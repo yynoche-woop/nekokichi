@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { faceSvg, NEKOKICHI } from '../data/cat-art';
+import { sandSvg, sandGround } from '../data/splat';
 
 interface Props {
   title: string;
@@ -40,17 +41,18 @@ const nav = [
     <meta property="og:image" content={ogImage} />
     <meta property="og:site_name" content="ネコキチ猫吉" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#eef5e2" />
+    <meta name="theme-color" content="#1c1629" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yusei+Magic&family=Zen+Kaku+Gothic+Antique:wght@500;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=M+PLUS+1p:wght@500;700;800&family=Reggae+One&display=swap" />
     {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
   </head>
   <body>
-    <div class="kiji" aria-hidden="true"></div>
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <header class="masthead">
       <div class="wrap masthead-inner">
         <a href="/" class="brand" id="brand" aria-label="ネコキチ猫吉 トップへ">
+          <span class="logo-sand" set:html={sandSvg(3, ['#e6ff2e', '#6c3cff'])} />
           <span class="logo-face">
             <span class="face-calm" set:html={faceSvg(NEKOKICHI, undefined, true)} />
             <span class="face-wow" set:html={faceSvg({ ...NEKOKICHI, expr: 'wow' }, undefined, true)} />
@@ -58,12 +60,13 @@ const nav = [
           </span>
           <span><b>ネコキチ猫吉</b><small>猫好きは、結局ぜんぶの猫が好き。</small></span>
         </a>
-        <p class="issue">{issueDate}の庭・編集長:猫吉<span class="price">入園料:なでなで3回</span></p>
+        <p class="issue">{issueDate}更新・編集長:猫吉<span class="price">砂かけ注意</span></p>
       </div>
       <nav class="wrap nav" aria-label="サイト内のコーナー">
         {nav.map((n) => <a href={n.href}>{n.label}</a>)}
       </nav>
     </header>
+    <div class="tape" aria-hidden="true"><div class="tape-track">{[0, 1].map(() => ['ネコキチ猫吉', '猫好きは結局ぜんぶの猫が好き', 'NEKOKICHI', '砂かけ注意', 'ウワサ検証中', 'NEKOKICHI'].map((t) => <span>{t}</span>))}</div></div>
     <script>
       // 編集長を押すと「!?」とびっくりしてからトップへ(動きを減らす設定・別タブで開く操作では普通のリンク)
       const brand = document.getElementById('brand') as HTMLAnchorElement;
@@ -80,11 +83,50 @@ const nav = [
         }, 600);
       });
       addEventListener('pageshow', () => brand.classList.remove('startled'));
+
+      // 見えたら「ざっ」と出る
+      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+      document.querySelectorAll('.pop-in').forEach((el) => io.observe(el));
+
+      // 何もないところをタップすると、猫が後ろ足で砂をかけたように色つきの猫砂が飛ぶ
+      const COLORS = ['#e6ff2e', '#6c3cff', '#16e0b0', '#ff3ea5', '#e9d6b0'];
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let flip = 1;
+      document.addEventListener('click', (e) => {
+        if (reduce || (e.target as Element).closest('a, button, input, label, select, textarea, .spot')) return;
+        if (getSelection()?.toString()) return;
+        kick(e.pageX, e.pageY, (flip = -flip));
+      });
+      (window as any).nkKick = kick;
+      function kick(x: number, y: number, dir: number, count = 40) {
+        count = Math.round(count * 1.6);
+        const color = COLORS[Math.floor(Math.random() * 4)];
+        for (let i = 0; i < count; i++) {
+          const g = document.createElement('span');
+          g.className = 'grain';
+          const size = 2.5 + Math.random() * 4;
+          g.style.width = `${size * (Math.random() < .5 ? 1.6 : 1)}px`;
+          g.style.height = `${size}px`;
+          g.style.left = `${x}px`;
+          g.style.top = `${y}px`;
+          g.style.background = Math.random() < .75 ? color : COLORS[4];
+          document.body.appendChild(g);
+          const vx = dir * (60 + Math.random() * 260), vy = -(160 + Math.random() * 260);
+          const t = 700 + Math.random() * 500;
+          const frames: Keyframe[] = [];
+          for (let k = 0; k <= 10; k++) {
+            const s = (k / 10) * (t / 1000);
+            frames.push({ translate: `${vx * s}px ${vy * s + 900 * s * s}px`, rotate: `${k * 40 * dir}deg`, opacity: k < 8 ? 1 : 1 - (k - 7) / 3 });
+          }
+          g.animate(frames, { duration: t, easing: 'linear', fill: 'forwards' }).onfinish = () => g.remove();
+        }
+      }
     </script>
     <main class="wrap">
       <slot />
     </main>
     <footer class="foot">
+      <svg class="ground" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true"><path d={sandGround(11)} fill="#e9d6b0" /></svg>
       <div class="wrap">
         <p><b>ネコキチ猫吉</b> 〜猫好きは、結局ぜんぶの猫が好き〜</p>
         <p>雑種もブランド猫も、短毛も長毛も。猫のウワサを編集部が全力で(そして少しだけ真面目に)検証し、暮らしと健康の「目安」をまとめる猫の総合誌です。</p>

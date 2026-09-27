@@ -1,246 +1,309 @@
 ---
+// トップページ。構成は「猫砂のかけあい」の町:ステージ → コーナー選択 → ネコキチニュース → 猫砂フェス → ずかん → 真面目な話。
+// (週刊ラグドールの「一面→結論→ウワサ→指名手配→アンケート」構成は使わない。横田さん 2026-09-27)
 import Base from '../layouts/Base.astro';
-import ColumnList from '../components/ColumnList.astro';
 import { getColumns } from '../lib';
 import { BREEDS } from '../data/breeds';
-import { TOOLS } from '../data/tools';
 import { faceSvg, bodySvg, NEKOKICHI } from '../data/cat-art';
+import { sandSvg, sandPile } from '../data/splat';
 import type { Art } from '../data/art-schema';
 
 const all = await getColumns();
 const kensho = all.filter((c) => c.data.category === 'kensho');
 const jitsuyo = all.filter((c) => c.data.category === 'jitsuyo');
-const rumors = kensho.slice(0, 6);
+
+const MIKE: Art = { coat: 'white', pattern: 'calico', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' };
+const KURO: Art = { coat: 'black', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'wow' };
+const SCO: Art = { coat: 'blue', pattern: 'solid', eye: 'copper', ears: 'fold', hair: 'short', expr: 'normal' };
+const RAG: Art = { coat: 'seal', pattern: 'point', eye: 'blue', ears: 'normal', hair: 'long', expr: 'smug' };
+
+// コーナー選択(ななめのタイル)
+const STAGES = [
+  { href: '/breeds/', t: '猫種ずかん', n: `${BREEDS.length}種`, d: 'スコもマンチカンも雑種も。全員かわいい容疑。', art: SCO, c: 'y' },
+  { href: '/columns/#kensho', t: 'ウワサ検証', n: `${kensho.length}本`, d: '猫は液体?黒猫は不吉?論文までさかのぼった。', art: KURO, c: 'v' },
+  { href: '/tools/', t: 'あそび場', n: '5つ', d: '猫種診断・姓名判断・年齢換算。', art: MIKE, c: 'm' },
+  { href: '/columns/#jitsuyo', t: '暮らし・健康', n: `${jitsuyo.length}本`, d: '食べちゃダメな物、室温、病院の目安。', art: RAG, c: 'p' },
+];
+
+// ネコキチニュース:MCふたり(編集長・猫吉と、三毛のミケ子)が最新記事を紹介する
+const OPEN = ['速報や!', 'ニュースです!', '聞いてや!', 'えらいこっちゃ!', '号外や!', '続報!'];
+const NEWS = kensho.slice(0, 6).map((c, i) => ({
+  href: `/columns/${c.id}/`,
+  a: `${OPEN[i % OPEN.length]} ${c.data.title.replace(/^【検証】/, '').replace(/ .*$/, '')}`,
+  b: `${c.data.verdict.label}。${c.data.verdict.summary}`,
+}));
+
+// 猫砂フェス:3つの陣営
+const FES = [
+  { k: 'kouseki', t: '鉱物系', d: 'ずっしり固まる、ベントナイトの民', color: '#e6ff2e' },
+  { k: 'kami', t: '紙・木系', d: '軽くて流せる、ペレットの民', color: '#16e0b0' },
+  { k: 'okara', t: 'おから系', d: 'ちょっといい匂い、豆腐の民', color: '#ff3ea5' },
+];
+
 const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'british-shorthair', 'american-shorthair', 'russian-blue']
   .map((s) => BREEDS.find((b) => b.slug === s))
   .filter((b) => b !== undefined);
-
-// 一面は「ねこの庭」:いろんな猫が、座布団・段ボール・芝生に集まっている。真ん中に編集長・猫吉(おすわり)
-type Spot = { a: Art; x: number; y: number; w: number; prop?: 'zabu' | 'box'; label: string; body?: boolean };
-const SCENE: Spot[] = [
-  { a: { coat: 'black', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' }, x: 6, y: 14, w: 17, label: '黒猫' },
-  { a: { coat: 'blue', pattern: 'solid', eye: 'copper', ears: 'fold', hair: 'short', expr: 'normal' }, x: 70, y: 12, w: 16, label: 'スコティッシュフォールド' },
-  { a: { coat: 'white', pattern: 'calico', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' }, x: 4, y: 50, w: 21, prop: 'zabu', label: '三毛猫' },
-  { a: { coat: 'white', pattern: 'tuxedo', eye: 'green', ears: 'normal', hair: 'short', expr: 'wow' }, x: 22, y: 68, w: 19, prop: 'box', label: 'ハチワレ' },
-  { a: NEKOKICHI, x: 38, y: 22, w: 25, body: true, label: '編集長の猫吉' },
-  { a: { coat: 'seal', pattern: 'point', eye: 'blue', ears: 'normal', hair: 'long', expr: 'normal' }, x: 66, y: 50, w: 22, prop: 'zabu', label: 'ラグドール' },
-  { a: { coat: 'red', pattern: 'tabby', eye: 'gold', ears: 'normal', hair: 'short', expr: 'sleepy' }, x: 84, y: 34, w: 14, label: '寝ている茶トラ' },
-  { a: { coat: 'silver', pattern: 'classic', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' }, x: 62, y: 76, w: 17, label: 'シルバータビー' },
-];
-const boss = bodySvg(NEKOKICHI, '編集長の猫吉(キジトラ白の猫)');
-
-// 読者アンケート:いちばん好きな毛柄(この端末だけに保存)
-const POLL = [
-  { k: 'kiji', t: 'キジトラ', a: { coat: 'brown', pattern: 'tabby', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' } },
-  { k: 'chatora', t: '茶トラ', a: { coat: 'red', pattern: 'tabby', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' } },
-  { k: 'mike', t: '三毛', a: { coat: 'white', pattern: 'calico', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' } },
-  { k: 'kuro', t: '黒猫', a: { coat: 'black', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' } },
-  { k: 'hachi', t: 'ハチワレ', a: { coat: 'white', pattern: 'tuxedo', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' } },
-  { k: 'saba', t: 'サバトラ', a: { coat: 'silver', pattern: 'tabby', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' } },
-] as const;
 ---
-<Base title="ネコキチ猫吉|猫好きは、結局ぜんぶの猫が好き" description="雑種もブランド猫も、短毛も長毛も。猫のウワサを編集部が本気で検証する週刊誌風の猫サイト。人気20種の猫種図鑑、猫種診断、猫の姓名判断、年齢換算・体型チェックなどのツールと、暮らし・健康の目安まで。">
-  <section class="front" aria-labelledby="front-h">
-        <div class="front-copy">
-      <span class="kicker">緊急特集</span>
-      <h1 id="front-h">いちばん<br />かわいい猫は<span class="q">？</span></h1>
-      <p class="sub-head">編集部、全猫を調べたら<span class="hl">全員だった</span></p>
-      <p>キジトラも三毛も黒猫も。スコもマンチカンもメインクーンも、名もなき雑種も。比べようとしたら、全員こっちを見てきた。無理だった。この雑誌は、猫にやられた人たち(ネコキチ)のための、猫の総合誌です。</p>
+<Base title="ネコキチ猫吉|猫好きは、結局ぜんぶの猫が好き" description="雑種もブランド猫も、短毛も長毛も。猫のウワサを編集部が本気で検証する猫サイト。人気20種の猫種ずかん、猫種診断、猫の姓名判断、年齢換算・体型チェックのツールと、暮らし・健康の目安まで。">
+
+  <!-- 1. ステージ:巨大な編集長が、砂をかけている -->
+  <section class="stage" aria-labelledby="stage-h">
+    <div class="stage-sand">
+      <Fragment set:html={sandSvg(21, ['#e6ff2e', '#e9d6b0'], 's1')} />
+      <Fragment set:html={sandSvg(55, ['#16e0b0', '#e6ff2e'], 's3')} />
+    </div>
+    <div class="stage-copy">
+      <p class="stage-kicker">猫のウワサと暮らしのメディア</p>
+      <h1 id="stage-h"><span>ネコキチ</span><span>猫吉</span></h1>
+      <p class="stage-sticker">猫好きは、結局ぜんぶの猫が好き。</p>
+      <p class="stage-lead">キジトラも三毛も黒猫も、スコもメインクーンも、名もなき雑種も。猫にやられた人たち(ネコキチ)のために、ウワサを本気で検証して、暮らしの目安をまじめにまとめます。</p>
       <div class="cta">
-        <a class="btn btn-pink" href="/breeds/">猫種図鑑を見る</a>
+        <a class="btn btn-pink" href="/breeds/">猫種ずかんへ</a>
         <a class="btn" href="/tools/match/">猫種診断をやる</a>
       </div>
     </div>
-    <div class="front-art" role="img" aria-label="芝生の庭に、いろんな猫が集まっている絵">
-      <span class="gogai">きょうは<b>{SCENE.length}匹</b>来ています</span>
-      {SCENE.map((c, i) => (
-        <span class:list={['spot', c.prop, { boss: c.body }]} style={`left:${c.x}%;top:${c.y}%;width:${c.w}%;--d:${-i * 0.37}s`} title={c.label}>
-          {c.prop && <i class="prop" />}
-          <Fragment set:html={c.body ? boss : faceSvg(c.a, undefined, true)} />
-        </span>
-      ))}
+    <div class="stage-art">
+      <svg class="pile" viewBox="0 0 200 100" aria-hidden="true"><path d={sandPile(8)} fill="#e9d6b0" /><path d={sandPile(9)} fill="#e6ff2e" transform="translate(40 30) scale(.6 .7)" /></svg>
+      <button class="boss" type="button" id="boss" aria-label="編集長の猫吉。押すと砂をかける">
+        <Fragment set:html={bodySvg(NEKOKICHI, '編集長の猫吉(キジトラ白の猫)')} />
+      </button>
+      <span class="rival r1" set:html={faceSvg(MIKE, '三毛猫', true)} />
+      <span class="rival r2" set:html={faceSvg(KURO, '黒猫', true)} />
+      <span class="boss-say" id="boss-say">押したら砂かけるで</span>
     </div>
   </section>
 
-  <section class="verdict" id="verdict" aria-labelledby="verdict-h">
-    <span class="stamp" aria-hidden="true">結論</span>
-    <div>
-      <span class="label">■ 編集部の結論</span>
-      <h2 id="verdict-h">いちばんは、<em>うちの子。</em></h2>
-      <p>そして、よその子もかわいい。道ばたの子も、動画の子も、図鑑の子も、ぜんぶかわいい。猫好きは、結局ぜんぶの猫が好き。この雑誌はその前提で、猫のウワサを本気で検証し、暮らしと健康の「目安」をまじめにまとめていきます。編集長は猫吉(キジトラ白)。いまキーボードの上で寝ているので、校正は遅れます。</p>
-    </div>
-    <div class="face" set:html={faceSvg(NEKOKICHI, '得意げな編集長・猫吉', true)} />
-  </section>
-
-  <div class="band" id="tools"><span class="no">01</span><h2>占い・診断・ツール</h2></div>
-  <div class="tool-grid">
-    {TOOLS.map((x) => <a class="tool-card" href={x.href}><span set:html={faceSvg(x.art)} /><span><b>{x.t}</b><small>{x.d}</small></span></a>)}
-  </div>
-
-  <div class="band" id="kensho"><span class="no">02</span><h2>猫のウワサ、検証しました</h2></div>
-  <p class="lede">ネットや昔から言われている猫のウワサを、編集部が論文や獣医師の解説までさかのぼって調べました。</p>
-  <div class="rumors">
-    {rumors.map((c) => (
-      <a class="rumor rumor-link" href={`/columns/${c.id}/`}>
-        <div class="rumor-q"><small>ウワサ</small><h3>{c.data.title.replace(/^【検証】/, '')}</h3></div>
-        <div class="rumor-a"><span class={`judge judge-${c.data.verdict.type}`}>{c.data.verdict.label}</span><p>{c.data.verdict.summary}</p><span class="rumor-more">記事を読む →</span></div>
+  <!-- 2. コーナー選択 -->
+  <div class="band"><span class="no">SELECT</span><h2>どこで遊ぶ?</h2></div>
+  <div class="stages">
+    {STAGES.map((s) => (
+      <a class={`stile t-${s.c} pop-in`} href={s.href}>
+        <span class="stile-art" set:html={faceSvg(s.art)} />
+        <span class="stile-n">{s.n}</span>
+        <b>{s.t}</b>
+        <small>{s.d}</small>
       </a>
     ))}
   </div>
-  <p class="more"><a class="btn" href="/columns/#kensho">ウワサ検証をもっと読む</a></p>
 
-  <div class="band" id="breeds"><span class="no">03</span><h2>猫種図鑑:庭に来た猫たち</h2></div>
-  <p class="lede">人気の猫種と、雑種。よく言われる性格の「ウワサ」と「実際は個体差」を分けて、特徴・お手入れ・気をつけたい病気までまとめました。</p>
+  <!-- 3. ネコキチニュース -->
+  <div class="band"><span class="no">NEWS</span><h2>ネコキチニュース</h2></div>
+  <section class="news pop-in" aria-label="ネコキチニュース">
+    <div class="news-screen">
+      <div class="mc mc-a"><span set:html={faceSvg(NEKOKICHI, '編集長の猫吉')} /><small>編集長 猫吉</small></div>
+      <div class="news-talk" aria-live="polite">
+        <p class="bubble ba" id="news-a">{NEWS[0].a}</p>
+        <p class="bubble bb" id="news-b">{NEWS[0].b}</p>
+      </div>
+      <div class="mc mc-b"><span set:html={faceSvg({ ...MIKE, expr: 'smug' }, '三毛のミケ子')} /><small>記者 ミケ子</small></div>
+    </div>
+    <div class="news-ctrl">
+      <a class="btn btn-pink" id="news-link" href={NEWS[0].href}>この記事を読む</a>
+      <button class="btn" type="button" id="news-next">次のニュース</button>
+      <span class="news-count" id="news-count">1 / {NEWS.length}</span>
+    </div>
+    <script type="application/json" id="news-data" set:html={JSON.stringify(NEWS)} />
+  </section>
+
+  <!-- 4. 猫砂フェス -->
+  <div class="band"><span class="no">FES</span><h2>猫砂フェス:どの砂派?</h2></div>
+  <section class="fes pop-in" aria-labelledby="fes-h">
+    <p id="fes-h" class="fes-lead">推しの猫砂を押して、トイレを自分の陣営の砂で埋めよう。何回押してもいい。猫はどの砂でも、だいたい一回は文句を言う。</p>
+    <div class="fes-box" id="fes-box" aria-hidden="true"></div>
+    <div class="fes-teams">
+      {FES.map((f) => (
+        <button class="fes-btn" type="button" data-k={f.k} data-color={f.color} style={`--c:${f.color}`}>
+          <b>{f.t}</b><small>{f.d}</small><span class="fes-pct" data-p={f.k}>0%</span>
+        </button>
+      ))}
+    </div>
+    <p class="small fes-note">※この端末で押した回数です。猫砂選びの本当のコツは、猫が気に入るかどうか。変えるときは少しずつ混ぜて。</p>
+  </section>
+
+  <!-- 5. ずかん -->
+  <div class="band"><span class="no">ZUKAN</span><h2>猫種ずかん:集めたくなる{BREEDS.length}種</h2></div>
   <div class="wanted-grid">
-    {pickup.map((b) => (
-      <a class="wanted breed-card" href={`/breeds/${b.slug}/`}>
-        <div class="w-title">{b.hair}・{b.size}</div>
-        <div class="w-pic" set:html={bodySvg(b.art, `${b.name}のイラスト`)} />
+    {pickup.map((b, i) => (
+      <a class="wanted breed-card pop-in" href={`/breeds/${b.slug}/`}>
+        <div class="w-title">No.{String(BREEDS.indexOf(b) + 1).padStart(2, '0')} {b.hair}・{b.size}</div>
+        <div class="w-pic"><Fragment set:html={sandSvg(100 + i, i % 2 ? ['#6c3cff', '#e9d6b0'] : ['#e6ff2e', '#e9d6b0'])} /><Fragment set:html={bodySvg(b.art, `${b.name}のイラスト`)} /></div>
         <h3>{b.name}</h3>
         <span class="crime">{b.catch}</span>
       </a>
     ))}
   </div>
-  <p class="more"><a class="btn btn-pink" href="/breeds/">猫種図鑑(全{BREEDS.length}種)を見る</a></p>
+  <p class="more"><a class="btn btn-pink" href="/breeds/">ぜんぶ見る({BREEDS.length}種)</a></p>
 
-  <div class="band" id="jitsuyo"><span class="no">04</span><h2>ここだけ真面目な話:暮らしと健康</h2></div>
-  <div class="serious">
-    <p class="serious-head"><span>いざというとき</span>かわいいだけで終わらせないために</p>
-    <p>おしっこが出ない、口を開けて息をしている、ぐったりしている。猫は具合が悪くても隠しがちなので、「いつもと違う」に気づいたら早めに動物病院へ。夜間に困ったときの探し方も含めて、<a href="/columns/emergency-signs/">すぐ病院へ行くべき症状</a>にまとめました。</p>
-  </div>
-  <ColumnList items={jitsuyo} />
-
-  <section class="poll" aria-labelledby="poll-h">
-    <div class="face" set:html={faceSvg({ ...NEKOKICHI, expr: 'wow' }, '目を見開いた編集長', true)} />
-    <div>
-      <h2 id="poll-h">読者アンケート:いちばん好きな毛柄は？</h2>
-      <p>いちばん近いのを押してください。何回押してもいいです。全部押してもいいです(編集長は全部押しました)。</p>
-      <div class="poll-btns">
-        {POLL.map((p) => <button class="poll-btn vote" type="button" data-k={p.k}><span set:html={faceSvg(p.a)} />{p.t}</button>)}
-      </div>
-      <div class="poll-result" aria-live="polite">
-        {POLL.map((p) => <div>{p.t}<div class="bar"><i data-bar={p.k}></i><span data-n={p.k}>0</span></div></div>)}
-        <small>※この端末で押した回数です。どれを押しても、結局みんな猫が好き。</small>
-      </div>
-    </div>
+  <!-- 6. 真面目な話 -->
+  <section class="calm" aria-labelledby="calm-h">
+    <p class="calm-tag">砂かけはここまで</p>
+    <h2 id="calm-h">ここからは真面目な話</h2>
+    <p>おしっこが出ない、口を開けて息をしている、ぐったりしている。猫は具合が悪くても隠しがちなので、「いつもと違う」に気づいたら早めに動物病院へ。</p>
+    <ul class="calm-list">
+      {jitsuyo.map((c) => <li><a href={`/columns/${c.id}/`}>{c.data.title}</a><span>{c.data.verdict.label.replace(/^結論:/, '')}</span></li>)}
+    </ul>
   </section>
-
-  <button class="peek" type="button" aria-label="ページの上へ戻る(のぞいている編集長)">
-    <span class="say">見た？</span>
-    <Fragment set:html={faceSvg(NEKOKICHI, undefined, true)} />
-  </button>
 
   <script>
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const rand = (a: number, b: number) => a + Math.random() * (b - a);
-    const popWord = (x: number, y: number, text: string, spread = 140) => {
-      const w = document.createElement('span');
-      w.className = 'pop-word';
-      w.textContent = text;
-      w.style.left = `${x - 30}px`;
-      w.style.top = `${y}px`;
-      w.style.setProperty('--dx', `${rand(-spread, spread)}px`);
-      w.style.setProperty('--dy', `${rand(-150, -60)}px`);
-      w.style.setProperty('--r', `${rand(-25, 25)}deg`);
-      document.body.appendChild(w);
-      w.addEventListener('animationend', () => w.remove());
-      return w;
-    };
+    const kick = (window as any).nkKick as ((x: number, y: number, dir: number, n?: number) => void) | undefined;
 
-    // 読者アンケート
-    const KEYS = [...document.querySelectorAll<HTMLButtonElement>('.vote')].map((b) => b.dataset.k!);
-    const counts: Record<string, number> = Object.fromEntries(KEYS.map((k) => [k, 0]));
-    try { Object.assign(counts, JSON.parse(localStorage.getItem('nk-poll') ?? '{}')); } catch {}
+    // 編集長を押すと砂をかける。ひとことしゃべる
+    const boss = document.getElementById('boss')!;
+    const say = document.getElementById('boss-say')!;
+    const LINES = ['くらえ!', '砂かけるで', 'ここ、わしのトイレ', 'ぜんぶの猫が好き', '編集長やぞ', 'シャッシャッ'];
+    let n = 0;
+    const bossKick = (count: number) => {
+      if (reduce || !kick) return;
+      const r = boss.getBoundingClientRect();
+      kick(r.left + scrollX + r.width * .25, r.top + scrollY + r.height * .9, -1, count);
+    };
+    boss.addEventListener('click', () => {
+      say.textContent = LINES[n++ % LINES.length];
+      bossKick(34);
+      if (!reduce) boss.animate([{ rotate: '0deg' }, { rotate: '-8deg' }, { rotate: '4deg' }, { rotate: '0deg' }], { duration: 420, easing: 'ease-out' });
+    });
+    // 最初の一発(読み込んで少ししたら、勝手に砂をかける)
+    setTimeout(() => bossKick(30), 900);
+
+    // ネコキチニュース
+    const NEWS: { href: string; a: string; b: string }[] = JSON.parse(document.getElementById('news-data')!.textContent!);
+    const home = document.querySelector<HTMLAnchorElement>('.brand')!.getAttribute('href')!.replace(/\/$/, '');
+    let i = 0;
+    const show = () => {
+      const x = NEWS[i];
+      const a = document.getElementById('news-a')!, b = document.getElementById('news-b')!;
+      a.textContent = x.a; b.textContent = x.b;
+      (document.getElementById('news-link') as HTMLAnchorElement).href = home + x.href;
+      document.getElementById('news-count')!.textContent = `${i + 1} / ${NEWS.length}`;
+      if (reduce) return;
+      a.animate([{ scale: .6, opacity: 0 }, { scale: 1.05, opacity: 1 }, { scale: 1 }], { duration: 350, easing: 'ease-out' });
+      b.animate([{ scale: .6, opacity: 0 }, { scale: .6, opacity: 0, offset: .4 }, { scale: 1.05, opacity: 1 }, { scale: 1 }], { duration: 650, easing: 'ease-out' });
+    };
+    document.getElementById('news-next')!.addEventListener('click', () => { i = (i + 1) % NEWS.length; show(); });
+
+    // 猫砂フェス:押した陣営の砂が、トイレに積もる
+    const box = document.getElementById('fes-box')!;
+    const btns = [...document.querySelectorAll<HTMLButtonElement>('.fes-btn')];
+    const counts: Record<string, number> = Object.fromEntries(btns.map((b) => [b.dataset.k!, 0]));
+    try { Object.assign(counts, JSON.parse(localStorage.getItem('nk-fes') ?? '{}')); } catch {}
+    const colorOf: Record<string, string> = Object.fromEntries(btns.map((b) => [b.dataset.k!, b.dataset.color!]));
     const render = () => {
-      const max = Math.max(1, ...Object.values(counts));
-      for (const k of KEYS) {
-        const bar = document.querySelector<HTMLElement>(`[data-bar="${k}"]`);
-        const n = document.querySelector<HTMLElement>(`[data-n="${k}"]`);
-        if (bar) bar.style.width = `${(counts[k] / max) * 100}%`;
-        if (n) n.textContent = String(counts[k]);
-      }
+      const total = Object.values(counts).reduce((a, b) => a + b, 0);
+      for (const b of btns) b.querySelector('.fes-pct')!.textContent = `${total ? Math.round((counts[b.dataset.k!] / total) * 100) : 0}%`;
+      let acc = 0;
+      const stops = Object.entries(counts).filter(([, v]) => v > 0).map(([k, v]) => { const a0 = acc; acc += (v / total) * 100; return `${colorOf[k]} ${a0}% ${acc}%`; });
+      box.style.setProperty('--fill', total ? `linear-gradient(90deg, ${stops.join(', ')})` : 'none');
+      box.style.setProperty('--h', `${Math.min(100, 12 + total * 4)}%`);
     };
     render();
-    const WORDS = ['全部かわいい', 'わかる', 'にゃ', '尊い', 'ぜんぶ', 'うちの子!'];
-    for (const b of document.querySelectorAll<HTMLButtonElement>('.vote')) {
+    for (const b of btns) {
       b.addEventListener('click', () => {
         counts[b.dataset.k!]++;
-        try { localStorage.setItem('nk-poll', JSON.stringify(counts)); } catch {}
+        try { localStorage.setItem('nk-fes', JSON.stringify(counts)); } catch {}
         render();
-        if (reduce) return;
+        if (reduce || !kick) return;
         const r = b.getBoundingClientRect();
-        for (let i = 0; i < 3; i++) {
-          const w = popWord(r.left + scrollX + r.width / 2, r.top + scrollY - 10, WORDS[Math.floor(Math.random() * WORDS.length)]);
-          w.style.animationDelay = `${i * 60}ms`;
-        }
+        kick(r.left + scrollX + r.width / 2, r.top + scrollY, Math.random() < .5 ? 1 : -1, 18);
       });
     }
-
-    // 一面の猫:さわると「にゃ」
-    const MEOW = ['にゃ', 'にゃーん', 'なに', 'ごはん?', 'ふみふみ', 'ゴロゴロ'];
-    for (const g of document.querySelectorAll<HTMLElement>('.spot')) {
-      g.addEventListener('click', () => {
-        if (reduce) return;
-        const r = g.getBoundingClientRect();
-        g.querySelector('svg')?.animate([{ translate: '0 0' }, { translate: '0 -18px' }, { translate: '0 0' }], { duration: 380, easing: 'ease-out' });
-        popWord(r.left + scrollX + r.width / 2, r.top + scrollY, MEOW[Math.floor(Math.random() * MEOW.length)], 30);
-      });
-    }
-
-    // 右下からのぞく編集長(一面を過ぎたら出てくる。押すとしゃべって、ページの上へ)
-    const peek = document.querySelector<HTMLButtonElement>('.peek');
-    const front = document.querySelector('.front');
-    if (peek && front) {
-      const LINES = ['見た？', '編集長です', 'ぜんぶの猫が好き', 'いま寝てた', '校正は明日'];
-      new IntersectionObserver(([e]) => peek.classList.toggle('show', !e.isIntersecting && e.boundingClientRect.top < 0)).observe(front);
-      let timer = 0;
-      peek.addEventListener('click', () => {
-        peek.querySelector('.say')!.textContent = LINES[Math.floor(Math.random() * LINES.length)];
-        peek.classList.add('talk');
-        clearTimeout(timer);
-        timer = window.setTimeout(() => peek.classList.remove('talk'), 1800);
-        setTimeout(() => scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }), reduce ? 0 : 450);
-      });
-    }
-
-    // 何もないところをタップすると、肉球スタンプ
-    const PAW = '<svg viewBox="0 0 40 40" aria-hidden="true"><g fill="currentColor" stroke="#1a1410" stroke-width="2"><ellipse cx="20" cy="27" rx="10" ry="8.5"/><ellipse cx="8" cy="16" rx="4.2" ry="5.2"/><ellipse cx="15.5" cy="9" rx="4.2" ry="5.4"/><ellipse cx="24.5" cy="9" rx="4.2" ry="5.4"/><ellipse cx="32" cy="16" rx="4.2" ry="5.2"/></g></svg>';
-    document.addEventListener('click', (e) => {
-      if (reduce || (e.target as Element).closest('a, button, input, label, svg')) return;
-      if (getSelection()?.toString()) return;
-      const p = document.createElement('span');
-      p.className = 'paw';
-      p.innerHTML = PAW;
-      p.style.left = `${e.pageX}px`;
-      p.style.top = `${e.pageY}px`;
-      p.style.rotate = `${rand(-30, 30)}deg`;
-      document.body.appendChild(p);
-      p.addEventListener('animationend', () => p.remove());
-    });
   </script>
 
   <style>
-    .spot { position: absolute; cursor: pointer; }
-    .spot svg { position: relative; width: 100%; }
-    .spot .prop { position: absolute; left: -6%; right: -6%; bottom: -6%; height: 26%; border: 2px solid var(--k); }
-    .spot.zabu .prop { background: var(--zabu); border-radius: 40%; }
-    .spot.box .prop { background: #d9b07a; border-radius: 4px; height: 40%; bottom: -16%; }
-    .spot.box .prop::after { content: ""; position: absolute; left: 10%; right: 10%; top: 28%; border-top: 2px dashed var(--wood-dark); }
-    .spot.boss { z-index: 2; }
-    .rumor-link { color: var(--k); text-decoration: none; transition: translate .1s, box-shadow .1s; }
-    .rumor-link:hover { color: var(--k); translate: -2px -2px; box-shadow: 8px 8px 0 var(--k); }
-    .rumor-more { display: block; margin-top: 8px; font-weight: 900; font-size: .85rem; color: var(--blue); }
-    .serious { margin-bottom: 18px; }
-    .poll-btns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 10px 0 14px; }
-    .poll-btn { display: grid; grid-template-columns: 40px 1fr; align-items: center; gap: 6px; font: inherit; font-family: var(--font-head); font-size: .98rem; text-align: left; padding: 6px 10px; border: 2px solid var(--k); border-radius: 12px; background: var(--white); box-shadow: 0 3px 0 var(--wood-dark); cursor: pointer; color: var(--k); }
-    .poll-btn:active { translate: 0 2px; box-shadow: 0 1px 0 var(--wood-dark); }
-    .poll-btn svg { width: 100%; }
-    @media (max-width: 560px) { .poll-btns { grid-template-columns: repeat(2, minmax(0, 1fr)); } .front-art { min-height: 300px; } .gogai { font-size: .85rem; } }
-    @media (prefers-reduced-motion: no-preference) {
-      .spot svg { animation: bob 3s ease-in-out infinite; animation-delay: var(--d); transform-origin: 50% 100%; }
-      .spot.boss svg { animation: none; }
-      @keyframes bob { 50% { translate: 0 -4px; } }
-      .boss .tail { transform-box: view-box; transform-origin: 162px 272px; animation: tail-sway 2.4s ease-in-out infinite; }
+    /* ステージ */
+    .stage { position: relative; display: grid; grid-template-columns: 1.1fr .9fr; gap: 10px; align-items: end; min-height: 520px; margin-top: 18px; }
+    .stage-sand { position: absolute; inset: 0; pointer-events: none; }
+    .stage-sand :global(.s1) { width: 62%; right: 20%; bottom: -2%; scale: -1 1; }
+    .stage-sand :global(.s3) { width: 26%; right: -4%; bottom: 30%; rotate: -10deg; }
+    .pile { position: absolute; right: 2%; bottom: -14px; width: min(64%, 420px); z-index: 0; }
+    .stage-copy { position: relative; z-index: 2; padding-bottom: 30px; color: var(--white); }
+    .stage-kicker { display: inline-block; margin: 0; background: var(--mint); color: var(--k); font-weight: 800; font-size: .85rem; padding: 0 12px; rotate: -3deg; }
+    .stage h1 { display: grid; font-family: var(--font-logo); font-size: clamp(3.4rem, 11vw, 7.6rem); line-height: .95; margin: 14px 0 10px; }
+    .stage h1 span:first-child { color: var(--yellow); -webkit-text-stroke: 3px var(--k); paint-order: stroke fill; text-shadow: 6px 6px 0 var(--violet); rotate: -4deg; transform-origin: left; }
+    .stage h1 span:last-child { color: var(--white); -webkit-text-stroke: 3px var(--k); paint-order: stroke fill; text-shadow: 6px 6px 0 var(--pink); margin-left: .6em; rotate: 3deg; }
+    .stage-sticker { display: inline-block; margin: 6px 0 14px; background: var(--white); color: var(--k); font-family: var(--font-head); font-size: clamp(1rem, 2.4vw, 1.3rem); padding: 4px 16px; rotate: -2deg; box-shadow: 4px 4px 0 var(--yellow); }
+    .stage-lead { max-width: 34em; margin: 0 0 20px; color: #e9e4f5; }
+    .stage-art { position: relative; z-index: 1; align-self: stretch; min-height: 420px; }
+    .boss { position: absolute; right: 8%; bottom: 0; width: min(78%, 340px); background: none; border: 0; padding: 0; cursor: pointer; transform-origin: 50% 100%; }
+    .boss svg { width: 100%; }
+    .rival { position: absolute; width: 26%; }
+    .rival.r1 { left: 0; top: 10%; rotate: -12deg; }
+    .rival.r2 { right: -2%; top: 0; width: 22%; rotate: 10deg; }
+    .boss-say { position: absolute; left: 2%; bottom: 48%; background: var(--yellow); color: var(--k); font-family: var(--font-head); padding: 4px 14px; border: 3px solid var(--k); rotate: -6deg; white-space: nowrap; }
+    @media (max-width: 800px) {
+      .stage { grid-template-columns: 1fr; min-height: 0; }
+      .stage-art { order: -1; min-height: 330px; }
+      .boss { width: 56%; right: 16%; }
+      .boss-say { bottom: 62%; }
+      .stage-sand :global(.s1) { width: 90%; right: 30%; top: 20px; bottom: auto; }
+      .stage-sand :global(.s3) { display: none; }
+      .stage-copy { padding-bottom: 0; }
     }
+    @media (prefers-reduced-motion: no-preference) {
+      .stage h1 span { animation: slam .6s cubic-bezier(.3, 1.6, .5, 1) both; }
+      .stage h1 span:last-child { animation-delay: .15s; }
+      @keyframes slam { from { opacity: 0; scale: 2.2; } }
+      .stage-sand :global(.splat) { animation: sand-in .7s cubic-bezier(.2, 1.4, .5, 1) both; }
+      .stage-sand :global(.s3) { animation-delay: .3s; }
+      @keyframes sand-in { from { opacity: 0; scale: .2; } }
+      .rival { animation: peek 3s ease-in-out infinite; }
+      .rival.r2 { animation-delay: -1.4s; }
+      @keyframes peek { 50% { translate: 0 -10px; } }
+      .boss .tail { transform-box: view-box; transform-origin: 162px 272px; animation: tail-sway 1.6s ease-in-out infinite; }
+    }
+
+    /* コーナー選択:ななめのタイル */
+    .stages { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .stile { position: relative; display: grid; align-content: end; gap: 2px; min-height: 250px; padding: 18px; color: var(--k); text-decoration: none; border: 3px solid var(--k); clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%); overflow: hidden; transition: translate .15s, rotate .15s; }
+    .stile:hover { translate: 0 -6px; rotate: -1deg; color: var(--k); }
+    .t-y { background: var(--yellow); } .t-v { background: var(--violet); color: var(--white); } .t-m { background: var(--mint); } .t-p { background: var(--pink); color: var(--white); }
+    .t-v:hover, .t-p:hover { color: var(--white); }
+    .stile-art { position: absolute; right: -10px; top: 8px; width: 62%; rotate: 8deg; transition: rotate .2s, scale .2s; }
+    .stile:hover .stile-art { rotate: -4deg; scale: 1.08; }
+    .stile-n { position: relative; font-family: var(--font-latin); font-size: .9rem; }
+    .stile b { position: relative; font-family: var(--font-head); font-weight: 400; font-size: 1.6rem; line-height: 1.2; }
+    .stile small { position: relative; font-size: .82rem; font-weight: 700; line-height: 1.5; }
+    @media (max-width: 860px) { .stages { grid-template-columns: repeat(2, minmax(0, 1fr)); } .stile { min-height: 210px; } }
+
+    /* ネコキチニュース */
+    .news { background: var(--night-2); border: 3px solid var(--k); box-shadow: 8px 8px 0 var(--yellow); padding: 18px; }
+    .news-screen { display: grid; grid-template-columns: 130px 1fr 130px; gap: 12px; align-items: end; }
+    .mc { text-align: center; color: var(--white); font-weight: 800; font-size: .78rem; }
+    .mc span { display: block; }
+    .mc-a span { rotate: -6deg; } .mc-b span { rotate: 6deg; }
+    .news-talk { display: grid; gap: 12px; align-self: center; }
+    .bubble { position: relative; margin: 0; padding: 10px 16px; border: 3px solid var(--k); font-weight: 800; line-height: 1.6; }
+    .ba { background: var(--yellow); justify-self: start; rotate: -1deg; }
+    .bb { background: var(--white); justify-self: end; rotate: 1deg; font-weight: 700; }
+    .news-ctrl { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 16px; }
+    .news-count { font-family: var(--font-latin); color: var(--hair); }
+    @media (max-width: 640px) {
+      .news-screen { grid-template-columns: 1fr 1fr; }
+      .news-talk { grid-column: 1 / -1; grid-row: 1; }
+      .mc { width: 90px; } .mc-b { justify-self: end; }
+    }
+
+    /* 猫砂フェス */
+    .fes { background: var(--paper); border: 3px solid var(--k); box-shadow: 8px 8px 0 var(--mint); padding: 20px; }
+    .fes-lead { margin: 0 0 14px; font-weight: 700; }
+    .fes-box { position: relative; height: 150px; border: 4px solid var(--k); border-top: 0; border-radius: 0 0 26px 26px; background: #f1ecff; overflow: hidden; }
+    .fes-box::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: var(--h, 12%); background: var(--fill, var(--sand)); transition: height .5s cubic-bezier(.3, 1.4, .5, 1); }
+    .fes-teams { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+    .fes-btn { display: grid; gap: 2px; text-align: left; font: inherit; padding: 12px 14px; background: var(--c); color: var(--k); border: 3px solid var(--k); box-shadow: 4px 4px 0 var(--k); cursor: pointer; transition: translate .1s, box-shadow .1s; }
+    .fes-btn:active { translate: 3px 3px; box-shadow: 1px 1px 0 var(--k); }
+    .fes-btn b { font-family: var(--font-head); font-weight: 400; font-size: 1.3rem; }
+    .fes-btn small { font-weight: 700; font-size: .8rem; }
+    .fes-pct { font-family: var(--font-latin); font-size: 1.4rem; }
+    .fes-note { margin: 12px 0 0; }
+    @media (max-width: 640px) { .fes-teams { grid-template-columns: 1fr; } }
+
+    /* 真面目な話 */
+    .calm { margin-top: 80px; background: var(--paper); border: 3px solid var(--k); padding: 22px 24px; box-shadow: 8px 8px 0 var(--sand); }
+    .calm-tag { display: inline-block; margin: 0; background: var(--sand); padding: 0 12px; font-weight: 800; font-size: .85rem; }
+    .calm h2 { font-size: clamp(1.4rem, 3.4vw, 2rem); margin: 8px 0 8px; }
+    .calm-list { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; }
+    .calm-list li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 10px 0; border-top: 2px dashed var(--hair); }
+    .calm-list a { font-weight: 800; color: var(--k); }
+    .calm-list span { font-size: .85rem; color: var(--gray); }
   </style>
 </Base>

@@ -2,7 +2,7 @@
 // 毛色 × 柄 × 目 × 耳 × 毛の長さ の組み合わせで、雑種も猫種もだいたい描ける。指定の型は art-schema.ts
 import type { Art } from './art-schema';
 
-const K = '#5a4633'; // 線は木の焦げ茶(ねこの庭)
+const K = '#1c1629'; // 線は夜のインク色
 const WHITE = '#ffffff';
 const PINK = '#ff9fb8';
 
@@ -129,8 +129,8 @@ export function faceGroup(a: Art, sticker = false): string {
   </g>`;
 }
 
-/** 線を細くする(ねこの庭は週刊ラグドールより細い線) */
-const thin = (svg: string) => svg.replace(/stroke-width="([\d.]+)"/g, (_, w) => `stroke-width="${+(Number(w) * 0.66).toFixed(1)}"`);
+/** 線を少し細くする(週刊ラグドールより軽く) */
+const thin = (svg: string) => svg.replace(/stroke-width="([\d.]+)"/g, (_, w) => `stroke-width="${+(Number(w) * 0.82).toFixed(1)}"`);
 
 export const faceGroupThin = (a: Art, sticker = false) => thin(faceGroup(a, sticker));
 

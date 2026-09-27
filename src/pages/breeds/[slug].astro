@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import { BREEDS, type Breed } from '../../data/breeds';
 import { faceSvg } from '../../data/cat-art';
+import { sandSvg } from '../../data/splat';
 
 export function getStaticPaths() {
   return BREEDS.map((b) => ({ params: { slug: b.slug }, props: { b } }));
@@ -26,6 +27,7 @@ const jsonld = { '@context': 'https://schema.org', '@type': 'Article', headline:
   <nav class="crumb"><a href="/">トップ</a> › <a href="/breeds/">猫種図鑑</a> › {b.name}</nav>
   <article class="col-article">
     <header class="col-head">
+      <Fragment set:html={sandSvg(i * 13 + 5, ['#16e0b0', '#ff3ea5'])} />
       <div class="col-head-copy">
         <span class="kicker">猫種図鑑 No.{String(i + 1).padStart(2, '0')}</span>
         <h1>{b.name}<small class="b-en">{b.en}{b.nick && ` / 通称「${b.nick}」`}</small></h1>

@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import ColumnList from '../../components/ColumnList.astro';
 import { getColumns, CATEGORY_LABEL, fmtDate, type Column } from '../../lib';
 import { faceSvg } from '../../data/cat-art';
+import { sandSvg } from '../../data/splat';
 
 export async function getStaticPaths() {
   const all = await getColumns();
@@ -37,6 +38,7 @@ const jsonld = {
   <nav class="crumb"><a href="/">トップ</a> › <a href="/columns/">記事一覧</a> › <a href={`/columns/#${d.category}`}>{CATEGORY_LABEL[d.category]}</a></nav>
   <article class="col-article">
     <header class="col-head">
+      <Fragment set:html={sandSvg(entry.id.length * 7 + 3, ['#e6ff2e', '#6c3cff'])} />
       <div class="col-head-copy">
         <span class="kicker">{CATEGORY_LABEL[d.category]}</span>
         {d.draft && <span class="col-draft">下書き(未公開)</span>}
