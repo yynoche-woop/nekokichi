@@ -2,7 +2,7 @@
 // 毛色 × 柄 × 目 × 耳 × 毛の長さ の組み合わせで、雑種も猫種もだいたい描ける。指定の型は art-schema.ts
 import type { Art } from './art-schema';
 
-const K = '#1a1410';
+const K = '#5a4633'; // 線は木の焦げ茶(ねこの庭)
 const WHITE = '#ffffff';
 const PINK = '#ff9fb8';
 
@@ -50,7 +50,8 @@ function eyes(a: Art, lid: string): string {
     const hi = a.expr === 'wow'
       ? `<path d="M${x + 5} 99 l2.2 5 l5 2.2 l-5 2.2 l-2.2 5 l-2.2 -5 l-5 -2.2 l5 -2.2 Z" fill="#fff"/><circle cx="${x - 5}" cy="117" r="2.4" fill="#fff"/>`
       : `<circle cx="${x + 5}" cy="104" r="4.6" fill="#fff"/><circle cx="${x - 5}" cy="117" r="2" fill="#fff"/>`;
-    const l = a.expr === 'smug' ? `<path d="M${x - 15.5} 101 A17 17 0 0 1 ${x + 15.5} 101 Z" fill="${lid}" stroke="${K}" stroke-width="4" stroke-linejoin="round"/>` : '';
+    // smug(ごきげん顔)は半目にせず、ほっぺを赤くする(半目は不機嫌に見えたため)
+    const l = a.expr === 'smug' ? `<ellipse cx="${x + (x < 100 ? -12 : 12)}" cy="132" rx="11" ry="6" fill="#ff8fa8" opacity=".55"/>` : '';
     return base + hi + l;
   };
   return eye(74, IRIS[a.eye]) + eye(126, a.eye === 'odd' ? IRIS.gold : IRIS[a.eye]);
@@ -128,9 +129,14 @@ export function faceGroup(a: Art, sticker = false): string {
   </g>`;
 }
 
+/** 線を細くする(ねこの庭は週刊ラグドールより細い線) */
+const thin = (svg: string) => svg.replace(/stroke-width="([\d.]+)"/g, (_, w) => `stroke-width="${+(Number(w) * 0.66).toFixed(1)}"`);
+
+export const faceGroupThin = (a: Art, sticker = false) => thin(faceGroup(a, sticker));
+
 export function faceSvg(a: Art, label?: string, sticker = false): string {
   const aria = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
-  return `<svg viewBox="-10 -16 220 206" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">${faceGroup(a, sticker)}</svg>`;
+  return `<svg viewBox="-10 -16 220 206" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">${faceGroupThin(a, sticker)}</svg>`;
 }
 
 /** 全身のおすわり(viewBox 0 0 220 300) */
@@ -148,7 +154,7 @@ export function bodySvg(a: Art, label?: string): string {
   const patches = a.pattern === 'calico'
     ? `<path d="M60 170 C80 160 100 176 96 200 C80 206 62 196 58 186 Z" fill="${COAT.red.body}"/><path d="M160 176 C150 166 130 176 134 200 C146 210 164 200 164 190 Z" fill="${COAT.black.body}"/>` : '';
   const stripes = striped ? `<g fill="none" stroke="${c.mark}" stroke-width="5" stroke-linecap="round"><path d="M58 186 q14 4 16 16 M56 212 q16 4 18 18 M164 186 q-14 4 -16 16 M166 212 q-16 4 -18 18"/></g>` : '';
-  return `<svg viewBox="0 0 220 300" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+  return thin(`<svg viewBox="0 0 220 300" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
     <g class="tail">
       <path d="${tail}" fill="none" stroke="${K}" stroke-width="${tw + 10}" stroke-linecap="round"/>
       <path d="${tail}" fill="none" stroke="${tailCol}" stroke-width="${tw}" stroke-linecap="round"/>
@@ -163,7 +169,7 @@ export function bodySvg(a: Art, label?: string): string {
     <ellipse cx="130" cy="286" rx="19" ry="11" fill="${legFill}" ${s}/>
     <path d="M84 281 v9 M96 281 v9 M124 281 v9 M136 281 v9" stroke="${K}" stroke-width="3" stroke-linecap="round"/>
     <g transform="translate(14 0) scale(.96)">${faceGroup(a)}</g>
-  </svg>`;
+  </svg>`);
 }
 
 /** 編集長・猫吉(キジトラ白のオス) */

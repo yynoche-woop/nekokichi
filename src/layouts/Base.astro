@@ -40,10 +40,10 @@ const nav = [
     <meta property="og:image" content={ogImage} />
     <meta property="og:site_name" content="ネコキチ猫吉" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#c99b66" />
+    <meta name="theme-color" content="#eef5e2" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yusei+Magic&family=Zen+Kaku+Gothic+Antique:wght@500;700&display=swap" />
     {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
   </head>
   <body>
@@ -58,22 +58,12 @@ const nav = [
           </span>
           <span><b>ネコキチ猫吉</b><small>猫好きは、結局ぜんぶの猫が好き。</small></span>
         </a>
-        <p class="issue">{issueDate}発行 編集長:猫吉<span class="price">定価:なでなで3回</span></p>
+        <p class="issue">{issueDate}の庭・編集長:猫吉<span class="price">入園料:なでなで3回</span></p>
       </div>
       <nav class="wrap nav" aria-label="サイト内のコーナー">
         {nav.map((n) => <a href={n.href}>{n.label}</a>)}
       </nav>
     </header>
-    <div class="ticker" aria-hidden="true">
-      <div class="ticker-track">
-        <span><b>速報</b>猫、また箱に入る</span>
-        <span><b>続報</b>編集長、キーボードの上で就寝</span>
-        <span><b>独自</b>雑種もブランド猫も、全員かわいかった</span>
-        <span><b>速報</b>夜中の大運動会、全国で開催の見通し</span>
-        <span><b>号外</b>「いちばんかわいい猫は?」の答え、うちの子に決定</span>
-        <span><b>特報</b>ふみふみ、本日も異常なし</span>
-      </div>
-    </div>
     <script>
       // 編集長を押すと「!?」とびっくりしてからトップへ(動きを減らす設定・別タブで開く操作では普通のリンク)
       const brand = document.getElementById('brand') as HTMLAnchorElement;

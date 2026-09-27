@@ -20,7 +20,7 @@ const tags = (b: (typeof BREEDS)[number]) =>
 ---
 <Base title="猫種図鑑:人気の猫20種の性格・特徴・お手入れ|ネコキチ猫吉" description="スコティッシュフォールド、マンチカン、アメショ、ラグドール、メインクーン、そして雑種まで。人気の猫20種の特徴・よく聞くウワサの真偽・お手入れ・気をつけたい病気を、編集部がまとめた猫種図鑑。">
   <nav class="crumb"><a href="/">トップ</a> › 猫種図鑑</nav>
-  <div class="band"><span class="no">図鑑</span><h1>猫種図鑑:かわいすぎる容疑者、全員集合</h1></div>
+  <div class="band"><span class="no">図鑑</span><h1>猫種図鑑:庭に来た猫たち</h1></div>
   <p class="lede">人気の猫種と、雑種(ミックス)。性格は「よく言われる」だけで、実際はどの子も個体差です。そして全員かわいいので、編集部は比べるのをあきらめました。</p>
   <div class="bfilter" role="group" aria-label="しぼりこみ">
     {FILTERS.map((f, i) => <button type="button" class:list={['btn', { on: i === 0 }]} data-f={f.k} aria-pressed={i === 0 ? 'true' : 'false'}>{f.t}</button>)}
@@ -28,12 +28,10 @@ const tags = (b: (typeof BREEDS)[number]) =>
   <div class="wanted-grid breed-grid">
     {BREEDS.map((b) => (
       <a class="wanted breed-card" href={`/breeds/${b.slug}/`} data-tags={tags(b)}>
-        <div class="w-title">WANTED</div>
-        <div class="w-sub">かわいすぎる容疑</div>
+        <div class="w-title">{b.hair}・{b.size}</div>
         <div class="w-pic" set:html={bodySvg(b.art, `${b.name}のイラスト`)} />
         <h3>{b.name}</h3>
         <span class="crime">{b.catch}</span>
-        <p class="breed-meta">{b.hair}・{b.size}</p>
       </a>
     ))}
   </div>

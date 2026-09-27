@@ -4,7 +4,8 @@ import ColumnList from '../components/ColumnList.astro';
 import { getColumns } from '../lib';
 import { BREEDS } from '../data/breeds';
 import { TOOLS } from '../data/tools';
-import { faceGroup, faceSvg, bodySvg, CROWD, NEKOKICHI } from '../data/cat-art';
+import { faceSvg, bodySvg, NEKOKICHI } from '../data/cat-art';
+import type { Art } from '../data/art-schema';
 
 const all = await getColumns();
 const kensho = all.filter((c) => c.data.category === 'kensho');
@@ -14,8 +15,18 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
   .map((s) => BREEDS.find((b) => b.slug === s))
   .filter((b) => b !== undefined);
 
-// 一面の集合写真:いろんな猫がぎゅうぎゅう。真ん中に編集長・猫吉(おすわり)
-const crowd = CROWD.map((c, i) => `<g class="crowd-cat c${i}" transform="translate(${c.x} ${c.y}) rotate(${c.r} 100 95) scale(${c.s})">${faceGroup(c.a, true)}</g>`).join('');
+// 一面は「ねこの庭」:いろんな猫が、座布団・段ボール・芝生に集まっている。真ん中に編集長・猫吉(おすわり)
+type Spot = { a: Art; x: number; y: number; w: number; prop?: 'zabu' | 'box'; label: string; body?: boolean };
+const SCENE: Spot[] = [
+  { a: { coat: 'black', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' }, x: 6, y: 14, w: 17, label: '黒猫' },
+  { a: { coat: 'blue', pattern: 'solid', eye: 'copper', ears: 'fold', hair: 'short', expr: 'normal' }, x: 70, y: 12, w: 16, label: 'スコティッシュフォールド' },
+  { a: { coat: 'white', pattern: 'calico', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' }, x: 4, y: 50, w: 21, prop: 'zabu', label: '三毛猫' },
+  { a: { coat: 'white', pattern: 'tuxedo', eye: 'green', ears: 'normal', hair: 'short', expr: 'wow' }, x: 22, y: 68, w: 19, prop: 'box', label: 'ハチワレ' },
+  { a: NEKOKICHI, x: 38, y: 22, w: 25, body: true, label: '編集長の猫吉' },
+  { a: { coat: 'seal', pattern: 'point', eye: 'blue', ears: 'normal', hair: 'long', expr: 'normal' }, x: 66, y: 50, w: 22, prop: 'zabu', label: 'ラグドール' },
+  { a: { coat: 'red', pattern: 'tabby', eye: 'gold', ears: 'normal', hair: 'short', expr: 'sleepy' }, x: 84, y: 34, w: 14, label: '寝ている茶トラ' },
+  { a: { coat: 'silver', pattern: 'classic', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' }, x: 62, y: 76, w: 17, label: 'シルバータビー' },
+];
 const boss = bodySvg(NEKOKICHI, '編集長の猫吉(キジトラ白の猫)');
 
 // 読者アンケート:いちばん好きな毛柄(この端末だけに保存)
@@ -30,8 +41,7 @@ const POLL = [
 ---
 <Base title="ネコキチ猫吉|猫好きは、結局ぜんぶの猫が好き" description="雑種もブランド猫も、短毛も長毛も。猫のウワサを編集部が本気で検証する週刊誌風の猫サイト。人気20種の猫種図鑑、猫種診断、猫の姓名判断、年齢換算・体型チェックなどのツールと、暮らし・健康の目安まで。">
   <section class="front" aria-labelledby="front-h">
-    <span class="gogai" aria-hidden="true">創刊号</span>
-    <div class="front-copy">
+        <div class="front-copy">
       <span class="kicker">緊急特集</span>
       <h1 id="front-h">いちばん<br />かわいい猫は<span class="q">？</span></h1>
       <p class="sub-head">編集部、全猫を調べたら<span class="hl">全員だった</span></p>
@@ -41,13 +51,14 @@ const POLL = [
         <a class="btn" href="/tools/match/">猫種診断をやる</a>
       </div>
     </div>
-    <div class="front-art">
-      <span class="onomatopoeia ono-1" aria-hidden="true">にゃーん</span>
-      <span class="onomatopoeia ono-2" aria-hidden="true">ぎゅう</span>
-      <svg class="crowd" viewBox="-20 -20 720 440" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
-        <Fragment set:html={crowd} />
-      </svg>
-      <div class="boss" set:html={boss} />
+    <div class="front-art" role="img" aria-label="芝生の庭に、いろんな猫が集まっている絵">
+      <span class="gogai">きょうは<b>{SCENE.length}匹</b>来ています</span>
+      {SCENE.map((c, i) => (
+        <span class:list={['spot', c.prop, { boss: c.body }]} style={`left:${c.x}%;top:${c.y}%;width:${c.w}%;--d:${-i * 0.37}s`} title={c.label}>
+          {c.prop && <i class="prop" />}
+          <Fragment set:html={c.body ? boss : faceSvg(c.a, undefined, true)} />
+        </span>
+      ))}
     </div>
   </section>
 
@@ -78,13 +89,12 @@ const POLL = [
   </div>
   <p class="more"><a class="btn" href="/columns/#kensho">ウワサ検証をもっと読む</a></p>
 
-  <div class="band" id="breeds"><span class="no">03</span><h2>猫種図鑑:かわいすぎる容疑者たち</h2></div>
+  <div class="band" id="breeds"><span class="no">03</span><h2>猫種図鑑:庭に来た猫たち</h2></div>
   <p class="lede">人気の猫種と、雑種。よく言われる性格の「ウワサ」と「実際は個体差」を分けて、特徴・お手入れ・気をつけたい病気までまとめました。</p>
   <div class="wanted-grid">
     {pickup.map((b) => (
       <a class="wanted breed-card" href={`/breeds/${b.slug}/`}>
-        <div class="w-title">WANTED</div>
-        <div class="w-sub">かわいすぎる容疑</div>
+        <div class="w-title">{b.hair}・{b.size}</div>
         <div class="w-pic" set:html={bodySvg(b.art, `${b.name}のイラスト`)} />
         <h3>{b.name}</h3>
         <span class="crime">{b.catch}</span>
@@ -168,11 +178,11 @@ const POLL = [
 
     // 一面の猫:さわると「にゃ」
     const MEOW = ['にゃ', 'にゃーん', 'なに', 'ごはん?', 'ふみふみ', 'ゴロゴロ'];
-    for (const g of document.querySelectorAll<SVGGElement>('.crowd-cat')) {
+    for (const g of document.querySelectorAll<HTMLElement>('.spot')) {
       g.addEventListener('click', () => {
         if (reduce) return;
         const r = g.getBoundingClientRect();
-        g.querySelector('.cface')?.animate([{ translate: '0 0' }, { translate: '0 -18px' }, { translate: '0 0' }], { duration: 380, easing: 'ease-out' });
+        g.querySelector('svg')?.animate([{ translate: '0 0' }, { translate: '0 -18px' }, { translate: '0 0' }], { duration: 380, easing: 'ease-out' });
         popWord(r.left + scrollX + r.width / 2, r.top + scrollY, MEOW[Math.floor(Math.random() * MEOW.length)], 30);
       });
     }
@@ -210,28 +220,26 @@ const POLL = [
   </script>
 
   <style>
-    .front-art { min-height: 440px; padding: 24px 12px 0; }
-    .crowd { width: 92%; align-self: start; margin-top: 46px; }
-    .front-art .ono-1 { right: auto; left: 4%; top: auto; bottom: 44%; }
-    .front-art .ono-2 { left: auto; right: 6%; bottom: 8%; }
-    .crowd-cat { cursor: pointer; }
-    .boss { position: absolute; width: 38%; left: 31%; bottom: 0; }
-    .boss svg { width: 100%; }
+    .spot { position: absolute; cursor: pointer; }
+    .spot svg { position: relative; width: 100%; }
+    .spot .prop { position: absolute; left: -6%; right: -6%; bottom: -6%; height: 26%; border: 2px solid var(--k); }
+    .spot.zabu .prop { background: var(--zabu); border-radius: 40%; }
+    .spot.box .prop { background: #d9b07a; border-radius: 4px; height: 40%; bottom: -16%; }
+    .spot.box .prop::after { content: ""; position: absolute; left: 10%; right: 10%; top: 28%; border-top: 2px dashed var(--wood-dark); }
+    .spot.boss { z-index: 2; }
     .rumor-link { color: var(--k); text-decoration: none; transition: translate .1s, box-shadow .1s; }
     .rumor-link:hover { color: var(--k); translate: -2px -2px; box-shadow: 8px 8px 0 var(--k); }
     .rumor-more { display: block; margin-top: 8px; font-weight: 900; font-size: .85rem; color: var(--blue); }
     .serious { margin-bottom: 18px; }
     .poll-btns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 10px 0 14px; }
-    .poll-btn { display: grid; grid-template-columns: 40px 1fr; align-items: center; gap: 6px; font: inherit; font-family: var(--font-head); font-weight: 900; font-size: .95rem; text-align: left; padding: 6px 10px; border: 3px solid var(--k); background: var(--white); box-shadow: 3px 3px 0 var(--k); cursor: pointer; }
-    .poll-btn:active { translate: 2px 2px; box-shadow: 1px 1px 0 var(--k); }
+    .poll-btn { display: grid; grid-template-columns: 40px 1fr; align-items: center; gap: 6px; font: inherit; font-family: var(--font-head); font-size: .98rem; text-align: left; padding: 6px 10px; border: 2px solid var(--k); border-radius: 12px; background: var(--white); box-shadow: 0 3px 0 var(--wood-dark); cursor: pointer; color: var(--k); }
+    .poll-btn:active { translate: 0 2px; box-shadow: 0 1px 0 var(--wood-dark); }
     .poll-btn svg { width: 100%; }
-    @media (max-width: 800px) { .front-art { min-height: 360px; } .crowd { width: 100%; margin-top: 30px; } .boss { width: 30%; left: 35%; } .front-art .ono-1 { display: none; } }
-    @media (max-width: 560px) { .poll-btns { grid-template-columns: repeat(2, minmax(0, 1fr)); } .front-art { min-height: 300px; } }
+    @media (max-width: 560px) { .poll-btns { grid-template-columns: repeat(2, minmax(0, 1fr)); } .front-art { min-height: 300px; } .gogai { font-size: .85rem; } }
     @media (prefers-reduced-motion: no-preference) {
-      .crowd-cat .cface { animation: bob 2.6s ease-in-out infinite; }
-      .crowd-cat.c1 .cface { animation-delay: -.4s; } .crowd-cat.c2 .cface { animation-delay: -1s; } .crowd-cat.c3 .cface { animation-delay: -1.6s; }
-      .crowd-cat.c4 .cface { animation-delay: -.7s; } .crowd-cat.c5 .cface { animation-delay: -2s; } .crowd-cat.c6 .cface { animation-delay: -1.3s; } .crowd-cat.c7 .cface { animation-delay: -.2s; }
-      @keyframes bob { 50% { translate: 0 -6px; } }
+      .spot svg { animation: bob 3s ease-in-out infinite; animation-delay: var(--d); transform-origin: 50% 100%; }
+      .spot.boss svg { animation: none; }
+      @keyframes bob { 50% { translate: 0 -4px; } }
       .boss .tail { transform-box: view-box; transform-origin: 162px 272px; animation: tail-sway 2.4s ease-in-out infinite; }
     }
   </style>
