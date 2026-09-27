@@ -189,39 +189,53 @@ export const CROWD: { a: Art; x: number; y: number; s: number; r: number }[] = [
   { a: { coat: 'white', pattern: 'tuxedo', eye: 'gold', ears: 'normal', hair: 'short', expr: 'wow' }, x: 520, y: 0, s: .66, r: 10 },
 ];
 
-/** 砂かけ中の猫(横向き・左を向いて、こっちを振り返る。viewBox 0 0 380 270)。
- * 後ろ足2本は .leg-near / .leg-far のグループで、腰(付け根)を中心に回すと砂を後ろ(右)へ蹴り上げる。
- * 足先の .toe-near / .toe-far の位置から砂を飛ばす(script 側で位置を取る) */
+/** 砂かけ中の猫(横向き・左を向いて、こっちを振り返る。viewBox 0 0 400 280)。
+ * 動きは「足を付け根で回す」のではなく、手描きのポーズを3コマ切り替える(機械っぽくしない。横田さんの指摘)。
+ *   .kf0 かまえ(後ろ足は体の下)/ .kf1 手前の後ろ足でけり上げ / .kf2 奥の後ろ足でけり上げ
+ * 足の付け根は胴体の裏に隠し、足は先細りの形。頭は胸に重ねて首をつなげる。しっぽはご機嫌に真上。
+ * 砂は、表示中のコマの .toe の位置から飛ばす(script 側) */
 export function kickCatSvg(a: Art, label?: string): string {
   const c = COAT[a.coat];
   const s = `stroke="${K}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
   const base = a.pattern === 'tuxedo' ? COAT.black.body : c.body;
   const white = ['kiji', 'bicolor', 'tuxedo', 'calico'].includes(a.pattern);
   const striped = ['tabby', 'kiji', 'classic', 'spotted'].includes(a.pattern);
-  const paw = white ? WHITE : base;
+  const pawC = white ? WHITE : base;
   const far = mixDark(base);
+  const farPaw = mixDark(pawC);
   const aria = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
-  // 後ろ足(腰 270,150 から下へ)。太もも+すね+足先
-  const hind = (fill: string, pawFill: string, toe: string) => `
-      <path d="M282 186 C290 206 292 222 294 236" fill="none" stroke="${K}" stroke-width="34" stroke-linecap="round"/>
-      <path d="M282 186 C290 206 292 222 294 236" fill="none" stroke="${fill}" stroke-width="24" stroke-linecap="round"/>
-      <ellipse cx="268" cy="160" rx="38" ry="46" fill="${fill}" ${s}/>
-      <ellipse class="${toe}" cx="300" cy="244" rx="22" ry="12" fill="${pawFill}" ${s}/>`;
-  const front = (x: number, fill: string) => `
-      <rect x="${x}" y="160" width="26" height="80" rx="13" fill="${fill}" ${s}/>
-      <ellipse cx="${x + 10}" cy="244" rx="20" ry="11" fill="${paw}" ${s}/>`;
-  return thin(`<svg viewBox="0 0 380 270" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
-    <g class="kc-tail"><path d="M300 120 C350 110 366 60 346 26" fill="none" stroke="${K}" stroke-width="30" stroke-linecap="round"/>
-      <path d="M300 120 C350 110 366 60 346 26" fill="none" stroke="${base}" stroke-width="20" stroke-linecap="round"/>
-      ${striped ? `<path d="M300 120 C350 110 366 60 346 26" fill="none" stroke="${c.mark}" stroke-width="20" stroke-dasharray="6 12" opacity=".85"/>` : ''}</g>
-    <g class="leg-far">${hind(far, mixDark(paw), 'toe-far')}</g>
-    ${front(150, far)}
-    <path d="M88 150 C92 104 150 86 220 92 C280 96 316 118 312 160 C308 196 270 212 214 212 L130 212 C100 210 84 186 88 150 Z" fill="${base}" ${s}/>
-    ${white ? `<path d="M96 170 C110 204 150 212 200 212 C170 196 130 190 110 160 Z" fill="${WHITE}"/>` : ''}
-    ${striped ? `<g fill="none" stroke="${c.mark}" stroke-width="6" stroke-linecap="round"><path d="M180 96 q6 20 -4 38 M214 94 q8 22 -2 42 M248 100 q8 20 0 40 M280 110 q6 18 -2 34"/></g>` : ''}
-    <g class="leg-near">${hind(base, paw, 'toe-near')}${striped ? `<path d="M286 150 l16 -4 M292 176 l14 0" stroke="${c.mark}" stroke-width="5" stroke-linecap="round"/>` : ''}</g>
-    ${front(110, white ? WHITE : base)}
-    <g class="kc-head" transform="translate(0 6) scale(.7)">${faceGroup({ ...a, expr: a.expr === 'normal' ? 'smug' : a.expr })}</g>
+  // 先細りの足(付け根は胴体の裏に入る)+ 足先(指のすじ入り)
+  const leg = (d: string, fill: string) => `<path d="${d}" fill="${fill}" ${s}/>`;
+  const foot = (cx: number, cy: number, rx: number, ry: number, rot: number, fill: string, cls = '') =>
+    `<g transform="rotate(${rot} ${cx} ${cy})"><ellipse class="${cls}" cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${fill}" ${s}/><path d="M${cx - rx * .35} ${cy - ry * .2} v${ry * .7} M${cx + rx * .1} ${cy - ry * .25} v${ry * .7}" stroke="${K}" stroke-width="3" stroke-linecap="round"/></g>`;
+  // 後ろ足:かまえ(体の下にたたむ)と、けり上げ(かかとを伸ばして後ろ上へ)
+  const hindRest = (dx: number, fill: string, pf: string) =>
+    leg(`M${250 + dx} 176 C${262 + dx} 200 ${272 + dx} 222 ${268 + dx} 240 L${288 + dx} 242 C${294 + dx} 222 ${290 + dx} 196 ${282 + dx} 172 Z`, fill) + foot(282 + dx, 246, 20, 10, 0, pf);
+  const hindKick = (dx: number, dy: number, fill: string, pf: string, toe: string) =>
+    leg(`M${270 + dx} 164 C${310 + dx} 184 ${344 + dx} ${186 + dy} ${370 + dx} ${160 + dy} L${384 + dx} ${176 + dy} C${352 + dx} ${210 + dy} ${306 + dx} ${210 + dy} ${262 + dx} 198 Z`, fill) + foot(382 + dx, 164 + dy, 11, 19, -40, pf, toe);
+  const front = (x: number, fill: string, pf: string) =>
+    leg(`M${x} 176 C${x - 2} 204 ${x} 224 ${x + 2} 240 L${x + 22} 240 C${x + 26} 220 ${x + 28} 200 ${x + 30} 176 Z`, fill) + foot(x + 12, 245, 19, 10, 0, pf);
+  const tail = `M318 146 C336 120 338 78 330 42 C326 26 334 16 344 22`;
+  const body = `M92 200 C78 176 80 136 106 116 C130 98 190 104 246 102 C300 100 330 128 326 166 C322 200 296 216 256 216 L140 216 C114 216 98 210 92 200 Z`;
+  return thin(`<svg viewBox="0 0 400 280" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+    <g class="kc-tail">
+      <path d="${tail}" fill="none" stroke="${K}" stroke-width="30" stroke-linecap="round"/>
+      <path d="${tail}" fill="none" stroke="${base}" stroke-width="20" stroke-linecap="round"/>
+      ${striped ? `<path d="${tail}" fill="none" stroke="${c.mark}" stroke-width="20" stroke-dasharray="6 13" opacity=".85"/>` : ''}
+    </g>
+    <g class="kf kf0">${hindRest(-24, far, farPaw)}</g>
+    <g class="kf kf1">${hindRest(-24, far, farPaw)}</g>
+    <g class="kf kf2">${hindKick(-18, 14, far, farPaw, 'toe')}</g>
+    ${front(146, far, farPaw)}
+    <g class="kf kf0">${hindRest(0, base, pawC)}</g>
+    <g class="kf kf1">${hindKick(0, 0, base, pawC, 'toe')}</g>
+    <g class="kf kf2">${hindRest(0, base, pawC)}</g>
+    ${front(104, white ? WHITE : base, pawC)}
+    <path d="${body}" fill="${base}" ${s}/>
+    ${white ? `<path d="M96 196 C88 172 92 146 108 132 C124 160 150 190 206 214 L140 214 C114 214 100 208 96 196 Z" fill="${WHITE}"/>` : ''}
+    ${striped ? `<g fill="none" stroke="${c.mark}" stroke-width="6" stroke-linecap="round"><path d="M176 104 q8 20 -2 40 M208 102 q9 22 -1 44 M240 104 q8 20 0 42 M276 108 q8 20 -2 38 M304 124 q6 16 -4 30"/></g>` : ''}
+    <path d="M296 146 C312 164 316 192 302 210" fill="none" stroke="${K}" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+    <g class="kc-head" transform="translate(34 18) scale(.74)">${faceGroup({ ...a, expr: a.expr === 'normal' ? 'smug' : a.expr })}</g>
   </svg>`);
 }
 

@@ -63,7 +63,7 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
     </div>
     <div class="stage-art">
       <svg class="pile" viewBox="0 0 200 100" aria-hidden="true"><path d={sandPile(8)} fill="#e9d6b0" /><path d={sandPile(9)} fill="#e6ff2e" transform="translate(40 30) scale(.6 .7)" /></svg>
-      <button class="boss" type="button" id="boss" aria-label="編集長の猫吉。押すと砂をかける">
+      <button class="boss" type="button" id="boss" data-f="0" aria-label="編集長の猫吉。押すと砂をかける">
         <Fragment set:html={kickCatSvg(NEKOKICHI, '後ろ足で砂をかけている編集長の猫吉(キジトラ白の猫)')} />
       </button>
       <span class="rival r1" set:html={faceSvg(MIKE, '三毛猫', true)} />
@@ -152,23 +152,21 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
     const say = document.getElementById('boss-say')!;
     const LINES = ['くらえ!', '砂かけるで', 'ここ、わしのトイレ', 'ぜんぶの猫が好き', '編集長やぞ', 'シャッシャッ'];
     let n = 0;
-    // 砂かけ:後ろ足を「手前→奥→手前」と3回けり上げる。足がいちばん上がった瞬間に、その足先から砂を後ろ(右)へ飛ばす
+    // 砂かけ:手描きのポーズを切り替える(かまえ→手前の足でけり→かまえ→奥の足でけり…)。
+    // 足を付け根で回すと機械っぽいので、コマを step で差し替える。けったコマの足先から砂を後ろ(右)へ飛ばす
     let busy = false;
-    const spray = (sel: string) => {
-      if (!kick) return;
-      const t = boss.querySelector(sel)!.getBoundingClientRect();
-      kick(t.left + scrollX + t.width / 2, t.top + scrollY + t.height, 1, 30, 1.9);
-    };
+    const SEQ = [1, 0, 2, 0, 1, 0, 2, 0];
     const bossKick = () => {
       if (reduce || busy) return;
       busy = true;
-      boss.classList.remove('kicking');
-      void boss.offsetWidth;
-      boss.classList.add('kicking');
-      setTimeout(() => spray('.toe-near'), 130);
-      setTimeout(() => spray('.toe-far'), 490);
-      setTimeout(() => spray('.toe-near'), 850);
-      setTimeout(() => { boss.classList.remove('kicking'); busy = false; }, 1250);
+      SEQ.forEach((f, k) => setTimeout(() => {
+        boss.dataset.f = String(f);
+        if (f && kick) {
+          const t = boss.querySelector(`.kf${f} .toe`)!.getBoundingClientRect();
+          kick(t.left + scrollX + t.width / 2, t.top + scrollY + t.height / 2, 1, 26, 1.9);
+        }
+        if (k === SEQ.length - 1) busy = false;
+      }, k * 150));
     };
     boss.addEventListener('click', () => { say.textContent = LINES[n++ % LINES.length]; bossKick(); });
     // 見えているあいだは、ときどき勝手に砂をかける
@@ -237,14 +235,10 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
     .stage-art { position: relative; z-index: 1; align-self: stretch; min-height: 420px; }
     .boss { position: absolute; right: 12%; bottom: 0; width: min(96%, 470px); background: none; border: 0; padding: 0; cursor: pointer; }
     .boss svg { width: 100%; filter: drop-shadow(2.5px 0 0 #fff) drop-shadow(-2.5px 0 0 #fff) drop-shadow(0 2.5px 0 #fff) drop-shadow(0 -2.5px 0 #fff); }
-    .boss :global(.leg-near), .boss :global(.leg-far) { transform-box: view-box; transform-origin: 262px 136px; }
-    .boss :global(.kc-tail) { transform-box: view-box; transform-origin: 300px 120px; }
-    .boss.kicking :global(.leg-near) { animation: kick-near 1.2s ease-in-out; }
-    .boss.kicking :global(.leg-far) { animation: kick-far 1.2s ease-in-out; }
-    .boss.kicking > :global(svg) { animation: dig 1.2s ease-in-out; transform-origin: 30% 100%; }
-    @keyframes kick-near { 0%, 100% { rotate: 0deg; } 11% { rotate: -70deg; } 22% { rotate: 4deg; } 60% { rotate: 0deg; } 71% { rotate: -70deg; } 82% { rotate: 4deg; } }
-    @keyframes kick-far { 0%, 30%, 60%, 100% { rotate: 0deg; } 41% { rotate: -64deg; } 52% { rotate: 4deg; } }
-    @keyframes dig { 0%, 100% { rotate: 0deg; } 11%, 41%, 71% { rotate: 3deg; } 22%, 52%, 82% { rotate: -1deg; } }
+    /* コマ切り替え:data-f のコマだけ見せる */
+    .boss :global(.kf) { display: none; }
+    .boss[data-f="0"] :global(.kf0), .boss[data-f="1"] :global(.kf1), .boss[data-f="2"] :global(.kf2) { display: inline; }
+    .boss[data-f="1"] > :global(svg), .boss[data-f="2"] > :global(svg) { translate: 0 3px; }
     .rival { position: absolute; width: 26%; }
     .rival.r1 { left: 34%; top: 0; width: 22%; rotate: -12deg; }
     .rival.r2 { right: -2%; top: 0; width: 22%; rotate: 10deg; }
@@ -267,7 +261,6 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
       .rival { animation: peek 3s ease-in-out infinite; }
       .rival.r2 { animation-delay: -1.4s; }
       @keyframes peek { 50% { translate: 0 -10px; } }
-      .boss :global(.kc-tail) { animation: tail-sway 1.6s ease-in-out infinite; }
     }
 
     /* コーナー選択:ななめのタイル */
