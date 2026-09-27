@@ -1,0 +1,346 @@
+---
+import Base from '../../layouts/Base.astro';
+import { faceSvg } from '../../data/cat-art';
+import { GRADE_INFO } from '../../data/seimei-text';
+---
+<Base title="猫の姓名判断:名前の画数で猫生を占う|ネコキチ猫吉" description="【号外】猫の名前、画数で占ってみた。苗字と猫の名前から、天格・人格・地格・外格・総格の五格で「猫生」を判定。ひざからのはみ出し率も出ます。占いは遊びです。">
+  <nav class="crumb"><a href="/">トップ</a> › <a href="/tools/">ツール</a> › 猫の姓名判断</nav>
+
+  <section class="sr-front">
+    <span class="sr-gogai" aria-hidden="true">号外</span>
+    <div class="sr-front-copy">
+      <span class="kicker">緊急占い</span>
+      <h1>猫の名前、<br />画数で占ってみた</h1>
+      <p class="sr-sub">編集部、姓名判断の本を<span class="hl">猫に置き換えた</span></p>
+      <p>人間の姓名判断でおなじみの「五格」を、猫の暮らしに置き換えました。苗字(飼い主の苗字)と猫の名前を入れると、猫生(ねこせい)がわかる。……たぶん。</p>
+    </div>
+    <div class="sr-front-art" set:html={faceSvg({ coat: 'white', pattern: 'calico', eye: 'green', ears: 'normal', hair: 'short', expr: 'wow' }, '目を見開いた三毛猫', true)} />
+  </section>
+
+  <section class="sr-rule" aria-labelledby="sr-rule-title">
+    <span class="stamp" aria-hidden="true">特報</span>
+    <p class="sr-rule-lead" id="sr-rule-title">猫は生まれてきただけで尊い存在なので、人間と違って、凶は存在しません。</p>
+    <p>なので編集部は、人間の姓名判断の吉凶を、ぜんぶ1ランク上げて読み替えることにしました。</p>
+    <figure class="sr-map">
+      <figcaption>読み替え表</figcaption>
+      <div class="sr-map-head"><span>人間</span><span></span><span>猫</span></div>
+      <ol>
+        <li><span class="h">大吉</span><span class="arrow" aria-hidden="true">▶</span><span class="c c0">大大吉</span></li>
+        <li><span class="h">吉</span><span class="arrow" aria-hidden="true">▶</span><span class="c c1">大吉</span></li>
+        <li><span class="h">半吉</span><span class="arrow" aria-hidden="true">▶</span><span class="c c2">吉</span></li>
+        <li><span class="h">凶</span><span class="arrow" aria-hidden="true">▶</span><span class="c c3">半吉</span></li>
+      </ol>
+    </figure>
+  </section>
+
+  <form class="sr-form" id="sr-form" novalidate>
+    <div class="sr-fields">
+      <label class="sr-field">
+        <span>苗字(飼い主の苗字)</span>
+        <input name="sei" type="text" maxlength="6" placeholder="例:山田" autocomplete="off" />
+      </label>
+      <label class="sr-field">
+        <span>猫の名前</span>
+        <input name="mei" type="text" maxlength="8" placeholder="例:モカ" autocomplete="off" />
+      </label>
+    </div>
+    <fieldset class="sr-sex">
+      <legend>性別</legend>
+      <label><input type="radio" name="sex" value="f" /><span>女の子</span></label>
+      <label><input type="radio" name="sex" value="m" /><span>男の子</span></label>
+    </fieldset>
+    <p class="sr-hint">ひらがな・カタカナ・漢字でどうぞ。「くん」「ちゃん」はつけない。</p>
+    <button class="btn btn-pink" type="submit">判定する</button>
+    <p class="sr-error" id="sr-error" role="alert" hidden></p>
+  </form>
+
+  <section class="sr-result" id="sr-result" aria-live="polite" hidden>
+    <p class="sr-shared" id="sr-shared" hidden>■ シェアされた判定です。<a href="#sr-form">うちの子も判定する</a></p>
+    <span class="stamp" aria-hidden="true">判定</span>
+    <div class="sr-verdict">
+      <span class="label" id="sr-who"></span>
+      <h2 id="sr-title"></h2>
+      <p id="sr-verdict-text"></p>
+    </div>
+
+    <div class="sr-strokes" id="sr-strokes"></div>
+
+    <div class="band"><span class="no">五格</span><h2>編集部の鑑定書</h2></div>
+    <div class="sr-grades" id="sr-grades"></div>
+
+    <div class="band"><span class="no">付録</span><h2>猫生パラメータ</h2></div>
+    <div class="sr-params-box">
+      <dl class="sr-params" id="sr-params"></dl>
+      <div class="sr-lucky">
+        <span class="sr-lucky-label">ラッキーアイテム</span>
+        <strong id="sr-lucky-item"></strong>
+        <span id="sr-lucky-why"></span>
+      </div>
+    </div>
+
+    <div class="sr-share">
+      <p class="sr-share-text" id="sr-share-text"></p>
+      <div class="cta">
+        <a class="btn btn-line" id="sr-line" href="#" target="_blank" rel="noopener">LINEで送る</a>
+          <button class="btn btn-blue" type="button" id="sr-share" hidden>ほかのアプリで送る</button>
+        <button class="btn btn-blue" type="button" id="sr-copy">結果をコピー</button>
+        <a class="btn" id="sr-x" href="#" target="_blank" rel="noopener">Xでシェア</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="band"><span class="no">解説</span><h2>どうやって占ってるの？</h2></div>
+  <div class="serious">
+    <p class="serious-head"><span>しくみ</span>人間の「五格」を、猫生に置き換えただけ</p>
+    <dl>
+      {Object.values(GRADE_INFO).map((g) => <><dt>{g.name}={g.life}</dt><dd>{g.note}。</dd></>)}
+      <dt>画数の数え方</dt>
+      <dd>ひらがな・カタカナは姓名判断で一般的な画数(濁点は2画、半濁点は1画、小さい「ゃ」「ッ」は元の字と同じ、のばす「ー」は1画)。漢字は Unicode の漢字データベース(Unihan)の日本の字形の画数。常用漢字・人名用漢字・JIS第1〜第2水準にない字は「画数不明」になります。</dd>
+      <dt>霊数と81</dt>
+      <dd>苗字や名前が1文字のときは、天格・地格・外格に「霊数」の1を足す一般的なルール。81を超えた数は80を引いて読みます。吉凶は一般的な吉凶表(4段階)をもとに、上の読み替え表のとおり1ランク上げて表示。どの画数でも、その子のかわいい個性。流派によって違うこともあります。</dd>
+    </dl>
+    <p class="small">※占いは遊びです。猫の性格や健康を言い当てるものではありません。性格は個体差、健康のことは動物病院へ。ちなみに編集部は、占いの途中で近所の猫の名前も全部入れていた。猫好きは結局ぜんぶの猫を占う。</p>
+    <p class="more"><a class="btn" href="/tools/match/">ついでに猫種診断もやる</a> <a class="btn" href="/columns/">記事を読む</a></p>
+  </div>
+
+
+  <script>
+    import { strokesOf, calcSeimei, stars, KEYWORD, setPhrased, type GradeKey, sexHash, LEADER_NUMS, RANK_LABEL, type Sex } from '../../data/seimei';
+    import { GRADE_INFO, TEXT, PARAMS, LAP_LABEL, verdictOf, LUCKY, SEX } from '../../data/seimei-text';
+
+    const form = document.getElementById('sr-form') as HTMLFormElement;
+    const $ = (id: string) => document.getElementById(id)!;
+    const el = (tag: string, cls?: string, text?: string) => {
+      const e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text != null) e.textContent = text;
+      return e;
+    };
+    const ORDER: GradeKey[] = ['ten', 'jin', 'chi', 'gai', 'sou'];
+    const RANK_CLASS: Record<string, string> = { 大吉: 'r-dai', 吉: 'r-kichi', 半吉: 'r-han', 凶: 'r-kyo' };
+
+    const showError = (msg: string) => {
+      $('sr-error').textContent = msg;
+      $('sr-error').hidden = false;
+      $('sr-result').hidden = true;
+    };
+
+    const run = () => {
+      const fd = new FormData(form);
+      const seiIn = String(fd.get('sei') || '').trim();
+      const meiIn = String(fd.get('mei') || '').trim();
+      if (!seiIn || !meiIn) return showError('苗字と猫の名前、両方入れてください。片方だと占えない。');
+      const sex = fd.get('sex') as Sex | null;
+      if (sex !== 'f' && sex !== 'm') return showError('女の子か男の子か、選んでください。編集部が書き分けたので。');
+      const a = strokesOf(seiIn);
+      const b = strokesOf(meiIn);
+      if (a.latin || b.latin) return showError('英字・数字は非対応です。カタカナでどうぞ(例:Leo → レオ)。');
+      const unknown = [...new Set([...a.unknown, ...b.unknown])];
+      if (unknown.length) return showError(`「${unknown.join('」「')}」は画数不明。編集部の辞書に載ってなかった。ひらがな・カタカナか、別の漢字でどうぞ。`);
+      if (!a.chars.length || !b.chars.length) return showError('苗字と猫の名前、両方入れてください。');
+      $('sr-error').hidden = true;
+
+      const r = calcSeimei(a.chars, b.chars);
+      const sei = a.chars.map((c) => c.c).join('');
+      const mei = b.chars.map((c) => c.c).join('');
+      const sx = SEX[sex];
+      const h = sexHash(r.hash, sex);
+      const call = `${mei}${sx.suffix}`;
+      const v = verdictOf(r.score, sex);
+      $('sr-who').textContent = `■ ${sei} ${mei}${sx.suffix}(${sx.label})の猫生、判定`;
+      setPhrased($('sr-title'), v.title);
+      $('sr-verdict-text').textContent = `${v.text}${sx.line}(五格の合計スコア ${r.score}/15)`;
+
+      $('sr-strokes').replaceChildren(
+        ...[...a.chars, null, ...b.chars].map((c) => {
+          if (!c) return el('span', 'sr-gap');
+          const box = el('span', 'sr-char');
+          box.append(el('b', '', c.c), el('small', '', `${c.n}画`));
+          return box;
+        }),
+      );
+
+      $('sr-grades').replaceChildren(
+        ...ORDER.map((k) => {
+          const g = r.grades[k];
+          const info = GRADE_INFO[k];
+          const card = el('article', `sr-grade ${RANK_CLASS[g.rank]}`);
+          const head = el('div', 'sr-grade-head');
+          const name = el('div', 'sr-grade-name');
+          name.append(el('small', '', info.life));
+          const h3 = el('h3', '', `${call}の${info.name} ${g.n}画`);
+          name.append(h3);
+          head.append(name, el('span', 'judge sr-rank', RANK_LABEL[g.rank]));
+          const body = el('div', 'sr-grade-body');
+          body.append(
+            el('p', 'sr-kw', `${g.folded}の数「${KEYWORD[g.folded]}」`),
+            el('p', '', TEXT[sex][k][g.rank]),
+            ...((k === 'jin' || k === 'sou') && LEADER_NUMS.includes(g.folded) ? [el('p', 'sr-leader', sx.leader)] : []),
+            el('p', 'sr-formula', `計算:${g.formula}${g.n !== g.folded ? `=${g.n}→81超えなので${g.folded}で読む` : ''}`),
+          );
+          card.append(head, body);
+          return card;
+        }),
+      );
+
+      const dl = $('sr-params');
+      dl.replaceChildren();
+      for (const p of PARAMS) {
+        const s = stars(r.grades[p.grade], p.salt + (h % 3));
+        const dd = el('dd', 'sr-meter');
+        dd.setAttribute('aria-label', `5段階で${s}`);
+        for (let i = 0; i < 5; i++) dd.append(el('i', i < s ? 'on' : ''));
+        dl.append(el('dt', '', p.label), dd);
+      }
+      const lap = Math.min(100, 5 + ((h >>> 2) % 60) + (r.grades.gai.folded % 7) + sx.lapBonus);
+      dl.append(el('dt', '', LAP_LABEL), el('dd', 'sr-lap', `${lap}%`));
+
+      const lucky = LUCKY[(h >>> 4) % LUCKY.length];
+      $('sr-lucky-item').textContent = lucky.item;
+      $('sr-lucky-why').textContent = lucky.why;
+
+      const share = `【号外】${sei}${mei}${sx.suffix}の猫生、判定「${v.title}」。人格${r.grades.jin.n}画=${RANK_LABEL[r.grades.jin.rank]}、ひざからのはみ出し率${lap}%。 #猫の姓名判断 #ネコキチ猫吉`;
+      $('sr-share-text').textContent = share;
+      // 入力内容を URL に入れておく(このURLを開くと同じ結果が出る)
+      const url = `${location.origin}${location.pathname}?${new URLSearchParams({ sei, mei, sex })}`;
+      history.replaceState(null, '', url);
+      ($('sr-x') as HTMLAnchorElement).href = `https://x.com/intent/post?text=${encodeURIComponent(share)}&url=${encodeURIComponent(url)}`;
+      $('sr-copy').onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(`${share}\n${url}`);
+          $('sr-copy').textContent = 'コピーした';
+        } catch {
+          $('sr-copy').textContent = 'コピーできなかった';
+        }
+        setTimeout(() => ($('sr-copy').textContent = '結果をコピー'), 2000);
+      };
+      ($('sr-line') as HTMLAnchorElement).href = `https://line.me/R/share?text=${encodeURIComponent(`${share}
+${url}`)}`;
+      // スマホの共有シート。使えないブラウザではボタンを出さない
+      const shareBtn = $('sr-share') as HTMLButtonElement;
+      shareBtn.hidden = !('share' in navigator);
+      shareBtn.onclick = () => navigator.share({ text: share, url }).catch(() => {});
+      $('sr-result').hidden = false;
+      return true;
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      $('sr-shared').hidden = true;
+      if (run()) $('sr-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // シェアされたURL(?sei=…&mei=…&sex=…)で開いたら、同じ結果をそのまま表示する
+    const q = new URLSearchParams(location.search);
+    const qSei = q.get('sei')?.trim();
+    const qMei = q.get('mei')?.trim();
+    if (qSei && qMei) {
+      (form.elements.namedItem('sei') as HTMLInputElement).value = qSei.slice(0, 6);
+      (form.elements.namedItem('mei') as HTMLInputElement).value = qMei.slice(0, 8);
+      const qSex = q.get('sex');
+      if (qSex === 'f' || qSex === 'm') form.querySelector<HTMLInputElement>(`input[name="sex"][value="${qSex}"]`)!.checked = true;
+      if (run()) {
+        $('sr-shared').hidden = false;
+        $('sr-result').scrollIntoView({ block: 'start' });
+      }
+    }
+  </script>
+
+  <style is:global>
+    .sr-front { position: relative; display: grid; grid-template-columns: 1fr 220px; background: var(--white); border: 4px solid var(--k); box-shadow: var(--shadow); overflow: hidden; }
+    .sr-front-copy { padding: 30px 26px 22px; border-right: 4px solid var(--k); }
+    .sr-front h1 { font-size: clamp(2rem, 6vw, 3.6rem); margin: .3em 0 .2em; }
+    .sr-sub { font-family: var(--font-head); font-weight: 900; font-size: clamp(1rem, 2.2vw, 1.25rem); border-top: 3px solid var(--k); border-bottom: 3px solid var(--k); padding: 6px 0; margin: 8px 0 12px; word-break: keep-all; overflow-wrap: anywhere; }
+    .sr-front p { margin: 0 0 .6em; }
+    .sr-front-art { display: grid; place-items: center; padding: 20px; background: var(--blue-soft); background-image: radial-gradient(rgba(61, 140, 240, .25) 2.2px, transparent 2.4px); background-size: 14px 14px; }
+    .sr-front-art svg { width: 100%; max-width: 180px; }
+    .sr-gogai { position: absolute; right: -8px; top: 14px; z-index: 2; background: var(--blue); color: var(--white); font-family: var(--font-head); font-weight: 900; font-size: 1.3rem; padding: 2px 20px; border: 3px solid var(--k); rotate: 6deg; box-shadow: 4px 4px 0 var(--k); }
+    @media (max-width: 700px) {
+      .sr-front { grid-template-columns: 1fr; }
+      .sr-front-copy { border-right: 0; padding: 22px 18px 18px; }
+      .sr-front-art { order: -1; border-bottom: 4px solid var(--k); padding: 16px; }
+      .sr-front-art svg { max-width: 130px; }
+    }
+
+    .sr-form { margin-top: 26px; background: var(--white); border: 4px solid var(--k); box-shadow: var(--shadow); padding: 20px 22px 22px; }
+    .sr-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .sr-field span { display: block; font-weight: 900; font-size: .9rem; margin-bottom: 4px; word-break: keep-all; }
+    .sr-field input { width: 100%; font: inherit; font-size: 1.1rem; padding: 10px 12px; border: 3px solid var(--k); border-radius: 0; background: var(--white); color: var(--k); }
+    .sr-field input:focus { outline: 4px solid var(--blue); outline-offset: 0; }
+    .sr-sex { border: 0; padding: 0; margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 10px; }
+    .sr-sex legend { font-weight: 900; font-size: .9rem; padding: 0; margin-bottom: 6px; width: 100%; }
+    .sr-sex label { cursor: pointer; }
+    .sr-sex input { position: absolute; opacity: 0; pointer-events: none; }
+    .sr-sex span { display: inline-block; padding: 6px 20px; border: 3px solid var(--k); background: var(--white); font-family: var(--font-head); font-weight: 900; box-shadow: 3px 3px 0 var(--k); }
+    /* 選んだ性別は「押し込まれた・✓付き・淡い青」。判定ボタン(青ベタ・影あり)と見分けられるように */
+    .sr-sex span::before { content: ""; display: inline-block; width: 0; transition: width .1s; }
+    .sr-sex input:checked + span { background: var(--blue-soft); color: var(--k); border-color: var(--blue); box-shadow: none; translate: 3px 3px; }
+    .sr-sex input:checked + span::before { content: "✓"; width: 1.2em; color: var(--blue); }
+    .sr-sex input:focus-visible + span { outline: 4px solid var(--blue); outline-offset: 2px; }
+    .sr-rule { position: relative; margin-top: 26px; background: var(--k); color: var(--white); border: 4px solid var(--k); box-shadow: 6px 6px 0 var(--blue); padding: 26px 22px 22px; text-align: center; }
+    .sr-rule p { margin: 0 0 10px; }
+    .sr-rule-lead { font-family: var(--font-head); font-weight: 900; font-size: clamp(1.2rem, 3.6vw, 1.6rem); line-height: 1.5; word-break: keep-all; text-wrap: balance; }
+    .sr-map { margin: 16px auto 0; max-width: 380px; }
+    .sr-map figcaption { display: inline-block; font-family: var(--font-dot); color: var(--blue); margin-bottom: 8px; }
+    .sr-map-head, .sr-map li { display: grid; grid-template-columns: 1fr 36px 1fr; align-items: center; }
+    .sr-map-head { font-family: var(--font-dot); font-size: .85rem; color: var(--hair); margin-bottom: 6px; }
+    .sr-map ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+    .sr-map .h { padding: 4px 0; border: 2px dashed var(--hair); color: var(--hair); text-decoration: line-through; text-decoration-thickness: 2px; }
+    .sr-map .arrow { color: var(--blue); }
+    .sr-map .c { padding: 4px 0; font-family: var(--font-head); font-weight: 900; font-size: 1.1rem; background: var(--white); color: var(--k); border: 3px solid var(--white); }
+    .sr-map .c0 { background: var(--blue); color: var(--white); border-color: var(--blue); }
+    .btn-line { background: #06c755; color: #fff; }
+    .sr-shared { margin: 0 0 14px; padding: 6px 104px 6px 12px; background: var(--blue-soft); border: 3px solid var(--k); font-weight: 900; font-size: .92rem; }
+    .sr-leader { font-size: .88rem; font-weight: 900; background: var(--blue-soft); border-left: 6px solid var(--blue); padding: 6px 10px; }
+    .sr-hint { font-size: .82rem; color: var(--gray); margin: 8px 0 14px; }
+    .sr-error { margin: 14px 0 0; padding: 8px 12px; border: 3px solid var(--k); background: var(--blue-soft); font-weight: 900; }
+    @media (max-width: 560px) { .sr-fields { grid-template-columns: 1fr; } .sr-form { padding: 16px; } }
+
+    .sr-result { position: relative; margin-top: 40px; scroll-margin-top: 30px; }
+    .sr-result > .stamp { z-index: 2; }
+    .sr-verdict { background: var(--k); color: var(--white); border: 4px solid var(--k); box-shadow: 6px 6px 0 var(--blue); padding: 26px 26px 22px; }
+    .sr-verdict .label { font-family: var(--font-dot); color: var(--blue); overflow-wrap: anywhere; }
+    .sr-verdict h2 { font-size: clamp(1.7rem, 5.4vw, 3rem); color: var(--white); margin: 6px 0 10px; word-break: keep-all; overflow-wrap: anywhere; }
+    .sr-verdict p { margin: 0; }
+    .sr-strokes { display: flex; flex-wrap: wrap; gap: 6px; margin: 22px 0 0; }
+    .sr-char { display: inline-flex; flex-direction: column; align-items: center; min-width: 46px; padding: 4px 6px; background: var(--white); border: 3px solid var(--k); line-height: 1.25; }
+    .sr-char b { font-family: var(--font-head); font-weight: 900; font-size: 1.3rem; }
+    .sr-char small { font-family: var(--font-dot); font-size: .75rem; }
+    .sr-gap { width: 12px; }
+
+    .sr-grades { display: grid; gap: 16px; }
+    .sr-grade { background: var(--white); border: 3px solid var(--k); box-shadow: var(--shadow); display: grid; grid-template-columns: 200px 1fr; }
+    .sr-grade-head { padding: 14px 16px; background: var(--blue-soft); border-right: 3px solid var(--k); display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+    .sr-grade-name small { font-family: var(--font-dot); color: var(--blue); font-size: .85rem; word-break: keep-all; }
+    .sr-grade-name h3 { font-size: 1.35rem; }
+    .sr-rank { margin: 0; }
+    .r-dai .sr-rank { background: var(--blue); color: var(--white); }
+    .r-kichi .sr-rank { background: var(--k); color: var(--white); }
+    .r-han .sr-rank { background: var(--blue-soft); }
+    .r-kyo .sr-rank { background: var(--hair); }
+    .sr-grade-body { padding: 14px 16px; }
+    .sr-grade-body p { margin: 0 0 6px; font-size: .93rem; }
+    .sr-kw { font-weight: 900; }
+    .sr-formula { font-family: var(--font-dot); font-size: .8rem !important; color: var(--gray); margin-bottom: 0 !important; }
+    @media (max-width: 640px) {
+      .sr-grade { grid-template-columns: 1fr; }
+      .sr-grade-head { border-right: 0; border-bottom: 3px solid var(--k); flex-direction: row; align-items: center; justify-content: space-between; }
+    }
+
+    .sr-params-box { display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; align-items: start; }
+    .sr-params { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; align-items: center; background: var(--white); border: 3px solid var(--k); box-shadow: var(--shadow); padding: 16px 18px; }
+    .sr-params dt { font-weight: 900; font-size: .92rem; word-break: keep-all; }
+    .sr-params dd { margin: 0; }
+    .sr-meter { display: flex; gap: 4px; }
+    .sr-meter i { width: 22px; height: 14px; border: 2px solid var(--k); background: var(--white); }
+    .sr-meter i.on { background: var(--blue); }
+    .sr-lap { font-family: var(--font-head); font-weight: 900; font-size: 1.5rem; color: var(--blue); line-height: 1.2; }
+    .sr-lucky { display: flex; flex-direction: column; gap: 4px; background: var(--k); color: var(--white); border: 3px solid var(--k); box-shadow: 6px 6px 0 var(--blue); padding: 16px 18px; }
+    .sr-lucky-label { font-family: var(--font-dot); color: var(--blue); }
+    .sr-lucky strong { font-family: var(--font-head); font-weight: 900; font-size: 1.4rem; word-break: keep-all; overflow-wrap: anywhere; }
+    @media (max-width: 700px) { .sr-params-box { grid-template-columns: 1fr; } }
+
+    .sr-share { margin-top: 26px; border-top: 4px double var(--k); padding-top: 16px; }
+    .sr-share-text { font-weight: 900; background: var(--blue-soft); border: 3px solid var(--k); padding: 10px 14px; overflow-wrap: anywhere; }
+  </style>
+</Base>

@@ -1,0 +1,78 @@
+---
+import Base from '../../layouts/Base.astro';
+import { faceSvg } from '../../data/cat-art';
+
+// 一般的によく使われる換算:1歳=15歳、2歳=24歳、以降1年ごとに+4歳。1歳未満は月齢ごとの目安。
+// ライフステージの区分は AAHA/AAFP の猫のライフステージ(子猫〜1歳/若年成猫1〜6歳/成熟期7〜10歳/シニア10歳〜)に合わせる。
+const MONTHS: [number, number][] = [[1, 1], [2, 3], [3, 5], [6, 10], [9, 13], [12, 15], [18, 21]];
+const table = [
+  ...MONTHS.map(([m, h]) => ({ y: m / 12, cat: m < 12 ? `${m}か月` : m === 12 ? '1歳' : '1歳半', human: h })),
+  ...[2, 3, 5, 7, 10, 12, 15, 18, 20].map((y) => ({ y, cat: `${y}歳`, human: 24 + (y - 2) * 4 })),
+];
+const stage = (y: number) => (y < 1 ? '子猫期' : y < 7 ? '若い大人(成猫期)' : y < 10 ? '熟年期' : 'シニア期');
+---
+<Base title="猫の年齢換算:人間でいうと何歳?|ネコキチ猫吉" description="猫の年齢を人間の年齢に換算。子猫の月齢から20歳まで、ライフステージ(子猫期・成猫期・熟年期・シニア期)の目安とあわせて表示します。">
+  <nav class="crumb"><a href="/">トップ</a> › <a href="/tools/">ツール</a> › 年齢換算</nav>
+  <div class="band"><span class="no">道具</span><h1>うちの子、人間でいうと何歳?</h1></div>
+  <p class="lede">年齢を入れると、人間の年齢に換算します。何歳になっても、うちの子がいちばんかわいいことは変わりません。</p>
+
+  <form class="tool" id="age-form">
+    <div class="row">
+      <div class="field">
+        <label for="age-y">年齢(歳)</label>
+        <input id="age-y" name="y" type="number" min="0" max="30" step="1" value="3" inputmode="numeric" />
+      </div>
+      <div class="field">
+        <label for="age-m">+ か月</label>
+        <select id="age-m" name="m">
+          {Array.from({ length: 12 }, (_, i) => <option value={i}>{i}か月</option>)}
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-pink" type="submit">換算する</button>
+    <div class="result" id="age-result" aria-live="polite">
+      <p class="sub">人間でいうと</p>
+      <div class="big" id="age-human">約28歳</div>
+      <p id="age-note">若い大人のまっただ中。体力も好奇心もピークです。体重管理と、毎日の狩りごっこを忘れずに。</p>
+    </div>
+  </form>
+
+  <div class="paper prose">
+    <h2>年齢換算表</h2>
+    <table>
+      <thead><tr><th>猫の年齢</th><th>人間でいうと</th><th>ステージ</th></tr></thead>
+      <tbody>{table.map((r) => <tr><td>{r.cat}</td><td>約{r.human}歳</td><td>{stage(r.y)}</td></tr>)}</tbody>
+    </table>
+    <p>換算方法にはいくつかの説があり、ここでは「1歳で15歳、2歳で24歳、その後は1年に4歳ずつ」という一般的な目安を使っています。猫種や体の大きさによる差ははっきりしていないので、あくまで目安です。くわしくは<a href="/columns/human-age/">猫の年齢換算の記事</a>へ。</p>
+    <div style="max-width:120px" set:html={faceSvg({ coat: 'red', pattern: 'tabby', eye: 'gold', ears: 'normal', hair: 'short', expr: 'sleepy' })} />
+  </div>
+
+  <script>
+    const form = document.getElementById('age-form') as HTMLFormElement;
+    const $ = (id: string) => document.getElementById(id)!;
+    const human = (months: number) => {
+      const pts: [number, number][] = [[0, 0], [1, 1], [2, 3], [3, 5], [6, 10], [9, 13], [12, 15], [18, 21], [24, 24]];
+      if (months >= 24) return 24 + ((months - 24) / 12) * 4;
+      for (let i = 1; i < pts.length; i++) {
+        const [m0, h0] = pts[i - 1];
+        const [m1, h1] = pts[i];
+        if (months <= m1) return h0 + ((months - m0) / (m1 - m0)) * (h1 - h0);
+      }
+      return 24;
+    };
+    const note = (months: number) =>
+      months < 12 ? 'やんちゃ盛りの子猫期。体重を週1回量って、成長を見守りましょう。ワクチンのスケジュールも動物病院で確認を。'
+      : months < 84 ? '若い大人のまっただ中。体力も好奇心もピークです。体重管理と、毎日の狩りごっこを忘れずに。'
+      : months < 120 ? '落ち着きが出てくる熟年期。年に1〜2回の健康診断がおすすめです(目安)。'
+      : months < 180 ? 'りっぱなシニア。段差を減らす、水飲み場を増やすなど、暮らしやすい工夫をしてあげましょう。'
+      : '堂々たる長寿猫。毎日がお祝いです。小さな変化に気づけるよう、体重と食欲をこまめにチェック。';
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const y = Math.max(0, Number((document.getElementById('age-y') as HTMLInputElement).value) || 0);
+      const m = Number((document.getElementById('age-m') as HTMLSelectElement).value) || 0;
+      const months = y * 12 + m;
+      $('age-human').textContent = `約${Math.round(human(months))}歳`;
+      $('age-note').textContent = note(months);
+    });
+  </script>
+</Base>

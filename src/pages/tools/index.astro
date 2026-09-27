@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import { TOOLS } from '../../data/tools';
+import { faceSvg } from '../../data/cat-art';
+
+const groups = [
+  { k: 'fun', t: '占い・診断' },
+  { k: 'health', t: '健康管理' },
+] as const;
+---
+<Base title="ツール一覧|ネコキチ猫吉" description="猫種診断、猫の姓名判断、年齢換算、体型チェック(BCS)、ごはんの量計算。猫種を問わず使える無料ツール。">
+  <nav class="crumb"><a href="/">トップ</a> › ツール</nav>
+  <div class="band"><span class="no">道具</span><h1>ツール一覧</h1></div>
+  <p class="lede">入力した内容はお使いの端末の中だけで計算され、どこにも送信されません。</p>
+  {groups.map((g) => (
+    <>
+      <h2 class="sub-band">{g.t}</h2>
+      <div class="tool-grid">
+        {TOOLS.filter((x) => x.group === g.k).map((x) => (
+          <a class="tool-card" href={x.href}><span set:html={faceSvg(x.art)} /><span><b>{x.t}</b><small>{x.d}</small></span></a>
+        ))}
+      </div>
+    </>
+  ))}
+</Base>

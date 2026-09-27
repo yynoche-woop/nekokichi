@@ -1,0 +1,107 @@
+---
+import '../styles/global.css';
+import { faceSvg, NEKOKICHI } from '../data/cat-art';
+
+interface Props {
+  title: string;
+  description: string;
+  /** 構造化データ(JSON-LD)。記事ページなどで渡す */
+  jsonld?: object;
+}
+const { title, description, jsonld } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(`${base}og.png`, Astro.site);
+const d = new Date(Date.now() + 9 * 3600 * 1000); // 日本時間のビルド日
+const issueDate = `${d.getUTCFullYear()}年${d.getUTCMonth() + 1}月${d.getUTCDate()}日`;
+// サイト内リンクはすべて "/..." で書く(GitHub Pages のサブパス公開中は scripts/base-links.mjs がビルド後に付け替える)
+const nav = [
+  { href: '/breeds/', label: '猫種図鑑' },
+  { href: '/columns/#kensho', label: 'ウワサ検証' },
+  { href: '/columns/#jitsuyo', label: '暮らし・健康' },
+  { href: '/tools/', label: 'ツール' },
+  { href: '/tools/match/', label: '猫種診断' },
+  { href: '/tools/seimei/', label: '猫の姓名判断' },
+];
+---
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={Astro.url.pathname === base ? 'website' : 'article'} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="ネコキチ猫吉" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#c99b66" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" />
+    {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
+  </head>
+  <body>
+    <div class="kiji" aria-hidden="true"></div>
+    <header class="masthead">
+      <div class="wrap masthead-inner">
+        <a href="/" class="brand" id="brand" aria-label="ネコキチ猫吉 トップへ">
+          <span class="logo-face">
+            <span class="face-calm" set:html={faceSvg(NEKOKICHI, undefined, true)} />
+            <span class="face-wow" set:html={faceSvg({ ...NEKOKICHI, expr: 'wow' }, undefined, true)} />
+            <span class="bikkuri" aria-hidden="true">!?</span>
+          </span>
+          <span><b>ネコキチ猫吉</b><small>猫好きは、結局ぜんぶの猫が好き。</small></span>
+        </a>
+        <p class="issue">{issueDate}発行 編集長:猫吉<span class="price">定価:なでなで3回</span></p>
+      </div>
+      <nav class="wrap nav" aria-label="サイト内のコーナー">
+        {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+      </nav>
+    </header>
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span><b>速報</b>猫、また箱に入る</span>
+        <span><b>続報</b>編集長、キーボードの上で就寝</span>
+        <span><b>独自</b>雑種もブランド猫も、全員かわいかった</span>
+        <span><b>速報</b>夜中の大運動会、全国で開催の見通し</span>
+        <span><b>号外</b>「いちばんかわいい猫は?」の答え、うちの子に決定</span>
+        <span><b>特報</b>ふみふみ、本日も異常なし</span>
+      </div>
+    </div>
+    <script>
+      // 編集長を押すと「!?」とびっくりしてからトップへ(動きを減らす設定・別タブで開く操作では普通のリンク)
+      const brand = document.getElementById('brand') as HTMLAnchorElement;
+      brand.addEventListener('click', (e) => {
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        e.preventDefault();
+        brand.classList.add('startled');
+        setTimeout(() => {
+          if (location.pathname === new URL(brand.href).pathname) {
+            brand.classList.remove('startled');
+            scrollTo({ top: 0, behavior: 'smooth' });
+          } else location.href = brand.href;
+        }, 600);
+      });
+      addEventListener('pageshow', () => brand.classList.remove('startled'));
+    </script>
+    <main class="wrap">
+      <slot />
+    </main>
+    <footer class="foot">
+      <div class="wrap">
+        <p><b>ネコキチ猫吉</b> 〜猫好きは、結局ぜんぶの猫が好き〜</p>
+        <p>雑種もブランド猫も、短毛も長毛も。猫のウワサを編集部が全力で(そして少しだけ真面目に)検証し、暮らしと健康の「目安」をまとめる猫の総合誌です。</p>
+        <p>性格や体の特徴には個体差があります。健康について気になることがあるときは、動物病院にご相談ください。</p>
+        <p><a href="/about/">このサイトについて</a> ・ <a href="/columns/">記事一覧</a> ・ <a href="/breeds/">猫種図鑑</a> ・ <a href="/tools/">ツール</a></p>
+        <p>© {new Date().getFullYear()} ネコキチ猫吉</p>
+      </div>
+    </footer>
+  </body>
+</html>

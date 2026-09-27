@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://yynoche-woop.github.io/nekokichi/sitemap-index.xml

@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import ColumnList from '../../components/ColumnList.astro';
+import { getColumns } from '../../lib';
+
+const all = await getColumns();
+const kensho = all.filter((c) => c.data.category === 'kensho');
+const jitsuyo = all.filter((c) => c.data.category === 'jitsuyo');
+---
+<Base title="記事一覧|ネコキチ猫吉" description="猫のウワサを編集部が検証するコラムと、暮らし・健康の実用記事の一覧。猫は液体?三毛猫のオスは?から、食べてはいけないもの・室温・受診の目安まで。">
+  <nav class="crumb"><a href="/">トップ</a> › 記事一覧</nav>
+  <div class="band"><span class="no">記事</span><h1>記事一覧</h1></div>
+  <p class="lede">猫にまつわるウワサを、ネコキチ編集部がひとつずつ検証します。判定はだいたい「個体差」。そして結論はだいたい「全員かわいい」。</p>
+  <h2 class="sub-band" id="kensho">ウワサ検証</h2>
+  <ColumnList items={kensho} />
+  <h2 class="sub-band" id="jitsuyo">暮らし・健康</h2>
+  <ColumnList items={jitsuyo} />
+</Base>

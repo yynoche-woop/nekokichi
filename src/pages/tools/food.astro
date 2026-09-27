@@ -1,0 +1,98 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="猫のごはんの量計算:1日何グラム?|ネコキチ猫吉" description="体重・ライフステージ・避妊去勢の有無・フードのカロリーから、猫の1日に必要なカロリーとフードの量(g)を計算します。">
+  <nav class="crumb"><a href="/">トップ</a> › <a href="/tools/">ツール</a> › ごはんの量計算</nav>
+  <div class="band"><span class="no">道具</span><h1>猫のごはんの量計算</h1></div>
+  <p class="lede">体重とライフステージから、1日に必要なカロリーとフードの量を計算します。</p>
+
+  <form class="tool" id="food-form">
+    <div class="field">
+      <label for="stage">ライフステージ</label>
+      <select id="stage" name="stage">
+        <option value="3.0">子猫(4か月未満)</option>
+        <option value="2.5">子猫(4〜12か月)</option>
+        <option value="1.2" selected>成猫・避妊去勢済み</option>
+        <option value="1.4">成猫・避妊去勢なし</option>
+        <option value="1.1">シニア(7歳〜)</option>
+        <option value="0.8">減量中</option>
+      </select>
+      <div class="hint" id="stage-hint"></div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="fw" id="fw-label">体重(kg)</label>
+        <input id="fw" name="weight" type="number" step="0.01" min="0.2" max="15" inputmode="decimal" placeholder="例:4.2" required />
+      </div>
+      <div class="field">
+        <label for="kcal">フードのカロリー(kcal/100g)</label>
+        <input id="kcal" name="kcal" type="number" step="1" min="30" max="700" inputmode="numeric" value="380" required />
+        <div class="hint">袋の裏に記載。ドライは350〜420、ウェットは70〜110が多いです</div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="meals">1日の回数</label>
+      <select id="meals" name="meals">
+        <option value="2" selected>2回</option>
+        <option value="3">3回</option>
+        <option value="4">4回</option>
+      </select>
+    </div>
+    <button class="btn btn-pink" type="submit">計算する</button>
+
+    <div class="result" id="food-result" hidden aria-live="polite">
+      <div class="sub">1日のフードの量</div>
+      <div class="big" id="f-grams"></div>
+      <p class="sub" id="f-detail"></p>
+      <p id="f-note"></p>
+    </div>
+  </form>
+
+  <div class="paper prose">
+    <h2>計算のしくみ</h2>
+    <p>安静時に必要なエネルギー(RER)= 70 ×(体重kg)<sup>0.75</sup> に、ライフステージごとの係数をかけて1日の必要カロリーを出しています。</p>
+    <ul>
+      <li>おやつを与える場合は、<strong>1日のカロリーの10%以内</strong>にして、その分フードを減らしましょう。</li>
+      <li>計算結果は出発点です。同じ体重でも、活動量や体質で必要な量は変わります。2〜4週間ごとに体重と<a href="/tools/bcs/">体型</a>を見て、量を調整してください。</li>
+      <li>療法食を食べている場合や持病がある場合は、獣医師の指示を優先してください。</li>
+    </ul>
+  </div>
+
+  <script>
+    const form = document.getElementById('food-form') as HTMLFormElement;
+    const stage = document.getElementById('stage') as HTMLSelectElement;
+    const $ = (id: string) => document.getElementById(id)!;
+
+    const syncStage = () => {
+      const losing = stage.value === '0.8';
+      $('fw-label').textContent = losing ? '目標体重(kg)' : '体重(kg)';
+      $('stage-hint').innerHTML = losing
+        ? '減量中は<strong>今の体重ではなく目標体重</strong>で計算します。<a href="/tools/bcs/">体型チェック</a>で目安が分かります。'
+        : '';
+    };
+    stage.addEventListener('change', syncStage);
+    syncStage();
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const factor = Number(fd.get('stage'));
+      const w = Number(fd.get('weight'));
+      const kcal100 = Number(fd.get('kcal'));
+      const meals = Number(fd.get('meals'));
+      if (!(w > 0 && kcal100 > 0)) return;
+
+      const rer = 70 * Math.pow(w, 0.75);
+      const der = rer * factor;
+      const grams = (der / kcal100) * 100;
+
+      $('f-grams').textContent = `約 ${Math.round(grams)} g`;
+      $('f-detail').textContent = `必要カロリー 約${Math.round(der)} kcal/日 ・ 1回あたり 約${Math.round(grams / meals)} g × ${meals}回`;
+      $('f-note').textContent =
+        factor === 0.8
+          ? '減量は1週間に体重の1〜2%程度のペースが目安です。食べなくなるほど急に減らすのは危険なので、獣医師と相談しながら進めてください。'
+          : 'キッチンスケールで量って与えると、体重管理がぐっと楽になります。';
+      $('food-result').hidden = false;
+    });
+  </script>
+</Base>

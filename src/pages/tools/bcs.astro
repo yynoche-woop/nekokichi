@@ -1,0 +1,93 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const questions = [
+  {
+    q: '肋骨を手のひらでなでると?',
+    a: ['見ただけで肋骨が分かる', '脂肪がほとんどなく、すぐに触れる', '薄い脂肪ごしに触れる', '少し押さないと分からない', 'しっかり押しても分からない'],
+  },
+  {
+    q: '真上から見た腰のくびれは?',
+    a: ['極端にくびれている', 'はっきりくびれている', 'ほどよくくびれている', 'ほとんどくびれがない', 'くびれがなく、横に張り出している'],
+  },
+  {
+    q: '真横から見たおなかのラインは?',
+    a: ['極端に吊り上がっている', 'はっきり吊り上がっている', 'わずかに吊り上がっている', 'まっすぐ〜少し垂れている', '大きく垂れて、歩くと揺れる'],
+  },
+  {
+    q: '背骨や腰の骨を触ると?',
+    a: ['見ただけで浮き出ている', '触るとすぐに分かる', '触ると分かる', '押すとようやく分かる', '押しても分からない'],
+  },
+];
+---
+<Base title="猫の体型チェック(BCS):太りすぎ?痩せすぎ?|ネコキチ猫吉" description="触って見て答えるだけで、猫の体型をボディコンディションスコア(BCS)5段階で判定。理想体重の目安も分かります。猫種を問わず使えます。">
+  <nav class="crumb"><a href="/">トップ</a> › <a href="/tools/">ツール</a> › 体型チェック</nav>
+  <div class="band"><span class="no">道具</span><h1>猫の体型チェック(BCS)</h1></div>
+  <p class="lede">ボディコンディションスコア(BCS)は、体重ではなく「体型」で太り具合を見る方法です。猫をなでながら、いちばん近いものを選んでください。</p>
+
+  <form class="tool" id="bcs-form">
+    {questions.map((item, i) => (
+      <fieldset class="field">
+        <legend>Q{i + 1}. {item.q}</legend>
+        <div class="choices">
+          {item.a.map((label, j) => (
+            <label><input type="radio" name={`q${i}`} value={j + 1} required /> {label}</label>
+          ))}
+        </div>
+      </fieldset>
+    ))}
+    <div class="field">
+      <label for="bcs-weight">今の体重(kg・任意)</label>
+      <input id="bcs-weight" name="weight" type="number" step="0.01" min="0.5" max="15" inputmode="decimal" placeholder="例:4.8" />
+      <div class="hint">入れると、理想体重の目安も表示します</div>
+    </div>
+    <button class="btn btn-pink" type="submit">判定する</button>
+
+    <div class="result" id="bcs-result" hidden aria-live="polite">
+      <div class="sub">あなたの猫のBCS</div>
+      <div class="big" id="b-score"></div>
+      <p id="b-ideal"></p>
+      <p id="b-advice"></p>
+    </div>
+  </form>
+
+  <div class="paper prose">
+    <h2>見た目だけでは分からない</h2>
+    <p>長毛の猫はふわふわの毛で、短毛でも筋肉がしっかりした猫は密な毛で、見た目だけでは太っているかどうか分かりにくいもの。体重計の数字に加えて、<strong>月に1回はこのチェックで「触って」確認</strong>するのがおすすめです。猫種によって骨格も理想体重もちがうので、体重の数字より「体型」を見るのがコツ。</p>
+    <p>BCSが4以上なら、<a href="/tools/food/">給餌量の計算</a>で1日の量を見直してみましょう。</p>
+  </div>
+
+  <script>
+    const RESULT: Record<number, { label: string; ratio: number; advice: string }> = {
+      1: { label: '1:痩せすぎ', ratio: 0.8, advice: '体重がかなり不足しています。病気が隠れていることもあるので、動物病院で相談してください。' },
+      2: { label: '2:やや痩せ', ratio: 0.9, advice: '少し痩せ気味です。食欲や便の状態を確認し、体重が減り続けるようなら受診しましょう。' },
+      3: { label: '3:理想的', ratio: 1, advice: '文句なしの理想体型です。編集長の猫吉も思わず二度見。この状態をキープしましょう。' },
+      4: { label: '4:やや太り気味', ratio: 1.15, advice: 'ぽっちゃりしていても、かわいさはまったく揺るぎません。でも、大好きなこの子と1日でも長く暮らすために、少しだけダイエットをがんばりましょう。おやつを減らし、1日のフード量を量って与えるところから始めましょう。遊ぶ時間を増やすのも効果的です。' },
+      5: { label: '5:肥満', ratio: 1.3, advice: 'まんまるボディもまた、たまらない魅力のひとつ。……ですが、健康のためにはダイエットが必要な体型です。糖尿病や関節の病気のリスクが上がります。急な減量は肝臓に負担がかかるため、獣医師と相談しながら少しずつ減らしましょう。' },
+    };
+    const form = document.getElementById('bcs-form') as HTMLFormElement;
+    const $ = (id: string) => document.getElementById(id)!;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const scores = [0, 1, 2, 3].map((i) => Number(fd.get(`q${i}`)));
+      const score = Math.min(5, Math.max(1, Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)));
+      const r = RESULT[score];
+      const w = Number(fd.get('weight'));
+
+      $('b-score').textContent = r.label;
+      $('b-advice').innerHTML = score >= 4 ? `${r.advice} <a href="/tools/food/">給餌量を計算する</a>` : r.advice;
+      if (w > 0 && score !== 3) {
+        const ideal = w / r.ratio;
+        $('b-ideal').textContent = `理想体重の目安:およそ ${ideal.toFixed(1)}kg(今より ${Math.abs(w - ideal).toFixed(1)}kg ${score > 3 ? '減' : '増'})`;
+      } else if (w > 0) {
+        $('b-ideal').textContent = `今の ${w}kg がこの子の理想体重の目安です。`;
+      } else {
+        $('b-ideal').textContent = '';
+      }
+      $('bcs-result').hidden = false;
+      $('bcs-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+</Base>

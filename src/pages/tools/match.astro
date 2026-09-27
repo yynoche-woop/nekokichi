@@ -1,0 +1,114 @@
+---
+import Base from '../../layouts/Base.astro';
+import { BREEDS } from '../../data/breeds';
+import { faceSvg, CROWD } from '../../data/cat-art';
+
+// 猫種診断:8つの質問で「好み」を5段階にし、猫種図鑑の「よく言われる傾向」と近い順に並べる。
+// 性格は個体差なので、結果はあくまで遊び。雑種(mix)は毎回「どの答えでも候補」として出す。
+type Dim = 'play' | 'cuddle' | 'groom' | 'voice' | 'size';
+const QUESTIONS: { q: string; dim: Dim; a: [string, number][] }[] = [
+  { q: '休みの日、猫とどう過ごしたい?', dim: 'play', a: [['猫じゃらしで一緒に全力で遊びたい', 5], ['ちょっと遊んで、あとはのんびり', 3], ['同じ部屋で静かに眺めていたい', 1]] },
+  { q: '夜中の大運動会(廊下を全力疾走)は?', dim: 'play', a: [['むしろ見たい。大歓迎', 5], ['たまになら笑って許す', 3], ['できれば寝かせてほしい', 1]] },
+  { q: '猫に甘えてほしい度は?', dim: 'cuddle', a: [['ずっとくっついていてほしい', 5], ['気が向いたときに来てくれれば', 3], ['おたがい自立した関係がいい', 1]] },
+  { q: 'ふだん家にいる時間は?', dim: 'cuddle', a: [['ほぼ家にいる(在宅が多い)', 5], ['半々くらい', 3], ['外出が多め', 1]] },
+  { q: 'ブラッシングの時間は?', dim: 'groom', a: [['毎日でも楽しめる', 5], ['週に数回ならできる', 3], ['できれば最低限にしたい', 1]] },
+  { q: '好きな毛並みは?', dim: 'groom', a: [['ふわふわのもふもふ長毛', 5], ['どっちも好き', 3], ['つやつやの短毛', 1]] },
+  { q: '猫とおしゃべりしたい?', dim: 'voice', a: [['たくさん話しかけてほしい', 5], ['ときどき返事してくれればいい', 3], ['静かな子がいい', 1]] },
+  { q: '抱っこするなら?', dim: 'size', a: [['ずっしり重い大きな猫', 5], ['ふつうくらい', 3], ['小柄で軽い猫', 1]] },
+];
+const data = BREEDS.map((b) => ({ slug: b.slug, name: b.name, catch: b.catch, t: b.tendency, art: b.art }));
+---
+<Base title="猫種診断:あなたと相性のいい猫は?|ネコキチ猫吉" description="8つの質問に答えるだけで、あなたの暮らしや好みに合いそうな猫種がわかる猫種診断。スコティッシュフォールド、ラグドール、メインクーン、雑種まで20種から判定。">
+  <nav class="crumb"><a href="/">トップ</a> › <a href="/tools/">ツール</a> › 猫種診断</nav>
+  <div class="band"><span class="no">診断</span><h1>猫種診断:あなたと相性のいい猫は?</h1></div>
+  <p class="lede">8つの質問に答えると、猫種図鑑の「よく言われる傾向」から、好みに近い猫種を探します。ただし性格は同じ猫種でも個体差。結果を見たあと、ほかの猫もぜんぶ好きになるのは仕様です。</p>
+
+  <div class="match-crowd" aria-hidden="true">
+    {CROWD.slice(0, 6).map((c) => <span set:html={faceSvg(c.a)} />)}
+  </div>
+
+  <form class="tool" id="match-form">
+    {QUESTIONS.map((item, i) => (
+      <fieldset class="field">
+        <legend>Q{i + 1}. {item.q}</legend>
+        <div class="choices">
+          {item.a.map(([label, v]) => (
+            <label><input type="radio" name={`q${i}`} value={v} data-dim={item.dim} required /> {label}</label>
+          ))}
+        </div>
+      </fieldset>
+    ))}
+    <button class="btn btn-pink" type="submit">診断する</button>
+    <div class="result match-result" id="match-result" hidden aria-live="polite">
+      <p class="sub">あなたと相性がよさそうなのは</p>
+      <div class="match-top">
+        <div class="match-face" id="m-face"></div>
+        <div>
+          <div class="big" id="m-name"></div>
+          <p class="match-catch" id="m-catch"></p>
+          <p><a class="btn" id="m-link" href="#">図鑑でくわしく見る</a></p>
+        </div>
+      </div>
+      <p class="sub" style="margin-top:14px">ほかにも気が合いそう</p>
+      <div class="tool-grid" id="m-more"></div>
+      <p class="match-mix" id="m-mix"></p>
+      <div class="sr-share-btns" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <a class="btn" id="m-x" href="#" target="_blank" rel="noopener">Xでシェア</a>
+        <a class="btn" id="m-line" href="#" target="_blank" rel="noopener">LINEで送る</a>
+      </div>
+    </div>
+  </form>
+
+  <div class="paper prose">
+    <h2>診断のしくみ</h2>
+    <p>回答から「活発さ」「甘えたがり」「お手入れ」「おしゃべり」「体の大きさ」の好みを5段階にして、<a href="/breeds/">猫種図鑑</a>に載せている各猫種の「よく言われる傾向」と近い順に並べています。</p>
+    <p>猫の性格は、猫種よりも一匹ずつの個性や育った環境による部分が大きいといわれます。保護猫の譲渡会では、スタッフさんがその子の性格を教えてくれることも。気になる猫種があっても、最後は「その子」と会ってみるのがいちばんです。</p>
+  </div>
+
+  <script type="application/json" id="match-data" set:html={JSON.stringify(data)} />
+  <script>
+    import { faceSvg } from '../../data/cat-art';
+    type B = { slug: string; name: string; catch: string; t: Record<string, number>; art: any };
+    const BREEDS: B[] = JSON.parse(document.getElementById('match-data')!.textContent!);
+    const form = document.getElementById('match-form') as HTMLFormElement;
+    const $ = (id: string) => document.getElementById(id)!;
+    const base = document.querySelector<HTMLAnchorElement>('.brand')!.getAttribute('href')!.replace(/\/?$/, '/');
+    const link = (slug: string) => `${base}breeds/${slug}/`;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const sum: Record<string, number[]> = {};
+      for (const r of form.querySelectorAll<HTMLInputElement>('input[type=radio]:checked')) (sum[r.dataset.dim!] ??= []).push(Number(r.value));
+      const pref = Object.fromEntries(Object.entries(sum).map(([k, v]) => [k, v.reduce((a, b) => a + b, 0) / v.length]));
+      // 近さ:5つの軸の差の二乗和(お手入れ・大きさは好みがはっきり出やすいので少し重め)
+      const W: Record<string, number> = { play: 1, cuddle: 1, groom: 1.3, voice: .8, size: 1.2 };
+      const ranked = BREEDS.filter((b) => b.slug !== 'mix')
+        .map((b) => ({ b, d: Object.keys(pref).reduce((s, k) => s + W[k] * (pref[k] - b.t[k]) ** 2, 0) }))
+        .sort((x, y) => x.d - y.d);
+      const top = ranked[0].b;
+      $('m-face').innerHTML = faceSvg(top.art, `${top.name}のイラスト`, true);
+      $('m-name').textContent = top.name;
+      $('m-catch').textContent = top.catch;
+      ($('m-link') as HTMLAnchorElement).href = link(top.slug);
+      $('m-more').innerHTML = ranked.slice(1, 4).map(({ b }) => `<a class="tool-card" href="${link(b.slug)}"><span>${faceSvg(b.art)}</span><span><b>${b.name}</b><small>${b.catch}</small></span></a>`).join('');
+      const mix = BREEDS.find((b) => b.slug === 'mix');
+      $('m-mix').innerHTML = mix ? `そして、<a href="${link('mix')}">雑種(ミックス)</a>は、どの答えでも候補です。見た目も性格も一匹ずつちがうので、あなたにぴったりの子がきっといます。` : '';
+      const text = `猫種診断の結果、わたしと相性がいいのは「${top.name}」でした。でも結局ぜんぶの猫が好き。 #猫種診断 #ネコキチ猫吉`;
+      const url = location.origin + location.pathname;
+      ($('m-x') as HTMLAnchorElement).href = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+      ($('m-line') as HTMLAnchorElement).href = `https://line.me/R/share?text=${encodeURIComponent(`${text}\n${url}`)}`;
+      $('match-result').hidden = false;
+      $('match-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  </script>
+  <style>
+    .match-crowd { display: flex; justify-content: center; gap: 4px; margin: 6px 0 0; }
+    .match-crowd span { width: 70px; }
+    .match-crowd span:nth-child(odd) { translate: 0 8px; rotate: -6deg; }
+    .match-crowd span:nth-child(even) { rotate: 5deg; }
+    .match-top { display: grid; grid-template-columns: 150px 1fr; gap: 16px; align-items: center; }
+    .match-face svg { width: 100%; }
+    .match-catch { font-weight: 900; }
+    .match-mix { margin-top: 14px !important; font-weight: 700; }
+    @media (max-width: 520px) { .match-top { grid-template-columns: 100px 1fr; } .match-crowd span { width: 52px; } }
+  </style>
+</Base>

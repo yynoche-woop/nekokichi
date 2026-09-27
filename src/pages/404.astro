@@ -1,0 +1,9 @@
+---
+import Base from '../layouts/Base.astro';
+import { faceSvg } from '../data/cat-art';
+---
+<Base title="ページが見つかりません|ネコキチ猫吉" description="お探しのページは見つかりませんでした。">
+  <div class="band"><span class="no">404</span><h1>このページ、猫が箱に入れて持っていきました</h1></div>
+  <div style="max-width:180px;margin:20px 0" set:html={faceSvg({ coat: 'black', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'smug' }, 'すました顔の黒猫', true)} />
+  <p class="back"><a class="btn btn-pink" href="/">トップへ</a> <a class="btn" href="/columns/">記事一覧</a> <a class="btn" href="/breeds/">猫種図鑑</a></p>
+</Base>

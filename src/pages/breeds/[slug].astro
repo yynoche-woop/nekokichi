@@ -1,0 +1,103 @@
+---
+import Base from '../../layouts/Base.astro';
+import { BREEDS, type Breed } from '../../data/breeds';
+import { faceSvg } from '../../data/cat-art';
+
+export function getStaticPaths() {
+  return BREEDS.map((b) => ({ params: { slug: b.slug }, props: { b } }));
+}
+interface Props { b: Breed }
+const { b } = Astro.props;
+const i = BREEDS.findIndex((x) => x.slug === b.slug);
+const next = [...BREEDS.slice(i + 1), ...BREEDS.slice(0, i)].slice(0, 4);
+const others = BREEDS.filter((x) => x.slug !== b.slug);
+const T = [
+  { k: 'play', t: '活発さ', lo: 'のんびり', hi: '運動会' },
+  { k: 'cuddle', t: '甘えたがり', lo: 'ひとり好き', hi: 'べったり' },
+  { k: 'voice', t: 'おしゃべり', lo: '無口', hi: 'よくしゃべる' },
+  { k: 'groom', t: 'お手入れの手間', lo: 'ラク', hi: 'たいへん' },
+  { k: 'size', t: '体の大きさ', lo: '小さめ', hi: 'でかい' },
+] as const;
+const title = `${b.name}の性格・特徴・お手入れ|猫種図鑑|ネコキチ猫吉`;
+const description = `${b.name}(${b.en})ってどんな猫?${b.lead.slice(0, 70)}…よく聞くウワサの真偽、お手入れ、気をつけたい病気まで。`;
+const jsonld = { '@context': 'https://schema.org', '@type': 'Article', headline: `${b.name}の性格・特徴・お手入れ`, author: { '@type': 'Organization', name: 'ネコキチ編集部' } };
+---
+<Base title={title} description={description} jsonld={jsonld}>
+  <nav class="crumb"><a href="/">トップ</a> › <a href="/breeds/">猫種図鑑</a> › {b.name}</nav>
+  <article class="col-article">
+    <header class="col-head">
+      <div class="col-head-copy">
+        <span class="kicker">猫種図鑑 No.{String(i + 1).padStart(2, '0')}</span>
+        <h1>{b.name}<small class="b-en">{b.en}{b.nick && ` / 通称「${b.nick}」`}</small></h1>
+        <p class="b-catch">{b.catch}</p>
+      </div>
+      <div class="col-head-art" set:html={faceSvg(b.art, `${b.name}の顔のイラスト`, true)} />
+    </header>
+    <div class="prose">
+      <p class="b-lead">{b.lead}</p>
+      <table class="b-spec">
+        <tbody>
+          <tr><th scope="row">原産・発祥</th><td>{b.origin}</td></tr>
+          <tr><th scope="row">毛の長さ</th><td>{b.hair}</td></tr>
+          <tr><th scope="row">大きさ</th><td>{b.size}</td></tr>
+          <tr><th scope="row">体重</th><td>{b.weight}</td></tr>
+        </tbody>
+      </table>
+
+      <h2>確かな特徴</h2>
+      <div class="evidence">
+        {b.features.map((f) => <article class="ev"><h3>{f.t}</h3><p>{f.d}</p></article>)}
+      </div>
+
+      <h2>よく言われる傾向</h2>
+      <div class="tend">
+        {T.map((t) => (
+          <div class="tend-row">
+            <span class="tend-t">{t.t}</span>
+            <span class="tend-lo">{t.lo}</span>
+            <span class="tend-bar" role="img" aria-label={`5段階中${b.tendency[t.k]}`}>{[1, 2, 3, 4, 5].map((n) => <i class:list={{ on: n <= b.tendency[t.k] }} />)}</span>
+            <span class="tend-hi">{t.hi}</span>
+          </div>
+        ))}
+      </div>
+      <p class="small">※紹介でよく言われる傾向を編集部が5段階にしたもの。性格は同じ猫種でも一匹ずつちがいます。</p>
+
+      <h2>よく聞くウワサ、検証</h2>
+      <div class="rumors">
+        {b.rumors.map((r) => (
+          <article class="rumor">
+            <div class="rumor-q"><small>ウワサ</small><h3>{r.q}</h3></div>
+            <div class="rumor-a"><span class={`judge judge-${r.j}`}>{r.label}</span><p>{r.a}</p></div>
+          </article>
+        ))}
+      </div>
+
+      <h2>暮らし・お手入れのポイント</h2>
+      <ul>{b.care.map((c) => <li>{c}</li>)}</ul>
+
+      <h2>ここだけ真面目な話</h2>
+      <div class="serious">
+        <p>{b.health}</p>
+        <p class="small">※一般的な情報です。個体差があります。健康のことは、かかりつけの獣医師に相談してください。</p>
+      </div>
+
+      <aside class="col-verdict b-tsukkomi">
+        <span class="label">編集部のひとこと</span>
+        <p>{b.tsukkomi}</p>
+      </aside>
+    </div>
+    {b.sources.length > 0 && (
+      <section class="col-sources">
+        <h2>編集部が見た資料</h2>
+        <ul>{b.sources.map((s) => <li><a href={s.url} target="_blank" rel="noopener">{s.title}</a></li>)}</ul>
+      </section>
+    )}
+  </article>
+
+  <h2 class="sub-band">ほかの猫種も見る(全員かわいい)</h2>
+  <div class="tool-grid">
+    {next.map((x) => <a class="tool-card" href={`/breeds/${x.slug}/`}><span set:html={faceSvg(x.art)} /><span><b>{x.name}</b><small>{x.catch}</small></span></a>)}
+  </div>
+  <p class="back"><a class="btn" href="/breeds/">猫種図鑑(全{BREEDS.length}種)へ</a> <a class="btn btn-pink" href="/tools/match/">猫種診断をやる</a></p>
+  <p class="small b-others">ほかに掲載中:{others.map((x, n) => <>{n > 0 && '・'}<a href={`/breeds/${x.slug}/`}>{x.name}</a></>)}</p>
+</Base>
