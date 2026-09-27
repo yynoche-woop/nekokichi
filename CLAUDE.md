@@ -7,6 +7,8 @@
 - 公開先:https://nekokichi.net/ (GitHub Pages。main に push すると GitHub Actions で自動デプロイ)
   - ドメインは Cloudflare Registrar(2026-09-27 取得)。DNS は Cloudflare で apex と www を yynoche-woop.github.io に CNAME(DNS only)。`public/CNAME` がドメイン設定
   - サイト内リンクは常に "/columns/..." のようにルートから書く(`scripts/base-links.mjs` はサブパス公開のときだけ働く)
+- GA4:G-52E7ZV9WTT(アカウント「アメショの森」内、プロパティ「ネコキチ猫吉 (nekokichi.net)」properties/556074127)。本番ドメインのときだけ計測
+- Search Console:sc-domain:nekokichi.net(サービスアカウントが Site Verification API + Cloudflare の TXT で確認。所有者はサービスアカウントと横田さん)。サイトマップ再送信は `../.scratch/gsc_submit_sitemaps.py nekokichi`
 - `npm run build` / `npx astro dev`
 - 広告は未設定(Amazonアソシエイトのサイト専用IDを作ったら、姓名判断の下などに控えめに)
 

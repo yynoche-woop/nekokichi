@@ -14,6 +14,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(`${base}og.png`, Astro.site);
 const d = new Date(Date.now() + 9 * 3600 * 1000); // 日本時間のビルド日
+const GA_ID = 'G-52E7ZV9WTT'; // GA4「ネコキチ猫吉 (nekokichi.net)」プロパティ(アカウント「アメショの森」)
 const issueDate = `${d.getUTCFullYear()}年${d.getUTCMonth() + 1}月${d.getUTCDate()}日`;
 // サイト内リンクはすべて "/..." で書く(GitHub Pages のサブパス公開中は scripts/base-links.mjs がビルド後に付け替える)
 const nav = [
@@ -46,6 +47,14 @@ const nav = [
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=M+PLUS+1p:wght@500;700;800&family=Reggae+One&display=swap" />
     {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
+    <script is:inline define:vars={{ GA_ID }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      // 本番ドメインだけ計測する(ローカル確認のアクセスでデータを汚さない)
+      if (location.hostname === 'nekokichi.net') gtag('config', GA_ID);
+    </script>
   </head>
   <body>
     <script is:inline>document.documentElement.classList.add('js');</script>
@@ -98,7 +107,7 @@ const nav = [
         kick(e.pageX, e.pageY, (flip = -flip));
       });
       (window as any).nkKick = kick;
-      function kick(x: number, y: number, dir: number, count = 40) {
+      function kick(x: number, y: number, dir: number, count = 40, power = 1) {
         count = Math.round(count * 1.6);
         const color = COLORS[Math.floor(Math.random() * 4)];
         for (let i = 0; i < count; i++) {
@@ -111,7 +120,7 @@ const nav = [
           g.style.top = `${y}px`;
           g.style.background = Math.random() < .75 ? color : COLORS[4];
           document.body.appendChild(g);
-          const vx = dir * (60 + Math.random() * 260), vy = -(160 + Math.random() * 260);
+          const vx = dir * (60 + Math.random() * 260) * power, vy = -(160 + Math.random() * 260) * (power > 1 ? .8 : 1);
           const t = 700 + Math.random() * 500;
           const frames: Keyframe[] = [];
           for (let k = 0; k <= 10; k++) {

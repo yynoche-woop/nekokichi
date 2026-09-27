@@ -188,3 +188,45 @@ export const CROWD: { a: Art; x: number; y: number; s: number; r: number }[] = [
   { a: { coat: 'brown', pattern: 'tabby', eye: 'green', ears: 'tufted', hair: 'long', expr: 'normal' }, x: 0, y: 0, s: .66, r: -10 },
   { a: { coat: 'white', pattern: 'tuxedo', eye: 'gold', ears: 'normal', hair: 'short', expr: 'wow' }, x: 520, y: 0, s: .66, r: 10 },
 ];
+
+/** 砂かけ中の猫(横向き・左を向いて、こっちを振り返る。viewBox 0 0 380 270)。
+ * 後ろ足2本は .leg-near / .leg-far のグループで、腰(付け根)を中心に回すと砂を後ろ(右)へ蹴り上げる。
+ * 足先の .toe-near / .toe-far の位置から砂を飛ばす(script 側で位置を取る) */
+export function kickCatSvg(a: Art, label?: string): string {
+  const c = COAT[a.coat];
+  const s = `stroke="${K}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
+  const base = a.pattern === 'tuxedo' ? COAT.black.body : c.body;
+  const white = ['kiji', 'bicolor', 'tuxedo', 'calico'].includes(a.pattern);
+  const striped = ['tabby', 'kiji', 'classic', 'spotted'].includes(a.pattern);
+  const paw = white ? WHITE : base;
+  const far = mixDark(base);
+  const aria = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
+  // 後ろ足(腰 270,150 から下へ)。太もも+すね+足先
+  const hind = (fill: string, pawFill: string, toe: string) => `
+      <path d="M282 186 C290 206 292 222 294 236" fill="none" stroke="${K}" stroke-width="34" stroke-linecap="round"/>
+      <path d="M282 186 C290 206 292 222 294 236" fill="none" stroke="${fill}" stroke-width="24" stroke-linecap="round"/>
+      <ellipse cx="268" cy="160" rx="38" ry="46" fill="${fill}" ${s}/>
+      <ellipse class="${toe}" cx="300" cy="244" rx="22" ry="12" fill="${pawFill}" ${s}/>`;
+  const front = (x: number, fill: string) => `
+      <rect x="${x}" y="160" width="26" height="80" rx="13" fill="${fill}" ${s}/>
+      <ellipse cx="${x + 10}" cy="244" rx="20" ry="11" fill="${paw}" ${s}/>`;
+  return thin(`<svg viewBox="0 0 380 270" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+    <g class="kc-tail"><path d="M300 120 C350 110 366 60 346 26" fill="none" stroke="${K}" stroke-width="30" stroke-linecap="round"/>
+      <path d="M300 120 C350 110 366 60 346 26" fill="none" stroke="${base}" stroke-width="20" stroke-linecap="round"/>
+      ${striped ? `<path d="M300 120 C350 110 366 60 346 26" fill="none" stroke="${c.mark}" stroke-width="20" stroke-dasharray="6 12" opacity=".85"/>` : ''}</g>
+    <g class="leg-far">${hind(far, mixDark(paw), 'toe-far')}</g>
+    ${front(150, far)}
+    <path d="M88 150 C92 104 150 86 220 92 C280 96 316 118 312 160 C308 196 270 212 214 212 L130 212 C100 210 84 186 88 150 Z" fill="${base}" ${s}/>
+    ${white ? `<path d="M96 170 C110 204 150 212 200 212 C170 196 130 190 110 160 Z" fill="${WHITE}"/>` : ''}
+    ${striped ? `<g fill="none" stroke="${c.mark}" stroke-width="6" stroke-linecap="round"><path d="M180 96 q6 20 -4 38 M214 94 q8 22 -2 42 M248 100 q8 20 0 40 M280 110 q6 18 -2 34"/></g>` : ''}
+    <g class="leg-near">${hind(base, paw, 'toe-near')}${striped ? `<path d="M286 150 l16 -4 M292 176 l14 0" stroke="${c.mark}" stroke-width="5" stroke-linecap="round"/>` : ''}</g>
+    ${front(110, white ? WHITE : base)}
+    <g class="kc-head" transform="translate(0 6) scale(.7)">${faceGroup({ ...a, expr: a.expr === 'normal' ? 'smug' : a.expr })}</g>
+  </svg>`);
+}
+
+/** 奥の足用に少し暗くする */
+function mixDark(hex: string): string {
+  const n = (i: number) => Math.round(parseInt(hex.slice(1 + i * 2, 3 + i * 2), 16) * 0.82);
+  return '#' + [0, 1, 2].map((i) => n(i).toString(16).padStart(2, '0')).join('');
+}
