@@ -96,7 +96,13 @@ function ruff(a: Art, fill: string): string {
 }
 
 /** 顔(viewBox 0 0 200 190)。sticker で白ふち */
-export function faceGroup(a: Art, sticker = false): string {
+/** 編集長のキャップ(ネオンイエロー。つばは横向き。耳のあいだにかぶる) */
+const BOSS_CAP = `<g class="boss-cap"><path d="M132 50 Q172 40 190 58 Q164 68 130 62 Z" fill="#e6ff2e" stroke="#1c1629" stroke-width="5" stroke-linejoin="round"/><path d="M60 62 Q64 20 100 18 Q138 20 142 62 Q100 54 60 62 Z" fill="#e6ff2e" stroke="#1c1629" stroke-width="5" stroke-linejoin="round"/><path d="M62 56 Q100 46 140 56" fill="none" stroke="#6c3cff" stroke-width="8"/><circle cx="100" cy="18" r="5" fill="#6c3cff" stroke="#1c1629" stroke-width="3"/></g>`;
+
+/** 編集長だけの服装(キャップ・蝶ネクタイ・ベスト)を付けるかどうか */
+export type CatArt = Art & { boss?: boolean };
+
+export function faceGroup(a: CatArt, sticker = false): string {
   const c = COAT[a.coat];
   const s = `stroke="${K}" stroke-width="5" stroke-linejoin="round"`;
   const white = a.pattern === 'calico';
@@ -122,6 +128,7 @@ export function faceGroup(a: Art, sticker = false): string {
     ${a.hair === 'hairless' ? '' : marks(a, c)}
     ${hairless}${foldEar}
     ${a.ears === 'fold' ? `<path d="${el}" fill="${earFill}" ${s}/><path d="${er}" fill="${earFill}" ${s}/>` : ''}
+    ${a.boss ? BOSS_CAP : ''}
     <g class="eyes">${eyes(a, a.pattern === 'point' ? c.soft : headFill === WHITE ? '#eee' : c.soft)}</g>
     <path d="M93 128 L107 128 L100 136 Z" fill="${a.pattern === 'point' ? c.soft : '#ff7d9c'}" stroke="${K}" stroke-width="3" stroke-linejoin="round"/>
     <path d="M100 136 Q100 144 91 145 M100 136 Q100 144 109 145" fill="none" stroke="${K}" stroke-width="3.4" stroke-linecap="round"/>
@@ -132,9 +139,9 @@ export function faceGroup(a: Art, sticker = false): string {
 /** 線を少し細くする(週刊ラグドールより軽く) */
 const thin = (svg: string) => svg.replace(/stroke-width="([\d.]+)"/g, (_, w) => `stroke-width="${+(Number(w) * 0.82).toFixed(1)}"`);
 
-export const faceGroupThin = (a: Art, sticker = false) => thin(faceGroup(a, sticker));
+export const faceGroupThin = (a: CatArt, sticker = false) => thin(faceGroup(a, sticker));
 
-export function faceSvg(a: Art, label?: string, sticker = false): string {
+export function faceSvg(a: CatArt, label?: string, sticker = false): string {
   const aria = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
   return `<svg viewBox="-10 -16 220 206" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">${faceGroupThin(a, sticker)}</svg>`;
 }
@@ -173,7 +180,7 @@ export function bodySvg(a: Art, label?: string): string {
 }
 
 /** 編集長・猫吉(キジトラ白のオス) */
-export const NEKOKICHI: Art = { coat: 'brown', pattern: 'kiji', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' };
+export const NEKOKICHI: CatArt = { coat: 'brown', pattern: 'kiji', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal', boss: true };
 
 export const PAW_SVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><ellipse cx="12" cy="16" rx="5.2" ry="4.4"/><ellipse cx="5.6" cy="10.4" rx="2.3" ry="2.9"/><ellipse cx="9.4" cy="6.4" rx="2.3" ry="2.9"/><ellipse cx="14.6" cy="6.4" rx="2.3" ry="2.9"/><ellipse cx="18.4" cy="10.4" rx="2.3" ry="2.9"/></g></svg>`;
 
@@ -194,7 +201,7 @@ export const CROWD: { a: Art; x: number; y: number; s: number; r: number }[] = [
  *   .kf0 かまえ(後ろ足は体の下)/ .kf1 手前の後ろ足でけり上げ / .kf2 奥の後ろ足でけり上げ
  * 足の付け根は胴体の裏に隠し、足は先細りの形。頭は胸に重ねて首をつなげる。しっぽはご機嫌に真上。
  * 砂は、表示中のコマの .toe の位置から飛ばす(script 側) */
-export function kickCatSvg(a: Art, label?: string): string {
+export function kickCatSvg(a: CatArt, label?: string): string {
   const c = COAT[a.coat];
   const s = `stroke="${K}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
   const base = a.pattern === 'tuxedo' ? COAT.black.body : c.body;
@@ -203,39 +210,67 @@ export function kickCatSvg(a: Art, label?: string): string {
   const pawC = white ? WHITE : base;
   const far = mixDark(base);
   const farPaw = mixDark(pawC);
+  const uid = Math.random().toString(36).slice(2, 7);
   const aria = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
-  // 先細りの足(付け根は胴体の裏に入る)+ 足先(指のすじ入り)
-  const leg = (d: string, fill: string) => `<path d="${d}" fill="${fill}" ${s}/>`;
+  // 足は「左右のふち」だけ線を引く(上のふちに線がないので、胴体から生えて見える)。足先を先に描き、足の色で足首の線を隠す
+  type Leg = { l: string; r: string; fill: string; color: string; foot: string };
   const foot = (cx: number, cy: number, rx: number, ry: number, rot: number, fill: string, cls = '') =>
-    `<g transform="rotate(${rot} ${cx} ${cy})"><ellipse class="${cls}" cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${fill}" ${s}/><path d="M${cx - rx * .35} ${cy - ry * .2} v${ry * .7} M${cx + rx * .1} ${cy - ry * .25} v${ry * .7}" stroke="${K}" stroke-width="3" stroke-linecap="round"/></g>`;
-  // 後ろ足:かまえ(体の下にたたむ)と、けり上げ(かかとを伸ばして後ろ上へ)
-  const hindRest = (dx: number, fill: string, pf: string) =>
-    leg(`M${250 + dx} 176 C${262 + dx} 200 ${272 + dx} 222 ${268 + dx} 240 L${288 + dx} 242 C${294 + dx} 222 ${290 + dx} 196 ${282 + dx} 172 Z`, fill) + foot(282 + dx, 246, 20, 10, 0, pf);
-  const hindKick = (dx: number, dy: number, fill: string, pf: string, toe: string) =>
-    leg(`M${270 + dx} 164 C${310 + dx} 184 ${344 + dx} ${186 + dy} ${370 + dx} ${160 + dy} L${384 + dx} ${176 + dy} C${352 + dx} ${210 + dy} ${306 + dx} ${210 + dy} ${262 + dx} 198 Z`, fill) + foot(382 + dx, 164 + dy, 11, 19, -40, pf, toe);
-  const front = (x: number, fill: string, pf: string) =>
-    leg(`M${x} 176 C${x - 2} 204 ${x} 224 ${x + 2} 240 L${x + 22} 240 C${x + 26} 220 ${x + 28} 200 ${x + 30} 176 Z`, fill) + foot(x + 12, 245, 19, 10, 0, pf);
+    `<g transform="rotate(${rot} ${cx} ${cy})"><ellipse class="${cls}" cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${fill}" ${s}/><path d="M${cx - rx * .35} ${cy - ry * .15} v${ry * .6} M${cx + rx * .15} ${cy - ry * .2} v${ry * .6}" stroke="${K}" stroke-width="3" stroke-linecap="round"/></g>`;
+  const draw = (g: Leg) => `${g.foot}<path d="${g.fill}" fill="${g.color}"/><path d="${g.l} ${g.r}" fill="none" ${s}/>`;
+  const front = (x: number, color: string, pf: string): Leg => ({
+    l: `M${x} 180 C${x - 2} 206 ${x} 224 ${x + 2} 240`,
+    r: `M${x + 30} 180 C${x + 28} 202 ${x + 26} 222 ${x + 22} 240`,
+    fill: `M${x} 180 C${x - 2} 206 ${x} 224 ${x + 2} 240 L${x + 22} 240 C${x + 26} 222 ${x + 28} 202 ${x + 30} 180 Z`,
+    color, foot: foot(x + 12, 245, 19, 10, 0, pf),
+  });
+  const hindRest = (dx: number, color: string, pf: string): Leg => ({
+    l: `M${250 + dx} 180 C${262 + dx} 202 ${272 + dx} 222 ${268 + dx} 240`,
+    r: `M${284 + dx} 176 C${291 + dx} 198 ${294 + dx} 222 ${288 + dx} 242`,
+    fill: `M${250 + dx} 180 C${262 + dx} 202 ${272 + dx} 222 ${268 + dx} 240 L${288 + dx} 242 C${294 + dx} 222 ${291 + dx} 198 ${284 + dx} 176 Z`,
+    color, foot: foot(282 + dx, 246, 20, 10, 0, pf),
+  });
+  const hindKick = (dx: number, dy: number, color: string, pf: string): Leg => ({
+    l: `M${270 + dx} 164 C${310 + dx} 184 ${344 + dx} ${186 + dy} ${370 + dx} ${160 + dy}`,
+    r: `M${262 + dx} 198 C${306 + dx} 210 ${352 + dx} ${210 + dy} ${384 + dx} ${176 + dy}`,
+    fill: `M${270 + dx} 164 C${310 + dx} 184 ${344 + dx} ${186 + dy} ${370 + dx} ${160 + dy} L${384 + dx} ${176 + dy} C${352 + dx} ${210 + dy} ${306 + dx} 210 ${262 + dx} 198 Z`,
+    color, foot: foot(382 + dx, 164 + dy, 11, 19, -40, pf, 'toe'),
+  });
+  const frontNear = front(104, white ? WHITE : base, pawC);
+  const frontFar = front(146, far, farPaw);
+  const FRAMES: Leg[][] = [
+    [hindRest(-24, far, farPaw), hindRest(0, base, pawC)],
+    [hindRest(-24, far, farPaw), hindKick(0, 0, base, pawC)],
+    [hindKick(-18, 14, far, farPaw), hindRest(0, base, pawC)],
+  ];
   const tail = `M318 146 C336 120 338 78 330 42 C326 26 334 16 344 22`;
   const body = `M92 200 C78 176 80 136 106 116 C130 98 190 104 246 102 C300 100 330 128 326 166 C322 200 296 216 256 216 L140 216 C114 216 98 210 92 200 Z`;
+  // 胴体の輪郭線は、足が生えているところだけ消す(マスク)。コマごとに足の位置が違うのでコマごとに作る
+  const masks = FRAMES.map((legs, f) => `<mask id="km${f}-${uid}" maskUnits="userSpaceOnUse" x="-40" y="-40" width="480" height="360"><rect x="-40" y="-40" width="480" height="360" fill="#fff"/>${[frontNear, frontFar, ...legs].map((g) => `<path d="${g.fill}" fill="#000"/>`).join('')}</mask>`).join('');
+  const vest = a.boss ? `<g clip-path="url(#kb-${uid})">
+      <path d="M150 90 L238 90 L250 230 L176 230 C156 190 146 140 150 90 Z" fill="#6c3cff"/>
+      <path d="M238 90 L250 230" stroke="#e6ff2e" stroke-width="7"/>
+      <path d="M150 90 C146 140 156 190 176 230" fill="none" stroke="#e6ff2e" stroke-width="7"/>
+      <circle cx="206" cy="148" r="15" fill="#e6ff2e" stroke="${K}" stroke-width="4"/>
+      <text x="206" y="154" text-anchor="middle" font-size="17" font-weight="900" fill="${K}" font-family="sans-serif">長</text>
+    </g>` : '';
+  const bow = a.boss ? `<g class="boss-bow"><path d="M108 150 L86 138 L88 164 Z M112 150 L134 138 L132 164 Z" fill="#ff3ea5" stroke="${K}" stroke-width="4" stroke-linejoin="round"/><circle cx="110" cy="151" r="7" fill="#ff3ea5" stroke="${K}" stroke-width="4"/></g>` : '';
   return thin(`<svg viewBox="0 0 400 280" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+    <defs>${masks}<clipPath id="kb-${uid}"><path d="${body}"/></clipPath></defs>
     <g class="kc-tail">
       <path d="${tail}" fill="none" stroke="${K}" stroke-width="30" stroke-linecap="round"/>
       <path d="${tail}" fill="none" stroke="${base}" stroke-width="20" stroke-linecap="round"/>
       ${striped ? `<path d="${tail}" fill="none" stroke="${c.mark}" stroke-width="20" stroke-dasharray="6 13" opacity=".85"/>` : ''}
     </g>
-    <g class="kf kf0">${hindRest(-24, far, farPaw)}</g>
-    <g class="kf kf1">${hindRest(-24, far, farPaw)}</g>
-    <g class="kf kf2">${hindKick(-18, 14, far, farPaw, 'toe')}</g>
-    ${front(146, far, farPaw)}
-    <g class="kf kf0">${hindRest(0, base, pawC)}</g>
-    <g class="kf kf1">${hindKick(0, 0, base, pawC, 'toe')}</g>
-    <g class="kf kf2">${hindRest(0, base, pawC)}</g>
-    ${front(104, white ? WHITE : base, pawC)}
-    <path d="${body}" fill="${base}" ${s}/>
+    ${FRAMES.map((legs, f) => `<g class="kf kf${f}">${draw(legs[0])}${draw(legs[1])}</g>`).join('')}
+    ${draw(frontFar)}${draw(frontNear)}
+    <path d="${body}" fill="${base}"/>
     ${white ? `<path d="M96 196 C88 172 92 146 108 132 C124 160 150 190 206 214 L140 214 C114 214 100 208 96 196 Z" fill="${WHITE}"/>` : ''}
     ${striped ? `<g fill="none" stroke="${c.mark}" stroke-width="6" stroke-linecap="round"><path d="M176 104 q8 20 -2 40 M208 102 q9 22 -1 44 M240 104 q8 20 0 42 M276 108 q8 20 -2 38 M304 124 q6 16 -4 30"/></g>` : ''}
+    ${vest}
+    ${FRAMES.map((_, f) => `<path class="kf kf${f}" d="${body}" fill="none" ${s} mask="url(#km${f}-${uid})"/>`).join('')}
     <path d="M296 146 C312 164 316 192 302 210" fill="none" stroke="${K}" stroke-width="4" stroke-linecap="round" opacity=".5"/>
     <g class="kc-head" transform="translate(34 18) scale(.74)">${faceGroup({ ...a, expr: a.expr === 'normal' ? 'smug' : a.expr })}</g>
+    ${bow}
   </svg>`);
 }
 
