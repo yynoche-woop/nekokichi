@@ -1,10 +1,11 @@
 ---
 import Base from '../../layouts/Base.astro';
+import BreedPick from '../../components/BreedPick.astro';
 ---
-<Base title="猫のごはんの量計算:1日何グラム?|ネコキチ猫吉" description="体重・ライフステージ・避妊去勢の有無・フードのカロリーから、猫の1日に必要なカロリーとフードの量(g)を計算します。">
+<Base title="猫のごはんの量計算:1日何グラム?|ネコキチ猫吉" description="体重・ライフステージ・避妊去勢の有無・フードのカロリーから、猫の1日に必要なカロリーとフードの量(g)を計算します。猫種を選ぶと、図鑑の体重の目安や成長がゆっくりな猫種の注意も表示します。">
   <nav class="crumb"><a href="/">トップ</a> › <a href="/tools/">ツール</a> › ごはんの量計算</nav>
   <div class="band"><span class="no">道具</span><h1>猫のごはんの量計算</h1></div>
-  <p class="lede">体重とライフステージから、1日に必要なカロリーとフードの量を計算します。</p>
+  <p class="lede">体重とライフステージから、1日に必要なカロリーとフードの量を計算します。計算は猫種を問わず同じ式です。猫種を選ぶと、体重の目安と猫種ごとの注意点を結果に添えます。</p>
 
   <form class="tool" id="food-form">
     <div class="field">
@@ -30,6 +31,7 @@ import Base from '../../layouts/Base.astro';
         <div class="hint">袋の裏に記載。ドライは350〜420、ウェットは70〜110が多いです</div>
       </div>
     </div>
+    <BreedPick hint="計算式は変わりません。選ぶと、その猫種の成猫の体重の目安と注意点を結果に添えます。" />
     <div class="field">
       <label for="meals">1日の回数</label>
       <select id="meals" name="meals">
@@ -45,6 +47,7 @@ import Base from '../../layouts/Base.astro';
       <div class="big" id="f-grams"></div>
       <p class="sub" id="f-detail"></p>
       <p id="f-note"></p>
+      <p class="sub" id="f-breed"></p>
     </div>
   </form>
 
@@ -55,6 +58,7 @@ import Base from '../../layouts/Base.astro';
       <li>おやつを与える場合は、<strong>1日のカロリーの10%以内</strong>にして、その分フードを減らしましょう。</li>
       <li>計算結果は出発点です。同じ体重でも、活動量や体質で必要な量は変わります。2〜4週間ごとに体重と<a href="/tools/bcs/">体型</a>を見て、量を調整してください。</li>
       <li>療法食を食べている場合や持病がある場合は、獣医師の指示を優先してください。</li>
+      <li>計算に使うのは「猫種の平均体重」ではなく、<strong>その子の体重</strong>(減量中は目標体重)です。<a href="/breeds/">猫種図鑑</a>の体重の目安は、小柄な猫種と大きな猫種で倍以上ちがいますが、同じ猫種の中でも個体差があります。</li>
     </ul>
   </div>
 
@@ -73,6 +77,16 @@ import Base from '../../layouts/Base.astro';
     stage.addEventListener('change', syncStage);
     syncStage();
 
+    type BreedInfo = { name: string; weight: string; grown: { years: number; text: string } | null };
+    const BREEDS: Record<string, BreedInfo> = JSON.parse(document.getElementById('breed-data')!.textContent || '{}');
+    const breedNote = (slug: string, factor: number) => {
+      const b = BREEDS[slug];
+      if (!b) return '';
+      const out = [`${b.name}の成猫の体重の目安:${b.weight}。`];
+      if (b.grown && (factor === 3.0 || factor === 2.5)) out.push(`${b.name}は${b.grown.text}。1歳を過ぎても体が大きくなることがあるので、子猫用のごはんから切り替える時期は、かかりつけの獣医師に相談しましょう。`);
+      if (factor === 0.8) out.push('目標体重は猫種の平均に合わせず、体型チェックの結果と獣医師の意見で決めましょう。');
+      return out.join('');
+    };
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const fd = new FormData(form);
@@ -92,6 +106,7 @@ import Base from '../../layouts/Base.astro';
         factor === 0.8
           ? '減量は1週間に体重の1〜2%程度のペースが目安です。食べなくなるほど急に減らすのは危険なので、獣医師と相談しながら進めてください。'
           : 'キッチンスケールで量って与えると、体重管理がぐっと楽になります。';
+      $('f-breed').textContent = breedNote(String(fd.get('breed') || ''), factor);
       $('food-result').hidden = false;
     });
   </script>

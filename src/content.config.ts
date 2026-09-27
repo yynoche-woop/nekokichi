@@ -11,9 +11,10 @@ const columns = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    // kensho = ウワサ検証, jitsuyo = 暮らし・健康の実用
-    category: z.enum(['kensho', 'jitsuyo']),
+    // shuusei = 猫の習性事典(2026-09-28 までの kensho=ウワサ検証 を改めた), jitsuyo = 暮らし・健康の実用
+    category: z.enum(['shuusei', 'jitsuyo']),
     tags: z.array(z.string()).default([]),
+    // 記事冒頭の「答え」。type は色分け用(習性事典では判定ではなく答えの種類の目安)
     verdict: z.object({
       type: z.enum(['hontou', 'uso', 'usoyori', 'kotai', 'kochou', 'warito']),
       label: z.string(),

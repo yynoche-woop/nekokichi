@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import BreedPick from '../../components/BreedPick.astro';
 
 const questions = [
   {
@@ -20,7 +21,7 @@ const questions = [
   },
 ];
 ---
-<Base title="猫の体型チェック(BCS):太りすぎ?痩せすぎ?|ネコキチ猫吉" description="触って見て答えるだけで、猫の体型をボディコンディションスコア(BCS)5段階で判定。理想体重の目安も分かります。猫種を問わず使えます。">
+<Base title="猫の体型チェック(BCS):太りすぎ?痩せすぎ?|ネコキチ猫吉" description="触って見て答えるだけで、猫の体型をボディコンディションスコア(BCS)5段階で判定。理想体重の目安も分かります。猫種を問わず使え、猫種を選ぶと図鑑の体重の目安と見比べられます。">
   <nav class="crumb"><a href="/">トップ</a> › <a href="/tools/">ツール</a> › 体型チェック</nav>
   <div class="band"><span class="no">道具</span><h1>猫の体型チェック(BCS)</h1></div>
   <p class="lede">ボディコンディションスコア(BCS)は、体重ではなく「体型」で太り具合を見る方法です。猫をなでながら、いちばん近いものを選んでください。</p>
@@ -41,6 +42,7 @@ const questions = [
       <input id="bcs-weight" name="weight" type="number" step="0.01" min="0.5" max="15" inputmode="decimal" placeholder="例:4.8" />
       <div class="hint">入れると、理想体重の目安も表示します</div>
     </div>
+    <BreedPick hint="選ぶと、その猫種の成猫の体重の目安と、長毛・成長の遅さなど判定の注意点を添えます。" />
     <button class="btn btn-pink" type="submit">判定する</button>
 
     <div class="result" id="bcs-result" hidden aria-live="polite">
@@ -48,12 +50,14 @@ const questions = [
       <div class="big" id="b-score"></div>
       <p id="b-ideal"></p>
       <p id="b-advice"></p>
+      <p class="sub" id="b-breed"></p>
     </div>
   </form>
 
   <div class="paper prose">
     <h2>見た目だけでは分からない</h2>
     <p>長毛の猫はふわふわの毛で、短毛でも筋肉がしっかりした猫は密な毛で、見た目だけでは太っているかどうか分かりにくいもの。体重計の数字に加えて、<strong>月に1回はこのチェックで「触って」確認</strong>するのがおすすめです。猫種によって骨格も理想体重もちがうので、体重の数字より「体型」を見るのがコツ。</p>
+    <p>たとえば<a href="/breeds/">猫種図鑑</a>の成猫の体重の目安は、小柄なデボンレックスで約2.5〜4kg、大きなメインクーンのオスで6〜8kg(9kgを超える子も)と、猫種で倍以上ちがいます。同じ猫種の中でも個体差があるので、猫種の目安は「だいたいこのくらい」の参考にとどめ、判定はBCSで行ってください。</p>
     <p>BCSが4以上なら、<a href="/tools/food/">給餌量の計算</a>で1日の量を見直してみましょう。</p>
   </div>
 
@@ -68,6 +72,16 @@ const questions = [
     const form = document.getElementById('bcs-form') as HTMLFormElement;
     const $ = (id: string) => document.getElementById(id)!;
 
+    type BreedInfo = { name: string; weight: string; hair: string; grown: { years: number; text: string } | null };
+    const BREEDS: Record<string, BreedInfo> = JSON.parse(document.getElementById('breed-data')!.textContent || '{}');
+    const breedNote = (slug: string) => {
+      const b = BREEDS[slug];
+      if (!b) return '';
+      const out = [`${b.name}の成猫の体重の目安:${b.weight}。理想体重は猫種の平均に合わせるものではなく、その子の骨格と体型で決まります。`];
+      if (b.hair === '長毛' || b.hair === 'セミロング') out.push('毛が長く体型が見た目で分かりにくいので、Q1〜Q4は必ず手で触って答えてください。');
+      if (b.grown) out.push(`${b.name}は${b.grown.text}。若い子は体重が増えていても、体型が3なら成長による増加のことがあります。`);
+      return out.join('');
+    };
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const fd = new FormData(form);
@@ -86,6 +100,7 @@ const questions = [
       } else {
         $('b-ideal').textContent = '';
       }
+      $('b-breed').textContent = breedNote(String(fd.get('breed') || ''));
       $('bcs-result').hidden = false;
       $('bcs-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });

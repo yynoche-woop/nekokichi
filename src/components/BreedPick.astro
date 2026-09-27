@@ -1,0 +1,23 @@
+---
+// ツール(年齢換算・体型チェック・ごはんの量)共通の猫種セレクタ。
+// 数字は src/data/breeds.ts の図鑑データだけを使う(体重の目安・成長がゆっくりな猫種)。
+// 選ばなければ、これまでどおり猫種を問わない計算になる。
+import { BREEDS } from '../data/breeds';
+
+interface Props {
+  hint?: string;
+}
+const { hint = '選ぶと、その猫種の体重の目安や成長の特徴を結果に添えます。' } = Astro.props;
+const data = Object.fromEntries(
+  BREEDS.map((b) => [b.slug, { name: b.name, weight: b.weight, size: b.size, hair: b.hair, grown: b.grown ?? null }]),
+);
+---
+<div class="field">
+  <label for="breed">猫種(任意)</label>
+  <select id="breed" name="breed">
+    <option value="">選ばない(猫種を問わない)</option>
+    {BREEDS.map((b) => <option value={b.slug}>{b.name}</option>)}
+  </select>
+  <div class="hint">{hint}</div>
+</div>
+<script type="application/json" id="breed-data" set:html={JSON.stringify(data)} />

@@ -8,5 +8,5 @@ export async function getColumns() {
   return all.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf() || a.id.localeCompare(b.id));
 }
 
-export const CATEGORY_LABEL = { kensho: 'ウワサ検証', jitsuyo: '暮らし・健康' } as const;
+export const CATEGORY_LABEL = { shuusei: '習性事典', jitsuyo: '暮らし・健康' } as const;
 export const fmtDate = (d: Date) => `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;

@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { faceSvg } from '../../data/cat-art';
+import BreedPick from '../../components/BreedPick.astro';
 
 // 一般的によく使われる換算:1歳=15歳、2歳=24歳、以降1年ごとに+4歳。1歳未満は月齢ごとの目安。
 // ライフステージの区分は AAHA/AAFP の猫のライフステージ(子猫〜1歳/若年成猫1〜6歳/成熟期7〜10歳/シニア10歳〜)に合わせる。
@@ -11,10 +12,10 @@ const table = [
 ];
 const stage = (y: number) => (y < 1 ? '子猫期' : y < 7 ? '若い大人(成猫期)' : y < 10 ? '熟年期' : 'シニア期');
 ---
-<Base title="猫の年齢換算:人間でいうと何歳?|ネコキチ猫吉" description="猫の年齢を人間の年齢に換算。子猫の月齢から20歳まで、ライフステージ(子猫期・成猫期・熟年期・シニア期)の目安とあわせて表示します。">
+<Base title="猫の年齢換算:人間でいうと何歳?|ネコキチ猫吉" description="猫の年齢を人間の年齢に換算。子猫の月齢から20歳まで、ライフステージ(子猫期・成猫期・熟年期・シニア期)の目安とあわせて表示します。猫種を選ぶと、メインクーンなど成長がゆっくりな猫種の補足も出ます。">
   <nav class="crumb"><a href="/">トップ</a> › <a href="/tools/">ツール</a> › 年齢換算</nav>
   <div class="band"><span class="no">道具</span><h1>うちの子、人間でいうと何歳?</h1></div>
-  <p class="lede">年齢を入れると、人間の年齢に換算します。何歳になっても、うちの子がいちばんかわいいことは変わりません。</p>
+  <p class="lede">年齢を入れると、人間の年齢に換算します。猫種を選ぶと、その猫種の体重の目安や、成長がゆっくりな猫種かどうかも添えます。何歳になっても、うちの子がいちばんかわいいことは変わりません。</p>
 
   <form class="tool" id="age-form">
     <div class="row">
@@ -29,11 +30,13 @@ const stage = (y: number) => (y < 1 ? '子猫期' : y < 7 ? '若い大人(成猫
         </select>
       </div>
     </div>
+    <BreedPick />
     <button class="btn btn-pink" type="submit">換算する</button>
     <div class="result" id="age-result" aria-live="polite">
       <p class="sub">人間でいうと</p>
       <div class="big" id="age-human">約28歳</div>
       <p id="age-note">若い大人のまっただ中。体力も好奇心もピークです。体重管理と、毎日の狩りごっこを忘れずに。</p>
+      <p class="sub" id="age-breed"></p>
     </div>
   </form>
 
@@ -43,7 +46,7 @@ const stage = (y: number) => (y < 1 ? '子猫期' : y < 7 ? '若い大人(成猫
       <thead><tr><th>猫の年齢</th><th>人間でいうと</th><th>ステージ</th></tr></thead>
       <tbody>{table.map((r) => <tr><td>{r.cat}</td><td>約{r.human}歳</td><td>{stage(r.y)}</td></tr>)}</tbody>
     </table>
-    <p>換算方法にはいくつかの説があり、ここでは「1歳で15歳、2歳で24歳、その後は1年に4歳ずつ」という一般的な目安を使っています。猫種や体の大きさによる差ははっきりしていないので、あくまで目安です。くわしくは<a href="/columns/human-age/">猫の年齢換算の記事</a>へ。</p>
+    <p>換算方法にはいくつかの説があり、ここでは「1歳で15歳、2歳で24歳、その後は1年に4歳ずつ」という一般的な目安を使っています。猫種や体の大きさによる差ははっきりしていないので、換算の式は猫種で変えていません。ただし、メインクーン・ノルウェージャンフォレストキャット・サイベリアン・ラグドール・ブリティッシュショートヘアのように、体が大人のサイズになるまで3〜5年かかるといわれる猫種もあります(<a href="/breeds/">猫種図鑑</a>)。くわしくは<a href="/columns/human-age/">猫の年齢換算の記事</a>へ。</p>
     <div style="max-width:120px" set:html={faceSvg({ coat: 'red', pattern: 'tabby', eye: 'gold', ears: 'normal', hair: 'short', expr: 'sleepy' })} />
   </div>
 
@@ -66,6 +69,17 @@ const stage = (y: number) => (y < 1 ? '子猫期' : y < 7 ? '若い大人(成猫
       : months < 120 ? '落ち着きが出てくる熟年期。年に1〜2回の健康診断がおすすめです(目安)。'
       : months < 180 ? 'りっぱなシニア。段差を減らす、水飲み場を増やすなど、暮らしやすい工夫をしてあげましょう。'
       : '堂々たる長寿猫。毎日がお祝いです。小さな変化に気づけるよう、体重と食欲をこまめにチェック。';
+    type BreedInfo = { name: string; weight: string; grown: { years: number; text: string } | null };
+    const BREEDS: Record<string, BreedInfo> = JSON.parse(document.getElementById('breed-data')!.textContent || '{}');
+    const breedNote = (slug: string, months: number) => {
+      const b = BREEDS[slug];
+      if (!b) return '';
+      const base = `${b.name}の成猫の体重の目安:${b.weight}。`;
+      if (!b.grown || months >= b.grown.years * 12) return base;
+      return months < 12
+        ? `${b.name}は${b.grown.text}。1歳を過ぎても体が大きくなることがあります。${base}`
+        : `${b.name}は${b.grown.text}。換算では大人でも、体はまだ成長の途中のことがあります。体重が増えても太ったとは限らないので、<a href="/tools/bcs/">体型チェック</a>で確かめましょう。${base}`;
+    };
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const y = Math.max(0, Number((document.getElementById('age-y') as HTMLInputElement).value) || 0);
@@ -73,6 +87,7 @@ const stage = (y: number) => (y < 1 ? '子猫期' : y < 7 ? '若い大人(成猫
       const months = y * 12 + m;
       $('age-human').textContent = `約${Math.round(human(months))}歳`;
       $('age-note').textContent = note(months);
+      $('age-breed').innerHTML = breedNote((document.getElementById('breed') as HTMLSelectElement).value, months);
     });
   </script>
 </Base>
