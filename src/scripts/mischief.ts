@@ -6,6 +6,8 @@
 // 動きを減らす設定のときは、毛だけ置いて動きはなし。
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// 演出はすべて #fx の中へ(画面からはみ出してもページの横幅を広げない。スマホで勝手に縮小表示される不具合の対策)
+const fx = document.getElementById('fx') ?? document.body;
 const HAIR_COLORS = ['#ffffff', '#e9d6b0', '#c99b66', '#2e2b2c', '#9aa5b6', '#f3a55e'];
 const PAW = 'M50 88c-17 0-28-9-28-21 0-13 13-24 28-24s28 11 28 24c0 12-11 21-28 21zM20 46c-7 0-11-7-11-14s5-13 11-13 11 6 11 13-4 14-11 14zM38 30c-7 0-11-7-11-15S31 1 38 1s11 7 11 14-4 15-11 15zM62 30c-7 0-11-7-11-15S55 1 62 1s11 7 11 14-4 15-11 15zM80 46c-7 0-11-7-11-14s4-13 11-13 11 6 11 13-5 14-11 14z';
 const rand = (a: number, b: number) => a + Math.random() * (b - a);
@@ -19,7 +21,7 @@ function popWord(x: number, y: number, text: string) {
   w.style.setProperty('--dx', `${rand(-30, 30)}px`);
   w.style.setProperty('--dy', `${rand(-70, -40)}px`);
   w.style.setProperty('--r', `${rand(-12, 12)}deg`);
-  document.body.appendChild(w);
+  fx.appendChild(w);
   w.addEventListener('animationend', () => w.remove());
 }
 
@@ -32,10 +34,10 @@ function addHair() {
   const bend = rand(-8, 8);
   h.innerHTML = `<svg viewBox="0 0 ${len} 12" width="${len}" height="12" aria-hidden="true"><path d="M1 6 Q${len / 2} ${6 + bend} ${len - 1} ${6 + rand(-3, 3)}" fill="none" stroke="${HAIR_COLORS[Math.floor(Math.random() * HAIR_COLORS.length)]}" stroke-width="1.4" stroke-linecap="round"/></svg>`;
   const docH = Math.max(document.body.scrollHeight - 200, innerHeight);
-  h.style.left = `${rand(10, document.documentElement.clientWidth - 50)}px`;
+  h.style.left = `${rand(10, document.documentElement.clientWidth - 60)}px`;
   h.style.top = `${rand(160, docH)}px`;
   h.style.rotate = `${rand(0, 360)}deg`;
-  document.body.appendChild(h);
+  fx.appendChild(h);
   hairs.push(h);
   updateCount();
 }
@@ -75,7 +77,7 @@ if (!reduce) {
       p.style.top = `${startY + i * 46 * Math.sin(ang) + side * Math.cos(ang)}px`;
       p.style.rotate = `${(ang * 180) / Math.PI + 90}deg`;
       p.style.animationDelay = `${i * 170}ms`;
-      document.body.appendChild(p);
+      fx.appendChild(p);
       p.addEventListener('animationend', () => p.remove());
     }
   };

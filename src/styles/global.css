@@ -346,3 +346,8 @@ td, th { overflow-wrap: break-word; }
 @media (max-width: 600px) { .issue { text-align: left; } .issue-boss { display: none; } }
 .col-head .splat { opacity: .45; }
 @media (max-width: 600px) { .roller { font-size: 0; gap: 2px; padding: 6px 10px; } .roller svg { width: 26px; } .roller-n { font-size: .8rem; } }
+
+/* 演出の層:砂・毛・足あと・ポップ文字はここに入れる。body いっぱいに広げてはみ出しを切る(スマホの勝手な縮小表示対策) */
+html { overflow-x: hidden; overflow-x: clip; }
+body { position: relative; overflow-x: clip; }
+#fx { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 45; }
