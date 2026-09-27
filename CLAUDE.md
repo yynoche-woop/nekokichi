@@ -10,7 +10,8 @@
 - GA4:G-52E7ZV9WTT(アカウント「アメショの森」内、プロパティ「ネコキチ猫吉 (nekokichi.net)」properties/556074127)。本番ドメインのときだけ計測
 - Search Console:sc-domain:nekokichi.net(サービスアカウントが Site Verification API + Cloudflare の TXT で確認。所有者はサービスアカウントと横田さん)。サイトマップ再送信は `../.scratch/gsc_submit_sitemaps.py nekokichi`
 - `npm run build` / `npx astro dev`
-- 広告は未設定(Amazonアソシエイトのサイト専用IDを作ったら、姓名判断の下などに控えめに)
+- 広告:Amazonアソシエイト(トラッキングID **nekokichinet-22**、2026-09-27作成のサイト専用ID。nekokichi-22 は他人が使用済みだった)。他サイト(ameshomori-22・shukanragdoll-22 等)のIDは絶対に使わない(横田さん「プロパティを分けて」)。`src/components/DnaTest.astro`(猫のDNA検査キット)を姓名判断の下にだけ置く。広告まみれにしない
+- GA4:プロパティ 556074127(測定ID G-52E7ZV9WTT、アカウント「アメショの森」)。Search Console:sc-domain:nekokichi.net(横田さんとサービスアカウントが所有者)。週次ルーティン wed-sites-weekly の対象(節 I)
 
 ## 構成
 - `src/content/columns/*.md` → `/columns/<slug>/`。書き方は `ops/column-spec.md`(kensho=ウワサ検証、jitsuyo=暮らし・健康)

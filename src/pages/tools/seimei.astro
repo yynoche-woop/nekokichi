@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { faceSvg } from '../../data/cat-art';
+import DnaTest from '../../components/DnaTest.astro';
 import { GRADE_INFO } from '../../data/seimei-text';
 ---
 <Base title="猫の姓名判断:名前の画数で猫生を占う|ネコキチ猫吉" description="【号外】猫の名前、画数で占ってみた。苗字と猫の名前から、天格・人格・地格・外格・総格の五格で「猫生」を判定。ひざからのはみ出し率も出ます。占いは遊びです。">
@@ -103,6 +104,8 @@ import { GRADE_INFO } from '../../data/seimei-text';
     <p class="more"><a class="btn" href="/tools/match/">ついでに猫種診断もやる</a> <a class="btn" href="/columns/">記事を読む</a></p>
   </div>
 
+
+  <DnaTest />
 
   <script>
     import { strokesOf, calcSeimei, stars, KEYWORD, setPhrased, type GradeKey, sexHash, LEADER_NUMS, RANK_LABEL, type Sex } from '../../data/seimei';
