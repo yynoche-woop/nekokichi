@@ -19,10 +19,10 @@ const RAG: Art = { coat: 'seal', pattern: 'point', eye: 'blue', ears: 'normal', 
 
 // コーナー選択(ななめのタイル)
 const STAGES = [
-  { href: '/breeds/', t: '猫種ずかん', n: `${BREEDS.length}種`, d: 'スコもマンチカンも雑種も。全員かわいい容疑。', art: SCO, c: 'y' },
-  { href: '/columns/#kensho', t: 'ウワサ検証', n: `${kensho.length}本`, d: '猫は液体?黒猫は不吉?論文までさかのぼった。', art: KURO, c: 'v' },
-  { href: '/tools/', t: 'あそび場', n: '5つ', d: '猫種診断・姓名判断・年齢換算。', art: MIKE, c: 'm' },
-  { href: '/columns/#jitsuyo', t: '暮らし・健康', n: `${jitsuyo.length}本`, d: '食べちゃダメな物、室温、病院の目安。', art: RAG, c: 'p' },
+  { href: '/breeds/', t: 'なかま図鑑', n: `${BREEDS.length}種`, d: 'スコもマンチカンも雑種も。みんな、なかま。', art: SCO, c: 'y' },
+  { href: '/columns/#kensho', t: '人間のウワサ検証', n: `${kensho.length}本`, d: '人間が猫について勝手に言っていることを、猫が調べた。', art: KURO, c: 'v' },
+  { href: '/tools/', t: 'あそび', n: '5つ', d: '人間用。猫種診断・名前うらない・年齢換算。', art: MIKE, c: 'm' },
+  { href: '/columns/#jitsuyo', t: '下僕マニュアル', n: `${jitsuyo.length}本`, d: '暮らしと健康。下僕は必ず読むこと。', art: RAG, c: 'p' },
 ];
 
 // ネコキチニュース:MCふたり(編集長・猫吉と、三毛のミケ子)が最新記事を紹介する
@@ -52,12 +52,12 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
       <Fragment set:html={sandSvg(55, ['#16e0b0', '#e6ff2e'], 's3')} />
     </div>
     <div class="stage-copy">
-      <p class="stage-kicker">猫のウワサと暮らしのメディア</p>
+      <p class="stage-kicker">猫が作っている、猫のメディア</p>
       <h1 id="stage-h"><span>ネコキチ</span><span>猫吉</span></h1>
       <p class="stage-sticker">猫好きは、結局ぜんぶの猫が好き。</p>
-      <p class="stage-lead">キジトラも三毛も黒猫も、スコもメインクーンも、名もなき雑種も。猫にやられた人たち(ネコキチ)のために、ウワサを本気で検証して、暮らしの目安をまじめにまとめます。</p>
+      <p class="stage-lead">このサイトは、猫が作っています。人間のみなさんは、読むだけでいいです。人間が猫について言っているウワサは、猫が論文までさかのぼって調べました。下僕向けの暮らしと健康の注意書きは、まじめに書きました。キジトラも三毛も黒猫も、スコも雑種も、みんななかまです。ｆｆｆｆｆｆｆｇｇｇｇ<small class="mash-note">(編集長がキーボードの上を歩きました)</small></p>
       <div class="cta">
-        <a class="btn btn-pink" href="/breeds/">猫種ずかんへ</a>
+        <a class="btn btn-pink" href="/breeds/">なかま図鑑を見る</a>
         <a class="btn" href="/tools/match/">猫種診断をやる</a>
       </div>
     </div>
@@ -73,7 +73,7 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
   </section>
 
   <!-- 2. コーナー選択 -->
-  <div class="band"><span class="no">SELECT</span><h2>どこで遊ぶ?</h2></div>
+  <div class="band"><span class="no">SELECT</span><h2>どこであそぶ?</h2></div>
   <div class="stages">
     {STAGES.map((s) => (
       <a class={`stile t-${s.c} pop-in`} href={s.href}>
@@ -105,9 +105,9 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
   </section>
 
   <!-- 4. 猫砂フェス -->
-  <div class="band"><span class="no">FES</span><h2>猫砂フェス:どの砂派?</h2></div>
+  <div class="band"><span class="no">FES</span><h2>猫砂フェス:下僕はどの砂を買うべき?</h2></div>
   <section class="fes pop-in" aria-labelledby="fes-h">
-    <p id="fes-h" class="fes-lead">推しの猫砂を押して、トイレを自分の陣営の砂で埋めよう。何回押してもいい。猫はどの砂でも、だいたい一回は文句を言う。</p>
+    <p id="fes-h" class="fes-lead">猫が投票します。人間も押していい。押した陣営の砂で、トイレが埋まっていく。なお猫は、どの砂でもだいたい一回は文句を言う。</p>
     <div class="fes-box" id="fes-box" aria-hidden="true"></div>
     <div class="fes-teams">
       {FES.map((f) => (
@@ -120,7 +120,7 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
   </section>
 
   <!-- 5. ずかん -->
-  <div class="band"><span class="no">ZUKAN</span><h2>猫種ずかん:集めたくなる{BREEDS.length}種</h2></div>
+  <div class="band"><span class="no">ZUKAN</span><h2>なかま図鑑:集めたくなる{BREEDS.length}種</h2></div>
   <div class="wanted-grid">
     {pickup.map((b, i) => (
       <a class="wanted breed-card pop-in" href={`/breeds/${b.slug}/`}>
@@ -136,8 +136,8 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
   <!-- 6. 真面目な話 -->
   <section class="calm" aria-labelledby="calm-h">
     <p class="calm-tag">砂かけはここまで</p>
-    <h2 id="calm-h">ここからは真面目な話</h2>
-    <p>おしっこが出ない、口を開けて息をしている、ぐったりしている。猫は具合が悪くても隠しがちなので、「いつもと違う」に気づいたら早めに動物病院へ。</p>
+    <h2 id="calm-h">下僕への注意書き(ここだけ真面目)</h2>
+    <p>猫は、具合が悪くても隠します。プライドがあるので。だから下僕が気づいてください。おしっこが出ない、口を開けて息をしている、ぐったりしている。「いつもと違う」と思ったら、早めに動物病院へ。</p>
     <ul class="calm-list">
       {jitsuyo.map((c) => <li><a href={`/columns/${c.id}/`}>{c.data.title}</a><span>{c.data.verdict.label.replace(/^結論:/, '')}</span></li>)}
     </ul>
@@ -233,6 +233,7 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
     .stage h1 span:last-child { color: var(--white); -webkit-text-stroke: 3px var(--k); paint-order: stroke fill; text-shadow: 6px 6px 0 var(--pink); margin-left: .6em; rotate: 3deg; }
     .stage-sticker { display: inline-block; margin: 6px 0 14px; background: var(--white); color: var(--k); font-family: var(--font-head); font-size: clamp(1rem, 2.4vw, 1.3rem); padding: 4px 16px; rotate: -2deg; box-shadow: 4px 4px 0 var(--yellow); }
     .stage-lead { max-width: 34em; margin: 0 0 20px; color: #e9e4f5; }
+    .mash-note { display: block; font-size: .78rem; color: var(--hair); }
     .stage-art { position: relative; z-index: 1; align-self: stretch; min-height: 420px; }
     .boss { position: absolute; right: 12%; bottom: 0; width: min(96%, 470px); background: none; border: 0; padding: 0; cursor: pointer; }
     .boss svg { width: 100%; filter: drop-shadow(2.5px 0 0 #fff) drop-shadow(-2.5px 0 0 #fff) drop-shadow(0 2.5px 0 #fff) drop-shadow(0 -2.5px 0 #fff); }

@@ -18,12 +18,12 @@ const GA_ID = 'G-52E7ZV9WTT'; // GA4「ネコキチ猫吉 (nekokichi.net)」プ�
 const issueDate = `${d.getUTCFullYear()}年${d.getUTCMonth() + 1}月${d.getUTCDate()}日`;
 // サイト内リンクはすべて "/..." で書く(GitHub Pages のサブパス公開中は scripts/base-links.mjs がビルド後に付け替える)
 const nav = [
-  { href: '/breeds/', label: '猫種図鑑' },
-  { href: '/columns/#kensho', label: 'ウワサ検証' },
-  { href: '/columns/#jitsuyo', label: '暮らし・健康' },
-  { href: '/tools/', label: 'ツール' },
+  { href: '/breeds/', label: 'なかま図鑑(猫種)' },
+  { href: '/columns/#kensho', label: '人間のウワサ検証' },
+  { href: '/columns/#jitsuyo', label: '下僕マニュアル(暮らし・健康)' },
+  { href: '/tools/', label: 'あそび' },
   { href: '/tools/match/', label: '猫種診断' },
-  { href: '/tools/seimei/', label: '猫の姓名判断' },
+  { href: '/tools/seimei/', label: '名前うらない' },
 ];
 ---
 <!doctype html>
@@ -69,13 +69,13 @@ const nav = [
           </span>
           <span><b>ネコキチ猫吉</b><small>猫好きは、結局ぜんぶの猫が好き。</small></span>
         </a>
-        <p class="issue">{issueDate}更新・編集長:猫吉<span class="price">砂かけ注意</span></p>
+        <p class="issue">{issueDate}更新ｊｊｊｊｊｋ・編集長:猫吉<span class="price">人間は読むだけ</span></p>
       </div>
       <nav class="wrap nav" aria-label="サイト内のコーナー">
         {nav.map((n) => <a href={n.href}>{n.label}</a>)}
       </nav>
     </header>
-    <div class="tape" aria-hidden="true"><div class="tape-track">{[0, 1].map(() => ['ネコキチ猫吉', '猫好きは結局ぜんぶの猫が好き', 'NEKOKICHI', '砂かけ注意', 'ウワサ検証中', 'NEKOKICHI'].map((t) => <span>{t}</span>))}</div></div>
+    <div class="tape" aria-hidden="true"><div class="tape-track">{[0, 1].map(() => ['このサイトは猫が作っています', '人間は読むだけでいい', 'NEKOKICHI', '肉球で入力中ｆｆｆｆｆｆ', '砂かけ注意', 'ごはんはまだですか', 'NEKOKICHI'].map((t) => <span>{t}</span>))}</div></div>
     <script>
       // 編集長を押すと「!?」とびっくりしてからトップへ(動きを減らす設定・別タブで開く操作では普通のリンク)
       const brand = document.getElementById('brand') as HTMLAnchorElement;
@@ -92,6 +92,7 @@ const nav = [
         }, 600);
       });
       addEventListener('pageshow', () => brand.classList.remove('startled'));
+      import '../scripts/mischief';
 
       // 見えたら「ざっ」と出る
       const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
@@ -138,11 +139,20 @@ const nav = [
       <svg class="ground" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true"><path d={sandGround(11)} fill="#e9d6b0" /></svg>
       <div class="wrap">
         <p><b>ネコキチ猫吉</b> 〜猫好きは、結局ぜんぶの猫が好き〜</p>
-        <p>雑種もブランド猫も、短毛も長毛も。猫のウワサを編集部が全力で(そして少しだけ真面目に)検証し、暮らしと健康の「目安」をまとめる猫の総合誌です。</p>
+        <p>このサイトは猫が作っています。人間(下僕)は、猫に言われたとおりにキーボードを押しただけです。</p>
+        <dl class="staff">
+          <div><dt>編集長</dt><dd>猫吉(キジトラ白)……だいたいキーボードの上</dd></div>
+          <div><dt>記者</dt><dd>ミケ子(三毛)……取材と称して段ボールに入る</dd></div>
+          <div><dt>デザイン</dt><dd>クロ(黒猫)……夜しか働かない</dd></div>
+          <div><dt>校正</dt><dd>スコ太(スコティッシュフォールド)……寝ています</dd></div>
+          <div><dt>毛</dt><dd>全員……画面にも落ちています</dd></div>
+          <div><dt>入力係</dt><dd>人間</dd></div>
+        </dl>
         <p>性格や体の特徴には個体差があります。健康について気になることがあるときは、動物病院にご相談ください。</p>
         <p><a href="/about/">このサイトについて</a> ・ <a href="/columns/">記事一覧</a> ・ <a href="/breeds/">猫種図鑑</a> ・ <a href="/tools/">ツール</a></p>
         <p>© {new Date().getFullYear()} ネコキチ猫吉</p>
       </div>
     </footer>
+    <button class="roller" type="button" id="roller" aria-label="画面に落ちた猫の毛をコロコロで取る"><svg viewBox="0 0 40 30" aria-hidden="true"><rect x="2" y="3" width="26" height="16" rx="4" fill="#fbfaf0" stroke="#1c1629" stroke-width="3"/><path d="M28 11 H34 V28" fill="none" stroke="#1c1629" stroke-width="3" stroke-linecap="round"/><path d="M8 7 v8 M14 7 v8 M20 7 v8" stroke="#b8b0c8" stroke-width="2"/></svg>コロコロ<span class="roller-n">0</span>本</button>
   </body>
 </html>
