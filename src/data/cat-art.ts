@@ -2,7 +2,7 @@
 // 毛色 × 柄 × 目 × 耳 × 毛の長さ の組み合わせで、雑種も猫種もだいたい描ける。指定の型は art-schema.ts
 import type { Art } from './art-schema';
 
-const K = '#1c1629'; // 線は夜のインク色
+const K = '#141214'; // 線は墨色(ゆるい手描き。太めの線を、ページ側の filter で少しよれさせる)
 const WHITE = '#ffffff';
 const PINK = '#ff9fb8';
 
@@ -46,10 +46,9 @@ const INNER: Record<Art['ears'], string> = {
 function eyes(a: Art, lid: string): string {
   const eye = (x: number, iris: string) => {
     if (a.expr === 'sleepy') return `<path d="M${x - 16} 110 Q${x} 124 ${x + 16} 110" fill="none" stroke="${K}" stroke-width="5" stroke-linecap="round"/>`;
-    const base = `<circle cx="${x}" cy="110" r="16" fill="${iris}" stroke="${K}" stroke-width="4"/><circle cx="${x}" cy="111" r="10.5" fill="${K}"/>`;
-    const hi = a.expr === 'wow'
-      ? `<path d="M${x + 5} 99 l2.2 5 l5 2.2 l-5 2.2 l-2.2 5 l-2.2 -5 l-5 -2.2 l5 -2.2 Z" fill="#fff"/><circle cx="${x - 5}" cy="117" r="2.4" fill="#fff"/>`
-      : `<circle cx="${x + 5}" cy="104" r="4.6" fill="#fff"/><circle cx="${x - 5}" cy="117" r="2" fill="#fff"/>`;
+    const px = x + (x < 100 ? 2 : -2);
+    const base = `<ellipse cx="${x}" cy="110" rx="15" ry="16" fill="#fff" stroke="${K}" stroke-width="4"/><circle cx="${px}" cy="112" r="${a.expr === 'wow' ? 9 : 11}" fill="${K}" stroke="${iris}" stroke-width="1.4"/>`;
+    const hi = `<circle cx="${px + 3.5}" cy="107.5" r="3" fill="#fff"/>`;
     // smug(ごきげん顔)は半目にせず、ほっぺを赤くする(半目は不機嫌に見えたため)
     const l = a.expr === 'smug' ? `<ellipse cx="${x + (x < 100 ? -12 : 12)}" cy="132" rx="11" ry="6" fill="#ff8fa8" opacity=".55"/>` : '';
     return base + hi + l;
@@ -130,20 +129,24 @@ export function faceGroup(a: CatArt, sticker = false): string {
     ${a.ears === 'fold' ? `<path d="${el}" fill="${earFill}" ${s}/><path d="${er}" fill="${earFill}" ${s}/>` : ''}
     ${a.boss ? BOSS_CAP : ''}
     <g class="eyes">${eyes(a, a.pattern === 'point' ? c.soft : headFill === WHITE ? '#eee' : c.soft)}</g>
-    <path d="M93 128 L107 128 L100 136 Z" fill="${a.pattern === 'point' ? c.soft : '#ff7d9c'}" stroke="${K}" stroke-width="3" stroke-linejoin="round"/>
-    <path d="M100 136 Q100 144 91 145 M100 136 Q100 144 109 145" fill="none" stroke="${K}" stroke-width="3.4" stroke-linecap="round"/>
+    <ellipse cx="100" cy="130" rx="3.6" ry="2.6" fill="${K}"/>
+    <path d="M91 138 Q100 147 109 138" fill="none" stroke="${K}" stroke-width="3.4" stroke-linecap="round"/>
     ${whisk}
   </g>`;
 }
 
 /** 線を少し細くする(週刊ラグドールより軽く) */
-const thin = (svg: string) => svg.replace(/stroke-width="([\d.]+)"/g, (_, w) => `stroke-width="${+(Number(w) * 0.82).toFixed(1)}"`);
+const thin = (svg: string) => svg.replace(/stroke-width="([\d.]+)"/g, (_, w) => `stroke-width="${+(Number(w) * 1.25).toFixed(1)}"`).replace(/stroke="#1c1629"/g, `stroke="${K}"`);
+
+/** 手描きのゆらぎ:線を少しよれさせるフィルター(ゆるい手描き風。横田さんの参考イメージは「太い墨の線・白目に黒目・余白」) */
+const ROUGH = '<defs><filter id="nkr" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/></filter></defs>';
+const rough = (svg: string) => svg.replace(/(<svg[^>]*>)/, `$1${ROUGH}<g filter="url(#nkr)">`).replace(/<\/svg>\s*$/, '</g></svg>');
 
 export const faceGroupThin = (a: CatArt, sticker = false) => thin(faceGroup(a, sticker));
 
 export function faceSvg(a: CatArt, label?: string, sticker = false): string {
   const aria = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
-  return `<svg viewBox="-10 -16 220 206" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">${faceGroupThin(a, sticker)}</svg>`;
+  return rough(`<svg viewBox="-10 -16 220 206" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">${faceGroupThin(a, sticker)}</svg>`);
 }
 
 /** 全身のおすわり(viewBox 0 0 220 300) */
@@ -161,7 +164,7 @@ export function bodySvg(a: Art, label?: string): string {
   const patches = a.pattern === 'calico'
     ? `<path d="M60 170 C80 160 100 176 96 200 C80 206 62 196 58 186 Z" fill="${COAT.red.body}"/><path d="M160 176 C150 166 130 176 134 200 C146 210 164 200 164 190 Z" fill="${COAT.black.body}"/>` : '';
   const stripes = striped ? `<g fill="none" stroke="${c.mark}" stroke-width="5" stroke-linecap="round"><path d="M58 186 q14 4 16 16 M56 212 q16 4 18 18 M164 186 q-14 4 -16 16 M166 212 q-16 4 -18 18"/></g>` : '';
-  return thin(`<svg viewBox="0 0 220 300" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+  return rough(thin(`<svg viewBox="0 0 220 300" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
     <g class="tail">
       <path d="${tail}" fill="none" stroke="${K}" stroke-width="${tw + 10}" stroke-linecap="round"/>
       <path d="${tail}" fill="none" stroke="${tailCol}" stroke-width="${tw}" stroke-linecap="round"/>
@@ -176,7 +179,7 @@ export function bodySvg(a: Art, label?: string): string {
     <ellipse cx="130" cy="286" rx="19" ry="11" fill="${legFill}" ${s}/>
     <path d="M84 281 v9 M96 281 v9 M124 281 v9 M136 281 v9" stroke="${K}" stroke-width="3" stroke-linecap="round"/>
     <g transform="translate(14 0) scale(.96)">${faceGroup(a)}</g>
-  </svg>`);
+  </svg>`));
 }
 
 /** 編集長・猫吉(キジトラ白のオス) */
@@ -250,11 +253,11 @@ export function kickCatSvg(a: CatArt, label?: string): string {
       <path d="M150 90 L238 90 L250 230 L176 230 C156 190 146 140 150 90 Z" fill="#6c3cff"/>
       <path d="M238 90 L250 230" stroke="#e6ff2e" stroke-width="7"/>
       <path d="M150 90 C146 140 156 190 176 230" fill="none" stroke="#e6ff2e" stroke-width="7"/>
-      <circle cx="206" cy="148" r="15" fill="#e6ff2e" stroke="${K}" stroke-width="4"/>
-      <text x="206" y="154" text-anchor="middle" font-size="17" font-weight="900" fill="${K}" font-family="sans-serif">長</text>
+      <path d="M186 146 L196 118 L204 121 L194 149 Z" fill="#ff3ea5" stroke="${K}" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M180 144 H218 V172 Q218 178 212 178 H186 Q180 178 180 172 Z" fill="#8a64ff" stroke="${K}" stroke-width="3.5" stroke-linejoin="round"/>
     </g>` : '';
   const bow = a.boss ? `<g class="boss-bow"><path d="M108 150 L86 138 L88 164 Z M112 150 L134 138 L132 164 Z" fill="#ff3ea5" stroke="${K}" stroke-width="4" stroke-linejoin="round"/><circle cx="110" cy="151" r="7" fill="#ff3ea5" stroke="${K}" stroke-width="4"/></g>` : '';
-  return thin(`<svg viewBox="0 0 400 280" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+  return rough(thin(`<svg viewBox="0 0 400 280" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
     <defs>${masks}<clipPath id="kb-${uid}"><path d="${body}"/></clipPath></defs>
     <g class="kc-tail">
       <path d="${tail}" fill="none" stroke="${K}" stroke-width="30" stroke-linecap="round"/>
@@ -271,7 +274,7 @@ export function kickCatSvg(a: CatArt, label?: string): string {
     <path d="M296 146 C312 164 316 192 302 210" fill="none" stroke="${K}" stroke-width="4" stroke-linecap="round" opacity=".5"/>
     <g class="kc-head" transform="translate(34 18) scale(.74)">${faceGroup({ ...a, expr: a.expr === 'normal' ? 'smug' : a.expr })}</g>
     ${bow}
-  </svg>`);
+  </svg>`));
 }
 
 /** 奥の足用に少し暗くする */
