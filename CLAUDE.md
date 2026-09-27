@@ -4,9 +4,9 @@
 アメショの森(../amesho-mori:実用ツール・健康・占い)と週刊ラグドール(../ragdoll-kawaii:ウワサ検証の週刊誌ノリ)のいいとこ取り(2026-09-27 作成)。
 アメショの森と週刊ラグドールはABテスト中なので、このサイトから両サイトへはリンクしない。
 
-- 公開先:https://yynoche-woop.github.io/nekokichi/ (GitHub Pages。main に push すると GitHub Actions で自動デプロイ)
-  - 独自ドメインを取ったら:astro.config.mjs の site をドメインにして base を消し、`public/CNAME` を置く。Search Console(サービスアカウントを「フル」で追加)と GA4 もそのときに設定
-  - サイト内リンクは常に "/columns/..." のようにルートから書く。サブパス公開中は `scripts/base-links.mjs` がビルド後に base を付ける
+- 公開先:https://nekokichi.net/ (GitHub Pages。main に push すると GitHub Actions で自動デプロイ)
+  - ドメインは Cloudflare Registrar(2026-09-27 取得)。DNS は Cloudflare で apex と www を yynoche-woop.github.io に CNAME(DNS only)。`public/CNAME` がドメイン設定
+  - サイト内リンクは常に "/columns/..." のようにルートから書く(`scripts/base-links.mjs` はサブパス公開のときだけ働く)
 - `npm run build` / `npx astro dev`
 - 広告は未設定(Amazonアソシエイトのサイト専用IDを作ったら、姓名判断の下などに控えめに)
 
