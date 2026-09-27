@@ -69,7 +69,7 @@ const nav = [
           </span>
           <span><b>ネコキチ猫吉</b><small>猫好きは、結局ぜんぶの猫が好き。</small></span>
         </a>
-        <p class="issue">{issueDate}更新ｊｊｊｊｊｋ・編集長:猫吉<span class="price">人間は読むだけ</span></p>
+        <p class="issue"><span class="issue-date">{issueDate}更新ｊｊｊｊｋ</span><span class="issue-boss">・編集長:猫吉</span><span class="price">人間は読むだけ</span></p>
       </div>
       <nav class="wrap nav" aria-label="サイト内のコーナー">
         {nav.map((n) => <a href={n.href}>{n.label}</a>)}
@@ -150,6 +150,7 @@ const nav = [
         </dl>
         <p>性格や体の特徴には個体差があります。健康について気になることがあるときは、動物病院にご相談ください。</p>
         <p><a href="/about/">このサイトについて</a> ・ <a href="/columns/">記事一覧</a> ・ <a href="/breeds/">猫種図鑑</a> ・ <a href="/tools/">ツール</a></p>
+        <p class="sister">姉妹サイト:<a href="https://amesho-mori.com/">アメショの森</a> ・ <a href="https://shukan-ragdoll.com/">週刊ラグドール</a></p>
         <p>© {new Date().getFullYear()} ネコキチ猫吉</p>
       </div>
     </footer>

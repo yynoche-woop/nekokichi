@@ -332,3 +332,10 @@ td, th { overflow-wrap: break-word; }
 .staff dt { font-family: var(--font-head); flex: none; width: 4.5em; }
 .staff dd { margin: 0; }
 .foot { padding-bottom: 80px; }
+
+/* 姉妹サイトへのリンク(フッターの末尾に小さく。横田さん 2026-09-27) */
+.sister { font-size: .75rem; opacity: .75; }
+.sister a { color: inherit; }
+
+.issue span { white-space: nowrap; }
+@media (max-width: 600px) { .issue { text-align: left; } .issue-boss { display: none; } }

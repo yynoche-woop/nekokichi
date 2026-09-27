@@ -2,7 +2,7 @@
 
 猫種を問わず、猫好き全体からのアクセスを狙う猫の総合サイト(Astro 7)。運営は横田さん。
 アメショの森(../amesho-mori:実用ツール・健康・占い)と週刊ラグドール(../ragdoll-kawaii:ウワサ検証の週刊誌ノリ)のいいとこ取り(2026-09-27 作成)。
-アメショの森と週刊ラグドールはABテスト中なので、このサイトから両サイトへはリンクしない。
+アメショの森・週刊ラグドールとは、フッターの末尾に小さく「姉妹サイト」として相互リンクする(横田さん 2026-09-27)。本文やナビからはリンクしない。
 
 - 公開先:https://nekokichi.net/ (GitHub Pages。main に push すると GitHub Actions で自動デプロイ)
   - ドメインは Cloudflare Registrar(2026-09-27 取得)。DNS は Cloudflare で apex と www を yynoche-woop.github.io に CNAME(DNS only)。`public/CNAME` がドメイン設定
