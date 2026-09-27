@@ -26,7 +26,7 @@ const STAGES = [
 ];
 
 // ネコキチニュース:MCふたり(編集長・猫吉と、三毛のミケ子)が最新記事を紹介する
-const OPEN = ['速報や!', 'ニュースです!', '聞いてや!', 'えらいこっちゃ!', '号外や!', '続報!'];
+const OPEN = ['速報です!', 'ニュースです!', '聞いてください!', '大変です!', '号外です!', '続報!'];
 const NEWS = kensho.slice(0, 6).map((c, i) => ({
   href: `/columns/${c.id}/`,
   a: `${OPEN[i % OPEN.length]} ${c.data.title.replace(/^【検証】/, '').replace(/ .*$/, '')}`,
@@ -68,7 +68,7 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
       </button>
       <span class="rival r1" set:html={faceSvg(MIKE, '三毛猫', true)} />
       <span class="rival r2" set:html={faceSvg(KURO, '黒猫', true)} />
-      <span class="boss-say" id="boss-say">押したら砂かけるで</span>
+      <span class="boss-say" id="boss-say">押すと砂をかけます</span>
     </div>
   </section>
 
@@ -150,7 +150,7 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
     // 編集長を押すと砂をかける。ひとことしゃべる
     const boss = document.getElementById('boss')!;
     const say = document.getElementById('boss-say')!;
-    const LINES = ['くらえ!', '砂かけるで', 'ここ、わしのトイレ', 'ぜんぶの猫が好き', '編集長やぞ', 'シャッシャッ'];
+    const LINES = ['くらえ!', '砂かけます', 'ここ、ぼくのトイレ', 'ぜんぶの猫が好き', '編集長です', 'シャッシャッ'];
     let n = 0;
     // 砂かけ:手描きのポーズを切り替える(かまえ→手前の足でけり→かまえ→奥の足でけり…)。
     // 足を付け根で回すと機械っぽいので、コマを step で差し替える。けったコマの足先から砂を後ろ(右)へ飛ばす
