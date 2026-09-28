@@ -50,3 +50,14 @@
   - アメリカへ渡った年(アンゴラ1954 vs PS保険1962)、ターキッシュバンのCFA公認年(1988 vs PS保険1983)と size「大型」(CFAの large、ロイヤルカナンは中型)、ボブテイルのしっぽの遺伝(CFAの優性 vs PS保険の劣性)、コーニッシュの渡米年、ボンベイの作出年、マウのCFA公認年・渡米年はCFAのまま
   - ミヌエットの tendency.size 1 はそのまま(体重は小柄なため)。トンキニーズ features[1] の「ソリッドはグリーン」はCFAの品種紹介文どおりなのでそのまま。オリエンタル health の泌尿器の書き方、バーマン lead の1926年(アニコム)もOKの範囲でそのまま
 - astro build(.agent-dist)成功・62ページ
+
+## 2026-09-29(週次)
+- 追加:/columns/whiskers/(猫のひげの役割・本数・抜ける理由・切ってはいけない訳。shuusei)。GA4は開設2日で20ユーザー・36PV(ほぼDirect)、Search Consoleはまだ検索データなし。検索需要の大きい定番テーマのうち、ネコキチ・姉妹サイト(アメショの森・週刊ラグドール)のどこにも受け皿がない「ひげ」を選んだ(しっぽ・鳴き声はアメショの森にあるため避けた)。sources 7件はすべて開いて確認(PubMed はE-utilitiesで抄録を取得)
+- 機械チェック:`ops/site_check.py --live`(今回新設)で本番サイトマップ61URLすべて200、リンク切れ・title/description の欠落/重複・表示崩れなし。build 警告なし
+- インデックス:`ops/index_check.py`(今回新設)で /、/columns/、/breeds/、/tools/、/breeds/ragdoll/、/columns/liquid/、/breeds/minuet/ を検査し、すべて Submitted and indexed(最終クロール 2026-09-27)。サイトマップのエラー・警告0
+- 目視:jitsuyo 5本(toxic-foods, room-temp, human-age, first-cat, emergency-signs)
+  - first-cat:用意するものの表「ヒゲが当たりにくい、浅くて広めの器」→「浅くて広めの器を好む猫もいる(猫のひげへのリンク)」。2021年の研究でひげに当たりにくい器で食べ方に差が出なかったため、断定を弱めた。表記も「ひげ」に統一
+  - human-age:ペットフード協会2025年公表の平均寿命16歳ほど → アイペット損保の記事(16.00歳、外に出ない猫16.23歳)と一致を確認
+  - 報告のみ:toxic-foods・room-temp・first-cat の冒頭・締めに、2026-09-28 以前のくだけた言い回し(「罠だらけのダンジョン」「この家の憲法第一条」など)が少し残る。事実の誤りではなく、トーン方針に関わるので直していない
+- 改行:whiskers・first-cat を WebKit 375/390px で確認し、単語の途中・行頭の句読点の指摘なし
+- 次回はここから:猫種図鑑の旧20種(mix〜devon-rex)の本文を出典と照合 → ツール5つ
