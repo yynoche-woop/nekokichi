@@ -565,7 +565,7 @@ export const BREEDS: Breed[] = [
     health: '多発性嚢胞腎に注意したい猫種として紹介されることがあり、遺伝子検査で調べられるとされる。ほかに腎不全、下部尿路の病気、皮膚の病気なども報告がある。水を飲む量やおしっこの変化、皮膚の赤みやかゆがる様子に気づいたら、早めに獣医師に相談しよう。',
     tsukkomi: '巻き毛をもふっていたら、まっすぐな毛の猫もなでたくなった。毛のくせも個性も全部かわいい。',
     tendency: { play: 3, cuddle: 4, groom: 3, voice: 2, size: 3 },
-    art: { coat: 'blue', pattern: 'bicolor', eye: 'copper', ears: 'normal', hair: 'rex', expr: 'normal' },
+    art: { coat: 'blue', pattern: 'bicolor', eye: 'copper', ears: 'normal', hair: 'curly', expr: 'normal' },
     sources: [
       { title: 'Selkirk Rex(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/selkirk-rex/' },
       { title: 'セルカーク・レックスを知りつくそう!(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/648.html' },
@@ -1270,7 +1270,7 @@ export const BREEDS: Breed[] = [
     health: 'CFAは、遺伝的な多様性のある猫種で特定の健康問題はまだ知られていないとしている。一方で、毛球症、下部尿路疾患、猫風邪、脱毛などが気をつけたい病気としてあげられている。また、貧血を起こすピルビン酸キナーゼ欠損症の遺伝子変異がラパーマでも見つかっており、検査がすすめられる猫種にあげられている。元気や食欲の低下、歯ぐきの色が白っぽいなどの変化があれば、早めに獣医師に相談しよう。',
     tsukkomi: 'くるくるの毛に指をうずめていたら、まっすぐな毛の猫もなでたくなった。猫の毛はどれも手ざわりが違ってうれしい。',
     tendency: { play: 4, cuddle: 4, groom: 3, voice: 2, size: 2 },
-    art: { coat: 'red', pattern: 'tabby', eye: 'gold', ears: 'normal', hair: 'rex', expr: 'normal' },
+    art: { coat: 'red', pattern: 'tabby', eye: 'gold', ears: 'normal', hair: 'curly', expr: 'normal' },
     sources: [
       { title: 'LaPerm(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/laperm/' },
       { title: 'ラパーマ(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/laperm.html' },

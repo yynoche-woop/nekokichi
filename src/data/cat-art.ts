@@ -11,7 +11,7 @@ export const COAT: Record<Art['coat'], Tone> = {
   black: { body: '#2e2b2c', mark: '#141212', soft: '#4a4546', label: '黒' },
   white: { body: '#ffffff', mark: '#e9e4de', soft: '#f3efea', label: '白' },
   blue: { body: '#9aa5b6', mark: '#6d7a8e', soft: '#b9c2cf', label: 'グレー(ブルー)' },
-  silver: { body: '#e6eaee', mark: '#3f434a', soft: '#c8cfd6', label: 'シルバー' },
+  silver: { body: '#d3d9e0', mark: '#3f434a', soft: '#b9c1ca', label: 'シルバー' }, // 少し濃いめのグレー(横田さん 2026-10-02)
   brown: { body: '#c99b66', mark: '#4a3322', soft: '#e3c49c', label: 'ブラウン' },
   red: { body: '#f3a55e', mark: '#cf6526', soft: '#f8c595', label: '茶(レッド)' },
   cream: { body: '#f7dfba', mark: '#e0b37c', soft: '#fbecd4', label: 'クリーム' },
@@ -88,8 +88,44 @@ function marks(a: Art, c: Tone): string {
   }
 }
 
+/** 小さな巻き毛の印(x, y を中心にくるっと) */
+const curl = (x: number, y: number, k = 1) => `M${x - 5 * k} ${y + 2 * k} c${1 * k} ${-7 * k} ${11 * k} ${-7 * k} ${10 * k} ${0} c${-1 * k} ${5 * k} ${-8 * k} ${5 * k} ${-7 * k} ${0}`;
+
+/** 縮れ毛の体:輪郭を小さく波打たせる(ふつうの体の線にそって、外へふくらむ山を並べる) */
+const CURLY_BODY = (() => {
+  const L: [number, number][] = [[56, 150], [47, 174], [42, 198], [40, 222], [41, 246], [47, 268], [60, 286]];
+  const bump = (p: [number, number], q: [number, number], out: number) => {
+    const mx = (p[0] + q[0]) / 2, my = (p[1] + q[1]) / 2, dx = q[0] - p[0], dy = q[1] - p[1], len = Math.hypot(dx, dy);
+    return ` Q${(mx + (dy / len) * out).toFixed(1)} ${(my - (dx / len) * out).toFixed(1)} ${q[0]} ${q[1]}`;
+  };
+  let d = `M${L[0][0]} ${L[0][1]}`;
+  for (let i = 1; i < L.length; i++) d += bump(L[i - 1], L[i], 9);
+  d += ' L160 286';
+  const R = L.map(([x, y]) => [220 - x, y] as [number, number]).reverse();
+  for (let i = 1; i < R.length; i++) d += bump(R[i - 1], R[i], 9);
+  return d + ' Z';
+})();
+
+/** 縮れ毛(セルカークレックスなど)の頭のまわり:小さなふくらみをたくさん並べ、くるくるの印を入れる */
+function curlyRuff(fill: string): string {
+  const n = 15, r = 84;
+  const pt = (t: number, rr: number) => [100 - Math.cos(t) * rr, 108 + Math.sin(t) * rr * 0.82];
+  const f = (p: number[]) => `${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
+  const t0 = -Math.PI * 0.1, t1 = Math.PI * 1.1;
+  let d = `M${f(pt(t0, r - 12))}`;
+  const marks: string[] = [];
+  for (let i = 0; i < n; i++) {
+    const a0 = t0 + ((t1 - t0) * i) / n, a1 = t0 + ((t1 - t0) * (i + 1)) / n, am = (a0 + a1) / 2;
+    d += ` Q${f(pt(am, r + 22))} ${f(pt(a1, r))}`;
+    if (i % 2 === 0) { const [x, y] = pt(am, r + 4); marks.push(curl(x, y, .9)); }
+  }
+  d += ` L${f(pt(t1, r - 12))} Z`;
+  return `<path d="${d}" fill="${fill}" stroke="${K}" stroke-width="5" stroke-linejoin="round"/><path d="${marks.join(' ')}" fill="none" stroke="${K}" stroke-width="3" stroke-linecap="round" opacity=".55"/>`;
+}
+
 /** 頭のまわりの毛(長毛・セミロング)。頭の輪郭より後ろに描く */
 function ruff(a: Art, fill: string): string {
+  if (a.hair === 'curly') return curlyRuff(fill);
   if (a.hair !== 'long' && a.hair !== 'semi') return '';
   const big = a.hair === 'long';
   // 頭の下半分〜横を、ふくらみの連続(ふわふわの飾り毛)で囲む
@@ -124,7 +160,7 @@ export function faceGroup(a: CatArt, sticker = false): string {
   const edge = sticker ? `<g fill="${WHITE}" stroke="${WHITE}" stroke-width="22" stroke-linejoin="round"><path d="${el}"/><path d="${er}"/>${ruff(a, WHITE).replace(`stroke="${K}"`, `stroke="${WHITE}"`)}<path d="${head}"/></g>` : '';
   const tufts = a.ears === 'tufted' ? `<path d="M50 20 l-4 -14 M56 18 l2 -14 M150 20 l4 -14 M144 18 l-2 -14" stroke="${K}" stroke-width="3.5" stroke-linecap="round"/>` : '';
   const hairless = a.hair === 'hairless' ? `<path d="M80 62 Q100 56 120 62 M84 72 Q100 67 116 72" fill="none" stroke="${K}" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>` : '';
-  const whisk = a.hair === 'rex'
+  const whisk = a.hair === 'rex' || a.hair === 'curly'
     ? `<path d="M44 128 q-8 -8 -16 0 t-14 -2 M46 138 q-8 8 -16 0 t-14 6 M156 128 q8 -8 16 0 t14 -2 M154 138 q8 8 16 0 t14 6" fill="none" stroke="${K}" stroke-width="3" stroke-linecap="round"/>`
     : `<path d="M44 128 L14 122 M46 138 L16 142 M156 128 L186 122 M154 138 L184 142" stroke="${K}" stroke-width="3" stroke-linecap="round"/>`;
   const foldEar = a.ears === 'fold' ? `<path d="M50 64 Q56 52 70 52 M150 64 Q144 52 130 52" fill="none" stroke="${K}" stroke-width="3" stroke-linecap="round"/>` : '';
@@ -173,7 +209,7 @@ export function bodySvg(a: Art, label?: string): string {
   const legFill = a.paleChest && !['bicolor', 'tuxedo', 'kiji', 'calico', 'mitted'].includes(a.pattern) ? c.soft : a.pattern === 'mitted' ? WHITE : a.pattern === 'sepia' ? c.soft : isPoint(a) ? c.soft : whiteChest ? WHITE : base;
   const pawFill = a.pattern === 'gloves' ? WHITE : legFill; // バーマンは白い手袋
   const tail = 'M158 272 C194 272 206 234 196 198'; // 太いしっぽ(長毛)でも枠からはみ出さないよう、内側寄りに
-  const tw = a.hair === 'long' || a.hair === 'semi' ? 34 : 22;
+  const tw = a.hair === 'long' || a.hair === 'semi' || a.hair === 'curly' ? 34 : 22;
   const aria = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
   const patches = a.pattern === 'calico'
     ? `<path d="M60 170 C80 160 100 176 96 200 C80 206 62 196 58 186 Z" fill="${COAT.red.body}"/><path d="M160 176 C150 166 130 176 134 200 C146 210 164 200 164 190 Z" fill="${COAT.black.body}"/>` : '';
@@ -187,7 +223,7 @@ export function bodySvg(a: Art, label?: string): string {
       <path d="${tail}" fill="none" stroke="${tailCol}" stroke-width="${tw}" stroke-linecap="round"/>
       ${striped ? `<path d="${tail}" fill="none" stroke="${c.mark}" stroke-width="${tw}" stroke-dasharray="6 12" opacity=".8"/>` : ''}
     </g>`}
-    <path d="M56 150 C38 196 40 256 60 286 L160 286 C180 256 182 196 164 150 Z" fill="${base}" ${s}/>
+    <path d="${a.hair === 'curly' ? CURLY_BODY : 'M56 150 C38 196 40 256 60 286 L160 286 C180 256 182 196 164 150 Z'}" fill="${base}" ${s}/>
     ${patches}${stripes}
     ${whiteChest ? `<path d="M80 160 C70 200 72 250 76 284 L144 284 C148 250 150 200 140 160 Z" fill="${WHITE}"/>` : ''}
     ${a.paleChest && !whiteChest ? `<path d="M84 160 C76 196 78 246 80 284 L140 284 C142 246 144 196 136 160 Z" fill="${c.soft}"/>` : ''}
@@ -198,6 +234,7 @@ export function bodySvg(a: Art, label?: string): string {
     ${a.pattern === 'gloves' ? `<g fill="${WHITE}"><rect x="78.5" y="256" width="23" height="28"/><rect x="118.5" y="256" width="23" height="28"/></g><path d="M77 256 h26 M117 256 h26" stroke="${K}" stroke-width="2.4" stroke-linecap="round" opacity=".5"/>` : ''}
     <ellipse cx="90" cy="286" rx="19" ry="11" fill="${pawFill}" ${s}/>
     <ellipse cx="130" cy="286" rx="19" ry="11" fill="${pawFill}" ${s}/>
+    ${a.hair === 'curly' ? `<path d="${[[64, 178], [156, 182], [58, 214], [162, 220], [62, 252], [158, 256], [108, 196], [180, 262], [200, 232], [198, 208]].map(([x, y]) => curl(x, y, 1.3)).join(' ')}" fill="none" stroke="${K}" stroke-width="3" stroke-linecap="round" opacity=".55"/>` : ''}
     <path d="M84 281 v9 M96 281 v9 M124 281 v9 M136 281 v9" stroke="${K}" stroke-width="3" stroke-linecap="round"/>
     <g transform="translate(14 0) scale(.96)">${faceGroup(a)}</g>
   </g>

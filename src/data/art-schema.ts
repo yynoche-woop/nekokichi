@@ -7,7 +7,7 @@ export const PATTERNS = ['solid', 'tabby', 'classic', 'spotted', 'ticked', 'bico
 // gloves=ポイント+白い足先(バーマン) / sepia=ポイントのコントラストが弱く、顔と足先がほんのり濃いグラデ(バーミーズ)
 export const EYES = ['gold', 'copper', 'green', 'blue', 'hazel', 'aqua', 'odd'] as const;
 export const EARS = ['normal', 'fold', 'curl', 'big', 'tufted'] as const;
-export const HAIRS = ['short', 'semi', 'long', 'hairless', 'rex'] as const;
+export const HAIRS = ['short', 'semi', 'long', 'hairless', 'rex', 'curly'] as const; // rex=短い巻き毛(デボン・コーニッシュ)、curly=ふわふわの縮れ毛(セルカーク・ラパーマ)
 export const EXPRS = ['normal', 'smug', 'wow', 'sleepy'] as const;
 
 export const ART_SCHEMA = z
