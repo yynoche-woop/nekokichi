@@ -6,7 +6,7 @@
 // - 猫種のカードが並んでいるページでは、ランダムに1匹だけ香箱座りしている(2026-10-02 追加)
 // - しばらく画面を止めていると、画面のふちから猫がのぞく。スクロールするとサッと隠れる(2026-10-02 追加)
 // 動きを減らす設定のときは、毛だけ置いて動きはなし。
-import { faceSvg, loafSvg } from '../data/cat-art';
+import { faceSvg, loafSvg, loafSideSvg } from '../data/cat-art';
 import type { Art } from '../data/art-schema';
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -243,7 +243,9 @@ if (!reduce) {
   const svg = card?.querySelector('.w-pic svg[role="img"]');
   if (card && svg) {
     const name = card.dataset.name ?? '猫';
-    svg.outerHTML = loafSvg(JSON.parse(card.dataset.art!), `${name}のイラスト(香箱座り)`);
+    // 正面(おててナイナイ)と横向き(しっぽを体にそわせて目を閉じる)を半々で
+    const art = JSON.parse(card.dataset.art!);
+    svg.outerHTML = (Math.random() < .5 ? loafSideSvg : loafSvg)(art, `${name}のイラスト(香箱座り)`);
     const tag = document.createElement('span');
     tag.className = 'loaf-tag';
     tag.textContent = '香箱座り中';

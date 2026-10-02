@@ -265,6 +265,37 @@ export function loafSvg(a: Art, label?: string, tuck: 'c' | 'd' = 'c'): string {
   </svg>`));
 }
 
+/** 横から見た香箱座り(目を閉じて、しっぽを体にそわせる)。背中の柄は描かない。viewBox 0 0 220 300 */
+export function loafSideSvg(a: Art, label?: string): string {
+  const c = COAT[a.coat];
+  const s = `stroke="${K}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
+  const base = a.pattern === 'calico' ? WHITE : a.pattern === 'tuxedo' ? COAT.black.body : a.hair === 'hairless' ? '#f1cdbd' : c.body;
+  const tailCol = isPoint(a) ? c.mark : a.pattern === 'calico' ? COAT.red.body : base;
+  const striped = ['tabby', 'kiji', 'classic', 'spotted'].includes(a.pattern);
+  const whiteChest = ['bicolor', 'tuxedo', 'kiji', 'calico', 'mitted'].includes(a.pattern);
+  const tw = a.hair === 'long' || a.hair === 'semi' || a.hair === 'curly' ? 26 : 18;
+  const aria = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
+  const body = 'M44 290 C14 290 10 238 46 214 C84 190 152 188 188 208 C218 226 216 290 186 290 Z';
+  const tail = 'M198 262 C214 286 188 294 150 292 L104 292';
+  const patches = a.pattern === 'calico' ? `<path d="M120 194 C150 188 178 196 194 214 C176 226 146 222 120 194 Z" fill="${COAT.black.body}"/><path d="M150 236 C170 230 196 240 204 256 C186 266 160 258 150 236 Z" fill="${COAT.red.body}"/>` : '';
+  const shade = isPoint(a) ? `<path d="M150 192 C186 198 214 222 212 260 C194 248 170 222 150 192 Z" fill="${c.soft}" opacity=".6"/>` : '';
+  const chest = whiteChest ? `<path d="M40 288 C30 262 44 236 74 232 C100 236 108 264 100 290 Z" fill="${WHITE}"/>` : a.paleChest ? `<path d="M40 288 C30 262 44 236 74 232 C100 236 108 264 100 290 Z" fill="${c.soft}"/>` : '';
+  return rough(thin(`<svg viewBox="0 0 220 300" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+    <g transform="${a.small ? 'translate(110 296) scale(.84) translate(-110 -296)' : ''}">
+    <path d="${body}" fill="${base}" ${s}/>
+    ${patches}${shade}${chest}
+    ${a.bobtail
+      ? `<path d="M196 236 c10 -12 28 -8 30 6 c8 4 4 20 -8 20 c-6 10 -24 8 -26 -4 c-10 -6 -6 -20 4 -22 z" fill="${tailCol}" ${s}/>`
+      : `<g class="tail">
+      <path d="${tail}" fill="none" stroke="${K}" stroke-width="${tw + 10}" stroke-linecap="round"/>
+      <path d="${tail}" fill="none" stroke="${tailCol}" stroke-width="${tw}" stroke-linecap="round"/>
+      ${striped ? `<path d="${tail}" fill="none" stroke="${c.mark}" stroke-width="${tw}" stroke-dasharray="6 12" opacity=".8"/>` : ''}
+    </g>`}
+    <g transform="translate(-4 84) scale(.76)">${faceGroup({ ...a, expr: 'sleepy' })}</g>
+    </g>
+  </svg>`));
+}
+
 /** おててナイナイ(胸の下に前足をしまっている)の描き方。
  *  c=しまった腕のラインが、胸のふわふわの下にもぐっていく / d=cに、ひじのふくらみを足す
  *  (a=胸の下のふくらみ、b=指先がのぞく は不採用。横田さん 2026-10-02) */
