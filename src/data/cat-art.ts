@@ -186,8 +186,10 @@ export function bodySvg(a: Art, label?: string): string {
     <path d="M56 150 C38 196 40 256 60 286 L160 286 C180 256 182 196 164 150 Z" fill="${base}" ${s}/>
     ${patches}${stripes}
     ${whiteChest ? `<path d="M80 160 C70 200 72 250 76 284 L144 284 C148 250 150 200 140 160 Z" fill="${WHITE}"/>` : ''}
-    <rect x="76" y="212" width="28" height="74" rx="14" fill="${legFill}" ${s}/>
-    <rect x="116" y="212" width="28" height="74" rx="14" fill="${legFill}" ${s}/>
+    <!-- 前足:付け根(上の辺)には線を引かず、胴体から生えているように見せる(横田さん 2026-10-02) -->
+    <rect x="76" y="212" width="28" height="74" rx="14" fill="${legFill}"/>
+    <rect x="116" y="212" width="28" height="74" rx="14" fill="${legFill}"/>
+    <path d="M76 226 V272 M104 226 V272 M116 226 V272 M144 226 V272" fill="none" ${s}/>
     ${a.pattern === 'gloves' ? `<g fill="${WHITE}"><rect x="78.5" y="256" width="23" height="28"/><rect x="118.5" y="256" width="23" height="28"/></g><path d="M77 256 h26 M117 256 h26" stroke="${K}" stroke-width="2.4" stroke-linecap="round" opacity=".5"/>` : ''}
     <ellipse cx="90" cy="286" rx="19" ry="11" fill="${pawFill}" ${s}/>
     <ellipse cx="130" cy="286" rx="19" ry="11" fill="${pawFill}" ${s}/>
