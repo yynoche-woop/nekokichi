@@ -168,7 +168,7 @@ export function bodySvg(a: Art, label?: string): string {
   const tailCol = isPoint(a) ? c.mark : a.pattern === 'calico' ? COAT.red.body : base;
   const striped = ['tabby', 'kiji', 'classic', 'spotted'].includes(a.pattern);
   const whiteChest = ['bicolor', 'tuxedo', 'kiji', 'calico', 'mitted'].includes(a.pattern);
-  const legFill = a.pattern === 'mitted' ? WHITE : a.pattern === 'sepia' ? c.soft : isPoint(a) ? c.soft : whiteChest ? WHITE : base;
+  const legFill = a.paleChest && !['bicolor', 'tuxedo', 'kiji', 'calico', 'mitted'].includes(a.pattern) ? c.soft : a.pattern === 'mitted' ? WHITE : a.pattern === 'sepia' ? c.soft : isPoint(a) ? c.soft : whiteChest ? WHITE : base;
   const pawFill = a.pattern === 'gloves' ? WHITE : legFill; // バーマンは白い手袋
   const tail = 'M160 272 C200 272 214 232 202 196';
   const tw = a.hair === 'long' || a.hair === 'semi' ? 34 : 22;
@@ -178,14 +178,17 @@ export function bodySvg(a: Art, label?: string): string {
   const stripes = striped ? `<g fill="none" stroke="${c.mark}" stroke-width="5" stroke-linecap="round"><path d="M58 186 q14 4 16 16 M56 212 q16 4 18 18 M164 186 q-14 4 -16 16 M166 212 q-16 4 -18 18"/></g>` : '';
   return rough(thin(`<svg viewBox="0 0 220 300" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
     <g transform="${a.small ? 'translate(110 296) scale(.84) translate(-110 -296)' : ''}">
-    <g class="tail">
+    ${a.bobtail
+      ? `<g class="tail"><path d="M164 262 c10 -14 30 -12 34 2 c8 2 8 20 -4 22 c-4 12 -26 12 -30 0 c-12 -4 -10 -20 0 -24 z" fill="${tailCol}" stroke="${K}" stroke-width="5" stroke-linejoin="round"/></g>`
+      : `<g class="tail">
       <path d="${tail}" fill="none" stroke="${K}" stroke-width="${tw + 10}" stroke-linecap="round"/>
       <path d="${tail}" fill="none" stroke="${tailCol}" stroke-width="${tw}" stroke-linecap="round"/>
       ${striped ? `<path d="${tail}" fill="none" stroke="${c.mark}" stroke-width="${tw}" stroke-dasharray="6 12" opacity=".8"/>` : ''}
-    </g>
+    </g>`}
     <path d="M56 150 C38 196 40 256 60 286 L160 286 C180 256 182 196 164 150 Z" fill="${base}" ${s}/>
     ${patches}${stripes}
     ${whiteChest ? `<path d="M80 160 C70 200 72 250 76 284 L144 284 C148 250 150 200 140 160 Z" fill="${WHITE}"/>` : ''}
+    ${a.paleChest && !whiteChest ? `<path d="M84 160 C76 196 78 246 80 284 L140 284 C142 246 144 196 136 160 Z" fill="${c.soft}"/>` : ''}
     <!-- 前足:付け根(上の辺)には線を引かず、胴体から生えているように見せる(横田さん 2026-10-02) -->
     <rect x="76" y="212" width="28" height="74" rx="14" fill="${legFill}"/>
     <rect x="116" y="212" width="28" height="74" rx="14" fill="${legFill}"/>
@@ -216,6 +219,7 @@ export function loafSvg(a: Art, label?: string): string {
     <path d="${body}" fill="${base}" ${s}/>
     ${patches}${sides}
     ${whiteChest ? `<path d="M66 288 C58 250 78 214 110 212 C142 214 162 250 154 288 Q110 292 66 288 Z" fill="${WHITE}"/>` : ''}
+    ${a.paleChest && !whiteChest ? `<path d="M66 288 C58 250 78 214 110 212 C142 214 162 250 154 288 Q110 292 66 288 Z" fill="${c.soft}"/>` : ''}
     <g transform="translate(32 54) scale(.78)">${faceGroup({ ...a, expr: a.expr === 'wow' ? 'normal' : a.expr })}</g>
     </g>
   </svg>`));

@@ -414,7 +414,7 @@ export const BREEDS: Breed[] = [
     health: 'CFAは、特定の健康上の問題が知られていない丈夫な猫種と説明している。ほかの猫と同じく、尿路結石症などの下部尿路の病気、肥大型心筋症、慢性腎臓病、猫風邪、異物の誤飲などが気をつけたい病気としてあげられている。おしっこの回数や量、食欲の変化に気づいたら、早めに獣医師に相談しよう。',
     tsukkomi: 'ぽんぽんしっぽを見ていたら、長いしっぽも、かぎしっぽも見たくなる。しっぽの数だけ猫がかわいい。',
     tendency: { play: 5, cuddle: 3, groom: 1, voice: 3, size: 2 },
-    art: { coat: 'white', pattern: 'calico', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' },
+    art: { coat: 'white', pattern: 'calico', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal', bobtail: true },
     sources: [
       { title: 'Japanese Bobtail(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/japanese-bobtail/' },
       { title: 'レアな猫種 三種三様の魅力を紹介!(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/9405.html' },
@@ -490,7 +490,7 @@ export const BREEDS: Breed[] = [
     health: 'CFAによると、街の猫の血を引くため丈夫な子が多く、ブリーダーは遺伝子検査で保因猫を繁殖から外している。ただし検査でわからない病気もあり、進行性網膜萎縮症については血統に発症歴がないか確認するよう勧めている。赤血球が壊れやすくなるピルビン酸キナーゼ欠損症も報告があり、EveryCatが紹介する研究では遺伝子検査をすすめる猫種にあげられている。ほかに肥大型心筋症や皮膚の病気も。元気や食欲の低下、歯ぐきの色が白っぽいなどの変化があれば早めに相談しよう。',
     tsukkomi: '小さなシンガプーラをなでていたら、大きな猫もなでたくなった。大小どちらも同じくらいいとおしい。',
     tendency: { play: 4, cuddle: 4, groom: 1, voice: 2, size: 1 },
-    art: { coat: 'sepia', pattern: 'ticked', eye: 'hazel', ears: 'big', hair: 'short', expr: 'wow', bigEyes: true, small: true },
+    art: { coat: 'sepia', pattern: 'ticked', eye: 'hazel', ears: 'big', hair: 'short', expr: 'wow', bigEyes: true, small: true, paleChest: true },
     sources: [
       { title: 'Singapura(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/singapura/' },
       { title: 'シンガプーラってどんな猫?最も小さな猫種!(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/1310.html' },
