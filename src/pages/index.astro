@@ -124,7 +124,7 @@ const pickup = ['mix', 'american-shorthair', 'ragdoll', 'maine-coon', 'british-s
   <div class="band"><span class="no">ZUKAN</span><h2>なかま図鑑:集めたくなる{BREEDS.length}種</h2></div>
   <div class="wanted-grid">
     {pickup.map((b, i) => (
-      <a class="wanted breed-card pop-in" href={`/breeds/${b.slug}/`}>
+      <a class="wanted breed-card pop-in" href={`/breeds/${b.slug}/`} data-art={JSON.stringify(b.art)} data-name={b.name}>
         <div class="w-title">No.{String(BREEDS.indexOf(b) + 1).padStart(2, '0')} {b.hair}・{b.size}</div>
         <div class="w-pic"><Fragment set:html={sandSvg(100 + i, i % 2 ? ['#6c3cff', '#e9d6b0'] : ['#e6ff2e', '#e9d6b0'])} /><Fragment set:html={bodySvg(b.art, `${b.name}のイラスト`)} /></div>
         <h3>{b.name}</h3>

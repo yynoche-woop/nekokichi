@@ -366,3 +366,4 @@ body { position: relative; overflow-x: clip; }
 .peek-r { right: 0; rotate: -90deg; translate: 110% 0; }
 .peek-r.on { translate: 46% 0; }
 .prose .b-coats th[scope="row"] { width: 8.5em; white-space: nowrap; }
+.loaf-tag { position: absolute; right: 6px; top: 6px; z-index: 2; background: var(--yellow); color: var(--k); border: 2px solid var(--k); font-size: .72rem; font-weight: 800; padding: 0 8px; rotate: 4deg; }

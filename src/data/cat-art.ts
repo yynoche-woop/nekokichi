@@ -199,6 +199,37 @@ export function bodySvg(a: Art, label?: string): string {
   </svg>`));
 }
 
+/** 香箱座り(前足を胸の下にしまって、香箱のように丸くなる座り方)。bodySvg と同じ viewBox 0 0 220 300 */
+export function loafSvg(a: Art, label?: string): string {
+  const c = COAT[a.coat];
+  const s = `stroke="${K}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
+  const base = a.pattern === 'calico' ? WHITE : a.pattern === 'tuxedo' ? COAT.black.body : a.hair === 'hairless' ? '#f1cdbd' : c.body;
+  const tailCol = isPoint(a) ? c.mark : a.pattern === 'calico' ? COAT.red.body : base;
+  const striped = ['tabby', 'kiji', 'classic', 'spotted'].includes(a.pattern);
+  const whiteChest = ['bicolor', 'tuxedo', 'kiji', 'calico', 'mitted'].includes(a.pattern);
+  const tw = a.hair === 'long' || a.hair === 'semi' ? 30 : 20;
+  const aria = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
+  const body = 'M44 288 C22 288 18 248 36 220 C56 188 108 176 150 180 C196 184 212 228 208 260 C206 282 194 290 176 290 Z';
+  const tail = 'M196 272 C214 284 200 296 168 294 L118 294';
+  const patches = a.pattern === 'calico' ? `<path d="M150 186 C184 190 204 220 204 246 C180 248 160 230 150 206 Z" fill="${COAT.black.body}"/><path d="M120 240 C140 236 160 250 158 272 C140 278 122 266 120 240 Z" fill="${COAT.red.body}"/>` : '';
+  const stripes = striped ? `<g fill="none" stroke="${c.mark}" stroke-width="5" stroke-linecap="round"><path d="M150 188 q6 16 0 30 M170 192 q8 16 2 32 M188 204 q8 14 4 30"/></g>` : '';
+  const shade = isPoint(a) ? `<path d="M150 182 C190 186 210 226 207 258 C190 250 170 226 158 200 Z" fill="${c.soft}" opacity=".7"/>` : '';
+  return rough(thin(`<svg viewBox="0 0 220 300" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+    <g transform="${a.small ? 'translate(110 296) scale(.84) translate(-110 -296)' : ''}">
+    <path d="${body}" fill="${base}" ${s}/>
+    ${patches}${shade}${stripes}
+    ${whiteChest ? `<path d="M52 284 C40 250 54 214 92 210 C120 214 132 250 124 286 Z" fill="${WHITE}"/>` : ''}
+    <ellipse cx="78" cy="288" rx="15" ry="7" fill="${a.pattern === 'gloves' || a.pattern === 'mitted' || whiteChest ? WHITE : isPoint(a) ? c.soft : base}" ${s}/>
+    <g class="tail">
+      <path d="${tail}" fill="none" stroke="${K}" stroke-width="${tw + 10}" stroke-linecap="round"/>
+      <path d="${tail}" fill="none" stroke="${tailCol}" stroke-width="${tw}" stroke-linecap="round"/>
+      ${striped ? `<path d="${tail}" fill="none" stroke="${c.mark}" stroke-width="${tw}" stroke-dasharray="6 12" opacity=".8"/>` : ''}
+    </g>
+    <g transform="translate(6 58) scale(.86)">${faceGroup({ ...a, expr: a.expr === 'wow' ? 'normal' : a.expr })}</g>
+    </g>
+  </svg>`));
+}
+
 /** 編集長・猫吉(キジトラ白のオス) */
 export const NEKOKICHI: CatArt = { coat: 'brown', pattern: 'kiji', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal', boss: true };
 

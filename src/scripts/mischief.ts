@@ -3,9 +3,10 @@
 // - 肉球の足あとが画面を横切る
 // - 紙のパネルの上に置いたカップを、猫の手が机から落とす(1ページに1回)
 // - マウスのカーソルが画面の下のほうに来ると、猫の手がじゃれにくる
+// - 猫種のカードが並んでいるページでは、ランダムに1匹だけ香箱座りしている(2026-10-02 追加)
 // - しばらく画面を止めていると、画面のふちから猫がのぞく。スクロールするとサッと隠れる(2026-10-02 追加)
 // 動きを減らす設定のときは、毛だけ置いて動きはなし。
-import { faceSvg } from '../data/cat-art';
+import { faceSvg, loafSvg } from '../data/cat-art';
 import type { Art } from '../data/art-schema';
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -233,5 +234,20 @@ if (!reduce) {
   addEventListener('scroll', reset, { passive: true });
   addEventListener('pointerdown', (e) => { if (!(e.target as Element).closest('.peek')) reset(); });
   reset();
+}
+
+/* ---------- 1匹だけ香箱座り ---------- */
+{
+  const cards = [...document.querySelectorAll<HTMLElement>('.wanted[data-art]')];
+  const card = cards[Math.floor(Math.random() * cards.length)];
+  const svg = card?.querySelector('.w-pic svg[role="img"]');
+  if (card && svg) {
+    const name = card.dataset.name ?? '猫';
+    svg.outerHTML = loafSvg(JSON.parse(card.dataset.art!), `${name}のイラスト(香箱座り)`);
+    const tag = document.createElement('span');
+    tag.className = 'loaf-tag';
+    tag.textContent = '香箱座り中';
+    card.querySelector('.w-pic')!.append(tag);
+  }
 }
 
