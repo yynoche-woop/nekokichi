@@ -88,6 +88,6 @@ draft: false
 
 - <a href="/columns/calico-male/">オスの三毛猫はなぜ珍しい?</a>(毛色の遺伝)
 - <a href="/columns/slow-blink/">猫のゆっくりまばたき</a>
-- <a href="/breeds/mix/">雑種(ミックス)・日本猫</a>・<a href="/breeds/">猫種図鑑</a>
+- <a href="/breeds/mix/">雑種(ミックス)</a>・<a href="/breeds/">猫種図鑑</a>
 
 黒猫にも、白猫にも、茶トラにも三毛にも、不吉な色はない。

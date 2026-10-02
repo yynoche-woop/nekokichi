@@ -21,10 +21,17 @@ export const COAT: Record<Art['coat'], Tone> = {
   ruddy: { body: '#c9824c', mark: '#5a3a22', soft: '#dfa878', label: 'ルディ' },
   cinnamon: { body: '#d69c6c', mark: '#9b5a34', soft: '#e8bf98', label: 'シナモン' },
   fawn: { body: '#ead0b6', mark: '#c9a07e', soft: '#f3e2d0', label: 'フォーン' },
+  sable: { body: '#7e5236', mark: '#4f3020', soft: '#6a432b', label: 'セーブル' },
+  mink: { body: '#d8b892', mark: '#6a4630', soft: '#b89070', label: 'ミンク' },
+  sepia: { body: '#dcc3a0', mark: '#7a5a3e', soft: '#f2e6d4', label: 'セピア' },
 };
 const IRIS: Record<Art['eye'], string> = {
   gold: '#f2c230', copper: '#e68a2e', green: '#6cc26a', blue: '#3d8cf0', hazel: '#b9b03c', aqua: '#3fbfae', odd: '#3d8cf0',
 };
+
+/** シャム系(顔・耳・足・しっぽが濃い)の柄 */
+const POINTED = ['point', 'mitted', 'gloves', 'sepia'];
+const isPoint = (a: Art) => POINTED.includes(a.pattern);
 
 const HEAD = 'M30 104 C28 60 60 40 100 40 C140 40 172 60 170 104 C178 110 176 120 183 128 C172 130 174 141 164 146 C150 164 126 172 100 172 C74 172 50 164 36 146 C26 141 28 130 17 128 C24 120 22 110 30 104 Z';
 const HEAD_SHORT = 'M28 108 C26 62 60 40 100 40 C140 40 174 62 172 108 C172 146 142 172 100 172 C58 172 28 146 28 108 Z';
@@ -47,8 +54,9 @@ function eyes(a: Art, lid: string): string {
   const eye = (x: number, iris: string) => {
     if (a.expr === 'sleepy') return `<path d="M${x - 16} 110 Q${x} 124 ${x + 16} 110" fill="none" stroke="${K}" stroke-width="5" stroke-linecap="round"/>`;
     const px = x + (x < 100 ? 2 : -2);
-    const base = `<ellipse cx="${x}" cy="110" rx="15" ry="16" fill="#fff" stroke="${K}" stroke-width="4"/><circle cx="${px}" cy="112" r="${a.expr === 'wow' ? 9 : 11}" fill="${K}" stroke="${iris}" stroke-width="1.4"/>`;
-    const hi = `<circle cx="${px + 3.5}" cy="107.5" r="3" fill="#fff"/>`;
+    const k = a.bigEyes ? 1.4 : 1;
+    const base = `<ellipse cx="${x}" cy="110" rx="${15 * k}" ry="${16 * k}" fill="#fff" stroke="${K}" stroke-width="4"/><circle cx="${px}" cy="112" r="${(a.expr === 'wow' ? 9 : 11) * k}" fill="${K}" stroke="${iris}" stroke-width="${1.4 * k}"/>`;
+    const hi = `<circle cx="${px + 3.5 * k}" cy="${110 - 2.5 * k}" r="${3 * k}" fill="#fff"/>`;
     // smug(ごきげん顔)は半目にせず、ほっぺを赤くする(半目は不機嫌に見えたため)
     const l = a.expr === 'smug' ? `<ellipse cx="${x + (x < 100 ? -12 : 12)}" cy="132" rx="11" ry="6" fill="#ff8fa8" opacity=".55"/>` : '';
     return base + hi + l;
@@ -71,6 +79,9 @@ function marks(a: Art, c: Tone): string {
     case 'bicolor': return muzzleV + chin;
     case 'tuxedo': return `<path d="M100 70 C92 96 78 124 66 158 Q100 174 134 158 C122 124 108 96 100 70 Z" fill="${WHITE}"/>` + chin;
     case 'point': return `<path d="M100 64 C70 64 50 86 50 112 C50 138 74 158 100 158 C126 158 150 138 150 112 C150 86 130 64 100 64 Z" fill="${c.soft}"/><path d="M100 76 C78 76 64 92 64 112 C64 132 80 146 100 146 C120 146 136 132 136 112 C136 92 122 76 100 76 Z" fill="${c.mark}" opacity=".6"/>`;
+    case 'mitted': return marks({ ...a, pattern: 'point' }, c) + `<path d="M100 92 C95 108 86 128 78 152 Q100 166 122 152 C114 128 105 108 100 92 Z" fill="${WHITE}"/>`;
+    case 'gloves': return marks({ ...a, pattern: 'point' }, c);
+    case 'sepia': return `<path d="M100 70 C74 70 56 90 56 113 C56 138 77 156 100 156 C123 156 144 138 144 113 C144 90 126 70 100 70 Z" fill="${c.mark}" opacity=".22"/><path d="M100 88 C84 88 74 100 74 116 C74 134 86 146 100 146 C114 146 126 134 126 116 C126 100 116 88 100 88 Z" fill="${c.mark}" opacity=".22"/>`;
     case 'calico': return `<path d="M40 64 C50 44 80 40 94 46 C92 70 70 92 34 96 C32 84 34 72 40 64 Z" fill="${COAT.red.body}"/><path d="M160 64 C150 44 120 40 106 46 C110 66 128 84 166 92 C168 82 166 72 160 64 Z" fill="${COAT.black.body}"/>` + muzzleV;
     default: return '';
   }
@@ -106,7 +117,7 @@ export function faceGroup(a: CatArt, sticker = false): string {
   const s = `stroke="${K}" stroke-width="5" stroke-linejoin="round"`;
   const white = a.pattern === 'calico';
   const headFill = white ? WHITE : a.pattern === 'tuxedo' ? COAT.black.body : c.body;
-  const earFill = a.pattern === 'point' ? c.mark : a.pattern === 'calico' ? COAT.red.body : a.pattern === 'tuxedo' ? COAT.black.body : c.body;
+  const earFill = isPoint(a) ? c.mark : a.pattern === 'calico' ? COAT.red.body : a.pattern === 'tuxedo' ? COAT.black.body : c.body;
   const [el, er] = EARS[a.ears];
   const head = a.hair === 'short' || a.hair === 'hairless' || a.hair === 'rex' ? HEAD_SHORT : HEAD;
   const edge = sticker ? `<g fill="${WHITE}" stroke="${WHITE}" stroke-width="22" stroke-linejoin="round"><path d="${el}"/><path d="${er}"/>${ruff(a, WHITE).replace(`stroke="${K}"`, `stroke="${WHITE}"`)}<path d="${head}"/></g>` : '';
@@ -122,13 +133,13 @@ export function faceGroup(a: CatArt, sticker = false): string {
     <path class="ear-l" d="${el}" fill="${earFill}" ${s}/>
     <path class="ear-r" d="${er}" fill="${a.pattern === 'calico' ? COAT.black.body : earFill}" ${s}/>
     ${INNER[a.ears] ? `<path d="${INNER[a.ears]}" fill="${PINK}"/>` : ''}
-    ${ruff(a, a.pattern === 'calico' ? WHITE : a.pattern === 'point' ? c.body : headFill)}
+    ${ruff(a, a.pattern === 'calico' ? WHITE : isPoint(a) ? c.body : headFill)}
     <path d="${head}" fill="${a.hair === 'hairless' ? '#f1cdbd' : headFill}" ${s}/>
     ${a.hair === 'hairless' ? '' : marks(a, c)}
     ${hairless}${foldEar}
     ${a.ears === 'fold' ? `<path d="${el}" fill="${earFill}" ${s}/><path d="${er}" fill="${earFill}" ${s}/>` : ''}
     ${a.boss ? BOSS_CAP : ''}
-    <g class="eyes">${eyes(a, a.pattern === 'point' ? c.soft : headFill === WHITE ? '#eee' : c.soft)}</g>
+    <g class="eyes">${eyes(a, isPoint(a) ? c.soft : headFill === WHITE ? '#eee' : c.soft)}</g>
     <ellipse cx="100" cy="130" rx="3.6" ry="2.6" fill="${K}"/>
     <path d="M91 138 Q100 147 109 138" fill="none" stroke="${K}" stroke-width="3.4" stroke-linecap="round"/>
     ${whisk}
@@ -154,10 +165,11 @@ export function bodySvg(a: Art, label?: string): string {
   const c = COAT[a.coat];
   const s = `stroke="${K}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
   const base = a.pattern === 'calico' ? WHITE : a.pattern === 'tuxedo' ? COAT.black.body : a.hair === 'hairless' ? '#f1cdbd' : c.body;
-  const tailCol = a.pattern === 'point' ? c.mark : a.pattern === 'calico' ? COAT.red.body : base;
+  const tailCol = isPoint(a) ? c.mark : a.pattern === 'calico' ? COAT.red.body : base;
   const striped = ['tabby', 'kiji', 'classic', 'spotted'].includes(a.pattern);
-  const whiteChest = ['bicolor', 'tuxedo', 'kiji', 'calico'].includes(a.pattern);
-  const legFill = a.pattern === 'point' ? c.soft : whiteChest ? WHITE : base;
+  const whiteChest = ['bicolor', 'tuxedo', 'kiji', 'calico', 'mitted'].includes(a.pattern);
+  const legFill = a.pattern === 'mitted' ? WHITE : a.pattern === 'sepia' ? c.soft : isPoint(a) ? c.soft : whiteChest ? WHITE : base;
+  const pawFill = a.pattern === 'gloves' ? WHITE : legFill; // バーマンは白い手袋
   const tail = 'M160 272 C200 272 214 232 202 196';
   const tw = a.hair === 'long' || a.hair === 'semi' ? 34 : 22;
   const aria = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
@@ -165,6 +177,7 @@ export function bodySvg(a: Art, label?: string): string {
     ? `<path d="M60 170 C80 160 100 176 96 200 C80 206 62 196 58 186 Z" fill="${COAT.red.body}"/><path d="M160 176 C150 166 130 176 134 200 C146 210 164 200 164 190 Z" fill="${COAT.black.body}"/>` : '';
   const stripes = striped ? `<g fill="none" stroke="${c.mark}" stroke-width="5" stroke-linecap="round"><path d="M58 186 q14 4 16 16 M56 212 q16 4 18 18 M164 186 q-14 4 -16 16 M166 212 q-16 4 -18 18"/></g>` : '';
   return rough(thin(`<svg viewBox="0 0 220 300" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+    <g transform="${a.small ? 'translate(110 296) scale(.84) translate(-110 -296)' : ''}">
     <g class="tail">
       <path d="${tail}" fill="none" stroke="${K}" stroke-width="${tw + 10}" stroke-linecap="round"/>
       <path d="${tail}" fill="none" stroke="${tailCol}" stroke-width="${tw}" stroke-linecap="round"/>
@@ -175,10 +188,12 @@ export function bodySvg(a: Art, label?: string): string {
     ${whiteChest ? `<path d="M80 160 C70 200 72 250 76 284 L144 284 C148 250 150 200 140 160 Z" fill="${WHITE}"/>` : ''}
     <rect x="76" y="212" width="28" height="74" rx="14" fill="${legFill}" ${s}/>
     <rect x="116" y="212" width="28" height="74" rx="14" fill="${legFill}" ${s}/>
-    <ellipse cx="90" cy="286" rx="19" ry="11" fill="${legFill}" ${s}/>
-    <ellipse cx="130" cy="286" rx="19" ry="11" fill="${legFill}" ${s}/>
+    ${a.pattern === 'gloves' ? `<g fill="${WHITE}"><rect x="78.5" y="256" width="23" height="28"/><rect x="118.5" y="256" width="23" height="28"/></g><path d="M77 256 h26 M117 256 h26" stroke="${K}" stroke-width="2.4" stroke-linecap="round" opacity=".5"/>` : ''}
+    <ellipse cx="90" cy="286" rx="19" ry="11" fill="${pawFill}" ${s}/>
+    <ellipse cx="130" cy="286" rx="19" ry="11" fill="${pawFill}" ${s}/>
     <path d="M84 281 v9 M96 281 v9 M124 281 v9 M136 281 v9" stroke="${K}" stroke-width="3" stroke-linecap="round"/>
     <g transform="translate(14 0) scale(.96)">${faceGroup(a)}</g>
+  </g>
   </svg>`));
 }
 
@@ -192,7 +207,7 @@ export const CROWD: { a: Art; x: number; y: number; s: number; r: number }[] = [
   { a: { coat: 'black', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' }, x: 0, y: 150, s: .72, r: -8 },
   { a: { coat: 'white', pattern: 'calico', eye: 'green', ears: 'normal', hair: 'short', expr: 'wow' }, x: 120, y: 70, s: .78, r: 6 },
   { a: { coat: 'seal', pattern: 'point', eye: 'blue', ears: 'normal', hair: 'long', expr: 'normal' }, x: 390, y: 60, s: .8, r: -5 },
-  { a: { coat: 'blue', pattern: 'solid', eye: 'copper', ears: 'fold', hair: 'short', expr: 'normal' }, x: 520, y: 150, s: .72, r: 8 },
+  { a: { coat: 'blue', pattern: 'solid', eye: 'copper', ears: 'normal', hair: 'short', expr: 'normal' }, x: 520, y: 150, s: .72, r: 8 },
   { a: { coat: 'silver', pattern: 'classic', eye: 'green', ears: 'normal', hair: 'short', expr: 'smug' }, x: 60, y: 250, s: .7, r: 4 },
   { a: { coat: 'red', pattern: 'tabby', eye: 'gold', ears: 'normal', hair: 'short', expr: 'sleepy' }, x: 460, y: 250, s: .7, r: -6 },
   { a: { coat: 'brown', pattern: 'tabby', eye: 'green', ears: 'tufted', hair: 'long', expr: 'normal' }, x: 0, y: 0, s: .66, r: -10 },

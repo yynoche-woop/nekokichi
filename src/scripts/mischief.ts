@@ -27,15 +27,32 @@ function popWord(x: number, y: number, text: string) {
 
 /* ---------- 猫の毛とコロコロ ---------- */
 const hairs: HTMLElement[] = [];
+const BLOCKS = 'main :is(p, h1, h2, h3, li, a, button, img, svg, table, figure, article, .band, .stile, .wanted, .news, .fes, .calm), header, footer';
 function addHair() {
   const h = document.createElement('span');
   h.className = 'hair';
-  const len = rand(18, 40);
-  const bend = rand(-8, 8);
-  h.innerHTML = `<svg viewBox="0 0 ${len} 12" width="${len}" height="12" aria-hidden="true"><path d="M1 6 Q${len / 2} ${6 + bend} ${len - 1} ${6 + rand(-3, 3)}" fill="none" stroke="${HAIR_COLORS[Math.floor(Math.random() * HAIR_COLORS.length)]}" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+  // 1本の線だと表示の崩れに見えるので、根元でまとまった数本の「毛の束」にする(2026-10-02 指摘)
+  const len = rand(22, 34);
+  const col = HAIR_COLORS[Math.floor(Math.random() * HAIR_COLORS.length)];
+  // ほぼ平行な、ゆるく波打つ毛を数本ずらして重ねる(1点から放射状にすると矢印に見えるため)
+  const strands = Array.from({ length: 4 }, (_, i) => {
+    const y0 = len / 2 - 4 + i * 2.6 + rand(-1, 1), x0 = rand(1, 5), x1 = len - rand(1, 6);
+    return `<path d="M${x0} ${y0} C${len * .3} ${y0 - rand(2, 5)} ${len * .6} ${y0 + rand(2, 5)} ${x1} ${y0 + rand(-2, 2)}" />`;
+  }).join('');
+  h.innerHTML = `<svg viewBox="0 0 ${len} ${len}" width="${len}" height="${len}" aria-hidden="true"><g fill="none" stroke="#1c1629" stroke-width="3.4" stroke-linecap="round" opacity=".35">${strands}</g><g fill="none" stroke="${col}" stroke-width="1.6" stroke-linecap="round">${strands}</g></svg>`;
+  // 文字やカードの上には落とさない(読むじゃまになり、表示の崩れに見えるため。2026-10-02 指摘)。すき間が見つからなければ落とさない
   const docH = Math.max(document.body.scrollHeight - 200, innerHeight);
-  h.style.left = `${rand(10, document.documentElement.clientWidth - 60)}px`;
-  h.style.top = `${rand(160, docH)}px`;
+  const blocks = [...document.querySelectorAll(BLOCKS)].map((e) => e.getBoundingClientRect()).filter((r) => r.width && r.height)
+    .map((r) => ({ l: r.left + scrollX - 12, t: r.top + scrollY - 12, r: r.right + scrollX + 12, b: r.bottom + scrollY + 12 }));
+  let x = 0, y = 0, ok = false;
+  for (let k = 0; k < 20 && !ok; k++) {
+    x = rand(10, document.documentElement.clientWidth - 60);
+    y = rand(160, docH);
+    ok = !blocks.some((b) => x + len > b.l && x < b.r && y + len > b.t && y < b.b);
+  }
+  if (!ok) return;
+  h.style.left = `${x}px`;
+  h.style.top = `${y}px`;
   h.style.rotate = `${rand(0, 360)}deg`;
   fx.appendChild(h);
   hairs.push(h);

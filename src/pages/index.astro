@@ -14,15 +14,15 @@ const jitsuyo = all.filter((c) => c.data.category === 'jitsuyo');
 
 const MIKE: Art = { coat: 'white', pattern: 'calico', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' };
 const KURO: Art = { coat: 'black', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'wow' };
-const SCO: Art = { coat: 'blue', pattern: 'solid', eye: 'copper', ears: 'fold', hair: 'short', expr: 'normal' };
-const RAG: Art = { coat: 'seal', pattern: 'point', eye: 'blue', ears: 'normal', hair: 'long', expr: 'smug' };
+const SABA: Art = { coat: 'silver', pattern: 'tabby', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' };
+const RAG: Art = { coat: 'seal', pattern: 'mitted', eye: 'blue', ears: 'normal', hair: 'semi', expr: 'smug' };
 
 // コーナー選択(ななめのタイル)
 const STAGES = [
-  { href: '/breeds/', t: 'なかま図鑑', n: `${BREEDS.length}種`, d: 'スコもマンチカンも雑種も。みんな、なかま。', art: SCO, c: 'y' },
+  { href: '/breeds/', t: 'なかま図鑑', n: `${BREEDS.length}種`, d: '長毛も短毛も雑種も。みんな<span class="nw">なかま</span>。', art: SABA, c: 'y' },
   { href: '/columns/#shuusei', t: '猫の習性事典', n: `${shuusei.length}項目`, d: '箱、ゴロゴロ、ふみふみ。猫のふしぎを研究から調べた。', art: KURO, c: 'v' },
   { href: '/tools/', t: 'あそび', n: '5つ', d: '人間用。猫種診断・名前うらない・年齢換算。', art: MIKE, c: 'm' },
-  { href: '/columns/#jitsuyo', t: '下僕マニュアル', n: `${jitsuyo.length}本`, d: '暮らしと健康。下僕は必ず読むこと。', art: RAG, c: 'p' },
+  { href: '/columns/#jitsuyo', t: '下僕<wbr>マニュアル', n: `${jitsuyo.length}本`, d: '暮らしと健康。下僕は必ず読むこと。', art: RAG, c: 'p' },
 ];
 
 // ネコキチニュース:MCふたり(編集長・猫吉と、三毛のミケ子)が最新記事を紹介する
@@ -40,11 +40,11 @@ const FES = [
   { k: 'okara', t: 'おから系', d: 'ちょっといい匂い、豆腐の民', color: '#ff3ea5' },
 ];
 
-const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'british-shorthair', 'american-shorthair', 'russian-blue']
+const pickup = ['mix', 'american-shorthair', 'ragdoll', 'maine-coon', 'british-shorthair', 'russian-blue', 'bengal', 'birman']
   .map((s) => BREEDS.find((b) => b.slug === s))
   .filter((b) => b !== undefined);
 ---
-<Base title="ネコキチ猫吉|猫好きは、結局ぜんぶの猫が好き" description="雑種もブランド猫も、短毛も長毛も。猫の習性と全猫種を、研究や獣医師の解説からまとめる猫サイト。36種の猫種ずかん、猫種診断、猫の姓名判断、年齢換算・体型チェックのツールと、暮らし・健康の目安まで。">
+<Base title="ネコキチ猫吉|猫好きは、結局ぜんぶの猫が好き" description="雑種も純血種も、短毛も長毛も。猫の習性と全猫種を、研究や獣医師の解説からまとめる猫サイト。36種の猫種ずかん、猫種診断、猫の姓名判断、年齢換算・体型チェックのツールと、暮らし・健康の目安まで。">
 
   <!-- 1. ステージ:巨大な編集長が、砂をかけている -->
   <section class="stage" aria-labelledby="stage-h">
@@ -55,7 +55,8 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
       <p class="stage-kicker">猫が作っている、猫のメディア</p>
       <h1 id="stage-h"><span>ネコキチ</span><span>猫吉</span></h1>
       <p class="stage-sticker">猫好きは、結局ぜんぶの猫が好き。</p>
-      <p class="stage-lead">このサイトは、猫が作っています。人間のみなさんは、読むだけでいいです。猫のしぐさや体のふしぎは、猫が論文までさかのぼって調べました。下僕向けの暮らしと健康の注意書きは、まじめに書きました。キジトラも三毛も黒猫も、スコも雑種も、みんななかまです。ｆｆｆｆｆｆｆｇｇｇｇ<small class="mash-note">(編集長がキーボードの上を歩きました)</small></p>
+      <p class="stage-lead">このサイトは、猫が作っています。人間のみなさんは、読むだけでいいです。猫のしぐさや体のふしぎは、猫が論文までさかのぼって調べました。下僕向けの暮らしと健康の注意書きは、まじめに書きました。キジトラも三毛も黒猫も、長毛も雑種も、みんな<span class="nw">なかま</span>です。ｆｆｆｆｆｆｆｇｇｇｇ<small class="mash-note">(編集長がキーボードの上を歩きました)</small></p>
+      <p class="hair-note">画面に落ちている猫の毛は、左下のコロコロで取れます。換毛期なので、またすぐ抜けます。</p>
       <div class="cta">
         <a class="btn btn-pink" href="/breeds/">なかま図鑑を見る</a>
         <a class="btn" href="/tools/match/">猫種診断をやる</a>
@@ -79,8 +80,8 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
       <a class={`stile t-${s.c} pop-in`} href={s.href}>
         <span class="stile-art" set:html={faceSvg(s.art)} />
         <span class="stile-n">{s.n}</span>
-        <b>{s.t}</b>
-        <small>{s.d}</small>
+        <b set:html={s.t} />
+        <small set:html={s.d} />
       </a>
     ))}
   </div>
@@ -231,6 +232,7 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
     .stage h1 span:last-child { color: var(--white); -webkit-text-stroke: 3px var(--k); paint-order: stroke fill; text-shadow: 6px 6px 0 var(--pink); margin-left: .6em; rotate: 3deg; }
     .stage-sticker { display: inline-block; margin: 6px 0 14px; background: var(--white); color: var(--k); font-family: var(--font-head); font-size: clamp(1rem, 2.4vw, 1.3rem); padding: 4px 16px; rotate: -2deg; box-shadow: 4px 4px 0 var(--yellow); }
     .stage-lead { max-width: 34em; margin: 0 0 20px; color: #e9e4f5; }
+    .hair-note { display: inline-block; margin: -8px 0 18px; padding: 2px 12px; background: rgba(233, 214, 176, .14); border: 2px dashed var(--sand); color: var(--sand); font-size: .82rem; font-weight: 700; }
     .mash-note { display: block; font-size: .78rem; color: var(--hair); }
     .stage-art { position: relative; z-index: 1; align-self: stretch; min-height: 420px; }
     .boss { position: absolute; right: 8%; bottom: 0; width: min(104%, 540px); background: none; border: 0; padding: 0; cursor: pointer; }
@@ -274,7 +276,13 @@ const pickup = ['mix', 'scottish-fold', 'munchkin', 'ragdoll', 'maine-coon', 'br
     .stile-n { position: relative; font-family: var(--font-latin); font-size: .9rem; }
     .stile b { position: relative; font-family: var(--font-head); font-weight: 900; font-size: 1.6rem; line-height: 1.2; }
     .stile small { position: relative; font-size: .82rem; font-weight: 700; line-height: 1.5; }
-    @media (max-width: 860px) { .stages { grid-template-columns: repeat(2, minmax(0, 1fr)); } .stile { min-height: 210px; } }
+    .nw { white-space: nowrap; }
+    @media (max-width: 860px) {
+      .stages { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stile { min-height: 0; padding: 14px; padding-top: calc(52% + 14px); }
+      .stile-art { width: 54%; right: 4px; top: 10px; }
+      .stile b { font-size: clamp(1.15rem, 5.6vw, 1.6rem); }
+    }
 
     /* ネコキチニュース */
     .news { background: var(--night-2); border: 3px solid var(--k); box-shadow: 8px 8px 0 var(--yellow); padding: 18px; }

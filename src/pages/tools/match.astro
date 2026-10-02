@@ -18,7 +18,7 @@ const QUESTIONS: { q: string; dim: Dim; a: [string, number][] }[] = [
 ];
 const data = BREEDS.map((b) => ({ slug: b.slug, name: b.name, catch: b.catch, t: b.tendency, art: b.art }));
 ---
-<Base title="猫種診断:あなたと相性のいい猫は?|ネコキチ猫吉" description={`8つの質問に答えるだけで、あなたの暮らしや好みに合いそうな猫種がわかる猫種診断。スコティッシュフォールド、ラグドール、メインクーン、雑種まで${BREEDS.length}種から判定。`}>
+<Base title="猫種診断:あなたと相性のいい猫は?|ネコキチ猫吉" description={`8つの質問に答えるだけで、あなたの暮らしや好みに合いそうな猫種がわかる猫種診断。アメショ、ラグドール、メインクーン、雑種まで${BREEDS.length}種から判定。`}>
   <nav class="crumb"><a href="/">トップ</a> › <a href="/tools/">ツール</a> › 猫種診断</nav>
   <div class="band"><span class="no">診断</span><h1>猫種診断:あなたと相性のいい猫は?</h1></div>
   <p class="lede">8つの質問に答えると、猫種図鑑の「よく言われる傾向」から、好みに近い猫種を探します。ただし性格は同じ猫種でも個体差。結果を見たあと、ほかの猫もぜんぶ好きになるのは仕様です。</p>

@@ -29,10 +29,11 @@ export interface Breed {
 }
 
 export const BREEDS: Breed[] = [
-  // ───────────────────────── 雑種・ミックス/日本猫
+
+  // ───────────────────────── 雑種・ミックス
   {
     slug: 'mix',
-    name: '雑種(ミックス)・日本猫',
+    name: '雑種(ミックス)',
     en: 'Mixed breed / Domestic cat',
     nick: 'ミックス',
     origin: '日本の町や家(世界中どこにでも)',
@@ -40,7 +41,7 @@ export const BREEDS: Breed[] = [
     size: '中型',
     weight: 'オス4〜6kg・メス3〜5kg前後(目安。体格は猫それぞれ)',
     catch: '血統書なし、かわいさ上限なし',
-    lead: '特定の品種に属さない猫たちで、日本でいちばん身近な猫といえる存在。日本には7〜9世紀ごろにはイエネコがいたと考えられ、いまの日本猫はアジア系統と欧米系統がまざった猫だとゲノム解析でわかってきている。保護猫として保健所や動物愛護センター、保護団体から家族に迎えられる子も多い。見た目も性格も一匹ずつまったく違うのが最大の特徴だ。',
+    lead: '特定の品種に属さない猫たちで、日本でいちばん身近な猫といえる存在。日本には7〜9世紀ごろにはイエネコがいたと考えられ、いまの日本猫はアジア系統と欧米系統がまざった猫だとゲノム解析でわかってきている。保護猫として保健所や動物愛護センター、保護団体から家族に迎えられる子も多い。見た目も性格も一匹ずつまったく違うのが最大の特徴だ。なお、雑種を「日本猫」と呼ぶこともあるが、品種として登録されている日本生まれの猫にはジャパニーズボブテイルがいる(このずかんでは別に紹介している)。',
     features: [
       { t: '体つきは一匹ずつ違う', d: '品種の基準がないので、小柄でしなやかな子もいれば、どっしり大きな子もいる。顔の形、しっぽの長さ、毛の長さもさまざまで、同じ兄弟でも似ていないことがある。' },
       { t: 'キジトラは野生の色に近い', d: '茶色っぽい地に黒いしま模様のキジトラは、「もともとはキジトラしかいなかった」といわれるほど、祖先のヤマネコに近い毛色とされる。ほかにも茶トラ、サバトラ、黒、白、ハチワレ、三毛、サビなど柄のバリエーションが豊富だ。' },
@@ -57,7 +58,7 @@ export const BREEDS: Breed[] = [
       '外に出る猫は平均寿命が短くなる傾向があるという調査もある。室内で安全に暮らせる環境をつくってあげたい。',
     ],
     health: '品種特有の病気の情報は少ないが、腎臓の病気や尿路の病気、歯周病など、猫全体に多い病気には同じように気をつけたい。保護猫の場合は、猫エイズや猫白血病ウイルスの検査結果、寄生虫の有無なども確認しておきたい。定期的に健康診断を受け、気になる変化があれば早めに動物病院に相談しよう。',
-    tsukkomi: '血統書はなくても、毎日かわいいという実績だけは山ほどある。雑種もブランド猫も、結局ぜんぶの猫が優勝なのだ。',
+    tsukkomi: '血統書はなくても、毎日かわいいという実績だけは山ほどある。雑種も純血種も、結局ぜんぶの猫が優勝なのだ。',
     tendency: { play: 3, cuddle: 3, groom: 2, voice: 3, size: 3 },
     art: { coat: 'brown', pattern: 'kiji', eye: 'gold', ears: 'normal', hair: 'short', expr: 'smug' },
     sources: [
@@ -69,83 +70,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-  // ───────────────────────── スコティッシュフォールド
-  {
-    slug: 'scottish-fold',
-    name: 'スコティッシュフォールド',
-    en: 'Scottish Fold',
-    nick: 'スコ',
-    origin: 'イギリス(スコットランド)',
-    hair: '短毛・長毛',
-    size: '中型',
-    weight: 'オス3〜6kg・メス3〜5kg(目安)',
-    catch: 'まんまる顔でフクロウ化する猫',
-    lead: '1961年、スコットランドの農場で見つかった折れ耳の白猫「スージー」がルーツの猫種。丸い顔と丸い目で、フクロウのような表情が魅力だ。折れ耳だけでなく立ち耳の子も生まれ、短毛と長毛がいる。一方で、折れ耳は骨や軟骨の発達に関わる遺伝子の変異によるもので、関節の病気と関係があることもわかっている。知っておけば、そばにいる子をもっと快適にしてあげられる。',
-    features: [
-      { t: '折れ耳と立ち耳がいる', d: '折れ耳は優性の遺伝で現れる。同じ猫種でも耳がまっすぐ立つ子も生まれ、CFAでは2022年から立ち耳の子もショーに出られるようになった。' },
-      { t: '耳が折れるのは生後3〜4週ごろから', d: '子猫は生まれたときは耳がまっすぐで、生後3〜4週ごろから折れはじめる。どんな耳になるかは、しばらく待たないとわからない。' },
-      { t: 'とにかく丸い', d: '頭も目も丸く、体はしっかりと肉づきがいい。CFAの基準でも「丸さ」が強調されていて、しっぽは柔らかく動くことが大事とされている。' },
-    ],
-    myths: [
-      { q: '耳が折れていると聞こえにくい?', j: 'uso', label: '誤り', a: 'CFAの解説では、折れた耳は聞こえ方には影響しないとされている。ただ、耳の中がこもりやすく汚れや湿気がたまりやすいので、耳のチェックはこまめにしてあげたい。外耳炎は報告のある病気のひとつでもある。' },
-      { q: '「スコ座り」はただのかわいいポーズ?', j: 'kotai', label: '個体差が大きい(よく観察)', a: '後ろ足を投げ出して座る姿は人気だが、獣医師監修の記事では、関節の痛みや負担をやわらげるための座り方の可能性も指摘されている。いつもこの座り方で、動きが減っていたら一度相談を。' },
-      { q: '折れ耳どうしを交配しても問題ない?', j: 'uso', label: '誤り', a: '折れ耳どうしをかけあわせると、骨や関節の症状が強く出やすいことが知られている。責任ある繁殖では、折れ耳は立ち耳の猫とかけあわせるのが基本だとCFAも説明している。' },
-    ],
-    care: [
-      'ジャンプしない、歩き方がぎこちない、しっぽや足先を触られるのを嫌がる、爪切りを嫌がるなどは関節のサインかもしれない。',
-      '段差を低くする、滑りにくい床にするなど、関節にやさしい部屋づくりが役立つ。体重を増やしすぎないことも大事だ。',
-      '折れ耳の子は耳の中が蒸れやすい。汚れやにおい、かゆがる様子がないか定期的にチェックしよう。',
-    ],
-    health: '折れ耳のもとになる遺伝子(TRPV4)の変異は、骨や軟骨の発達に影響する「骨軟骨異形成症」と関係があると報告されている。折れ耳の子は程度の差はあれ関節に変化が出る可能性があると考えられ、症状がほとんど目立たない子から、手足にこぶができて歩きにくくなる子まで幅がある。ほかに肥大型心筋症や尿路結石、外耳炎にも注意したい。痛みのサインに気づいたら、早めに獣医師に相談しよう。',
-    tsukkomi: '丸い顔に見つめられたら、もう全員の猫をなでたくなる。耳が立っても折れても、スコはスコだ。',
-    tendency: { play: 2, cuddle: 4, groom: 2, voice: 2, size: 3 },
-    art: { coat: 'brown', pattern: 'tabby', eye: 'gold', ears: 'fold', hair: 'short', expr: 'normal' },
-    sources: [
-      { title: 'Scottish Fold(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/scottish-fold/' },
-      { title: 'スコティッシュ・フォールドってどんな猫?性格や特徴は?かかりやすい病気は?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/471.html' },
-      { title: '猫の「骨軟骨異形成症候群」ってどんな病気?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/5340.html' },
-      { title: 'A dominant TRPV4 variant underlies osteochondrodysplasia in Scottish fold cats(Osteoarthritis and Cartilage, 2016)', url: 'https://pubmed.ncbi.nlm.nih.gov/27063440/' },
-      { title: 'Genetics and osteochondrodysplasia in Scottish fold cats(EveryCat Health Foundation)', url: 'https://everycat.org/cat-health/genetics-and-osteochondrodysplasia-in-scottish-fold-cats/' },
-    ],
-  },
-
-  // ───────────────────────── マンチカン
-  {
-    slug: 'munchkin',
-    name: 'マンチカン',
-    en: 'Munchkin',
-    nick: '',
-    origin: 'アメリカ',
-    hair: '短毛・長毛',
-    size: '小型',
-    weight: '約2〜4kg(目安)',
-    catch: '足は短め、好奇心は長め',
-    lead: '1983年にアメリカで見つかった短い足の猫「ブラックベリー」が起源とされる猫種。名前は『オズの魔法使い』に出てくる小さな人々にちなむといわれる。登録団体ではTICAが公認している。短い足は遺伝子の変異によるもので、学術的には軟骨の発達に関わる「軟骨異形成」の一種と考えられている。足の長い子も生まれ、どちらもマンチカンだ。',
-    features: [
-      { t: '短い足は遺伝子の変異から', d: '2020年の研究で、足の短いマンチカンに共通するUGDHという遺伝子の構造変異が見つかった。足が短い子はこの変異を1つもっていて、軟骨異形成と呼ばれる体つきになる。' },
-      { t: '足の長い子も生まれる', d: '親が短足でも、子猫がみんな短足になるわけではない。足の長いマンチカンも普通に生まれる。短足どうしのかけあわせは避けられている。' },
-      { t: '体は小さめ〜ふつう', d: 'TICAの規定では成猫の体重は約2〜4kgとされ、猫の中ではやや小さめ〜ふつうのサイズ。毛の長さは短毛と長毛の両方がいる。' },
-    ],
-    myths: [
-      { q: 'マンチカンはみんな短足?', j: 'uso', label: '誤り', a: '足の長いマンチカンも生まれる。短い足をつくる変異は1つあれば現れ、2つそろった子は研究で確認されておらず、胎児のうちに育たない可能性が指摘されている。だから短足どうしは交配しないのが基本だ。' },
-      { q: '短い足だとジャンプできない?', j: 'kotai', label: '個体差が大きい', a: '短い足でも元気に走り回り、ソファくらいなら登る子は多い。ただ、高いところからの飛び降りは足腰や背中の負担になりやすい。どこまで跳べるかは個体差なので、無理をさせない環境づくりを。' },
-    ],
-    care: [
-      'ステップや低めのキャットタワーを用意し、高いところから飛び降りなくてすむ動線にしてあげたい。',
-      '体重が増えると足腰や背中に負担がかかりやすい。ごはんの量を計り、体型を触って確かめる習慣をつけよう。',
-      '長毛の子は毛球症予防のためにもブラッシングを。短足で体をひねりにくい子は、お尻まわりの汚れもチェック。',
-    ],
-    health: '短い足は軟骨の発達に関わる変化によるもので、骨軟骨異形成症との関連を指摘する獣医師監修の記事もある。足腰の負担から椎間板ヘルニアに注意したいとされるほか、毛球症や尿路結石症も報告のある病気だ。歩き方の変化、段差を嫌がる、触ると痛がるといった様子があれば、早めに動物病院に相談しよう。',
-    tsukkomi: '短い足でトコトコ来られたら、足の長い猫のしなやかな歩き方にも会いたくなる。どの足の長さも正解だ。',
-    tendency: { play: 4, cuddle: 4, groom: 2, voice: 3, size: 2 },
-    art: { coat: 'red', pattern: 'tabby', eye: 'gold', ears: 'normal', hair: 'short', expr: 'wow' },
-    sources: [
-      { title: 'A structural UGDH variant associated with standard Munchkin cats(BMC Genetics, 2020)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7325026/' },
-      { title: 'マンチカンはどんな性格?特徴は?寿命やお迎え費用についても解説!(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/475.html' },
-      { title: '短足なマンチカンの起源は?病気と関係はあるの?(アニホック動物病院グループ)', url: 'https://anihoc.com/column/cat-knowledge/5093/' },
-      { title: 'マンチカン(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/munchkin.html' },
-    ],
-  },
 
   // ───────────────────────── アメリカンショートヘア
   {
@@ -157,7 +81,7 @@ export const BREEDS: Breed[] = [
     hair: '短毛',
     size: '中型',
     weight: 'オス5〜7kg・メス3.5〜5kg(目安)',
-    catch: 'ねずみ捕りの星、いまは家族の星',
+    catch: '昔は船のねずみ捕り、いまは陽気な家猫',
     lead: '開拓時代の船や農場でねずみを捕っていた猫たちがルーツとされる、アメリカ生まれの猫種。1906年に設立されたCFAが最初に認めた品種のひとつで、いまの名前になったのは1965年。がっしりした体と、シルバーのうずまき模様のイメージが強いが、実際は100を超える色の組み合わせがある。',
     features: [
       { t: '働き者の体つき', d: '筋肉のしっかりした中〜大きめの体に、硬めで厚い被毛。雨風や茂みにも負けない、屋外で働いていたころのたくましさを残している。' },
@@ -184,6 +108,7 @@ export const BREEDS: Breed[] = [
       { title: 'アメリカンショートヘア(ロイヤルカナン)', url: 'https://www.royalcanin.com/jp/cats/breeds/american-shorthair' },
     ],
   },
+
 
   // ───────────────────────── ラグドール
   {
@@ -216,7 +141,7 @@ export const BREEDS: Breed[] = [
     health: 'ラグドールでは、肥大型心筋症に関わるMYBPC3遺伝子の変異が2007年に報告されている。心筋が厚くなる病気で、疲れやすさや呼吸の変化などが出ることがあるが、初期は気づきにくい。遺伝子検査や心臓の超音波検査について、かかりつけの獣医師に相談しておくと安心だ。ほかに尿路結石症や毛球症も報告がある。',
     tsukkomi: 'でっかいぬいぐるみを抱えたら、小さな猫にも会いたくなる。大きさ違いで全員集合だ。',
     tendency: { play: 2, cuddle: 5, groom: 3, voice: 2, size: 5 },
-    art: { coat: 'seal', pattern: 'point', eye: 'blue', ears: 'normal', hair: 'semi', expr: 'sleepy' },
+    art: { coat: 'seal', pattern: 'mitted', eye: 'blue', ears: 'normal', hair: 'semi', expr: 'sleepy' },
     sources: [
       { title: 'Ragdoll(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/ragdoll/' },
       { title: 'ラグドールってどんな性格?かかりやすい病気は?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/724.html' },
@@ -224,6 +149,7 @@ export const BREEDS: Breed[] = [
       { title: 'A substitution mutation in the myosin binding protein C gene in ragdoll hypertrophic cardiomyopathy(Genomics, 2007)', url: 'https://pubmed.ncbi.nlm.nih.gov/17521870/' },
     ],
   },
+
 
   // ───────────────────────── ブリティッシュショートヘア
   {
@@ -263,6 +189,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── ノルウェージャンフォレストキャット
   {
     slug: 'norwegian-forest',
@@ -293,13 +220,14 @@ export const BREEDS: Breed[] = [
     health: '遺伝性の病気は多くないといわれるが、肥大型心筋症、毛球症、糖尿病などには注意したい。糖の代謝に関わる遺伝性の病気(糖原病)も、報告のある病気としてあげられている。長毛で体型の変化に気づきにくいので、体を触って確認する習慣をつけ、年1回以上の健康診断で相談しよう。',
     tsukkomi: '森の猫をもふもふしていたら、町の猫も路地の猫ももふもふしたくなる。猫好きの森は、どこまでも深い。',
     tendency: { play: 3, cuddle: 3, groom: 4, voice: 2, size: 5 },
-    art: { coat: 'brown', pattern: 'tabby', eye: 'green', ears: 'tufted', hair: 'long', expr: 'normal' },
+    art: { coat: 'silver', pattern: 'tabby', eye: 'green', ears: 'tufted', hair: 'long', expr: 'normal' },
     sources: [
       { title: 'Norwegian Forest Cat(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/norwegian-forest-cat/' },
       { title: 'ノルウェージャン・フォレスト・キャットってどんな猫?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/1902.html' },
       { title: 'ノルウェージャンフォレストキャット(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/norwegian_forest_cat.html' },
     ],
   },
+
 
   // ───────────────────────── メインクーン
   {
@@ -340,6 +268,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── ロシアンブルー
   {
     slug: 'russian-blue',
@@ -377,6 +306,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── サイベリアン
   {
     slug: 'siberian',
@@ -407,7 +337,7 @@ export const BREEDS: Breed[] = [
     health: '熱中症や毛球症に気をつけたい猫種として紹介されることが多い。ほかに肥大型心筋症、多発性嚢胞腎、遺伝性の溶血性貧血なども報告のある病気としてあげられている。体が大きく成長もゆっくりなので、体重の変化を記録しつつ、年1回以上の健康診断で心臓や腎臓の状態について獣医師に相談しよう。',
     tsukkomi: 'もふもふに顔をうずめたら、短毛の猫のすべすべもほしくなる。どの手ざわりも優勝だ。',
     tendency: { play: 3, cuddle: 4, groom: 4, voice: 2, size: 4 },
-    art: { coat: 'brown', pattern: 'tabby', eye: 'gold', ears: 'tufted', hair: 'long', expr: 'normal' },
+    art: { coat: 'cream', pattern: 'tabby', eye: 'gold', ears: 'tufted', hair: 'long', expr: 'normal' },
     sources: [
       { title: 'Siberian(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/siberian/' },
       { title: 'サイベリアン・フォレスト・キャットってどんな猫?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/963.html' },
@@ -415,6 +345,7 @@ export const BREEDS: Breed[] = [
       { title: 'Polymorphism Analysis of Ch1 and Ch2 Genes in the Siberian Cat(Veterinary Sciences, 2017)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5753643/' },
     ],
   },
+
 
   // ───────────────────────── ベンガル
   {
@@ -454,6 +385,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── エキゾチックショートヘア
   {
     slug: 'exotic-shorthair',
@@ -491,6 +423,7 @@ export const BREEDS: Breed[] = [
       { title: 'Feline polycystic kidney disease mutation identified in PKD1(JASN, 2004)', url: 'https://pubmed.ncbi.nlm.nih.gov/15466259/' },
     ],
   },
+
 
   // ───────────────────────── ペルシャ
   {
@@ -530,6 +463,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── アビシニアン
   {
     slug: 'abyssinian',
@@ -567,6 +501,7 @@ export const BREEDS: Breed[] = [
       { title: 'ソマリってどんな猫?実はアビシニアンの長毛種!(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/1718.html' },
     ],
   },
+
 
   // ───────────────────────── シャム
   {
@@ -606,6 +541,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── スフィンクス
   {
     slug: 'sphynx',
@@ -617,9 +553,9 @@ export const BREEDS: Breed[] = [
     size: '中型',
     weight: 'オス4〜6.5kg・メス3〜5.5kg(目安)',
     catch: 'あったか湯たんぽ系ヌード猫',
-    lead: '1966年にカナダ・トロントで生まれた毛のない子猫がはじまりとされる猫種。毛がないのは劣性遺伝の突然変異によるもので、その後、毛のある猫との交配を重ねて健全な遺伝子の多様性をもつ品種として育てられた。スエードのような肌ざわり、大きな耳、レモン形の目、しわのある顔が特徴。人が大好きで、体温を求めてくっついてくる子が多いといわれる。',
+    lead: '1966年にカナダ・トロントで生まれた毛のない子猫がはじまりとされる猫種。毛がないのは潜性遺伝の突然変異によるもので、その後、毛のある猫との交配を重ねて健全な遺伝子の多様性をもつ品種として育てられた。スエードのような肌ざわり、大きな耳、レモン形の目、しわのある顔が特徴。人が大好きで、体温を求めてくっついてくる子が多いといわれる。',
     features: [
-      { t: '完全な無毛ではない', d: '毛がないように見えるが、鼻や耳、しっぽに短い毛が残ることが多い。季節やホルモンで毛の生え方が変わることもある。毛がないのは劣性遺伝の変異による。' },
+      { t: '完全な無毛ではない', d: '毛がないように見えるが、鼻や耳、しっぽに短い毛が残ることが多い。季節やホルモンで毛の生え方が変わることもある。毛がないのは潜性遺伝の変異による。' },
       { t: 'しっかりした体とお腹', d: '華奢ではなく、骨も筋肉もしっかりした中型の体。ごはんを食べたばかりのような丸いお腹と、あちこちのしわがトレードマークだ。' },
       { t: '大きな耳と長い指', d: 'コウモリのような大きな耳、レモン形の目、厚い肉球と長い指が特徴。表情は心配そうにも好奇心いっぱいにも見える。長い指で、ふみふみも上手だ。' },
     ],
@@ -643,6 +579,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── アメリカンカール
   {
     slug: 'american-curl',
@@ -654,10 +591,10 @@ export const BREEDS: Breed[] = [
     size: '中型',
     weight: 'オス3〜4.5kg・メス2.5〜3.5kg(目安)',
     catch: '耳がくるん、気分もくるん',
-    lead: '1981年、カリフォルニアの家の前に現れた、耳が後ろに反り返った黒い子猫「シュラミス」がはじまりの猫種。この耳は優性の遺伝で現れ、その後ブリーダーたちが時間をかけて品種として育ててきた。短毛と長毛があり、色や柄はさまざま。大人になっても子猫のような好奇心をもち続けるといわれる。',
+    lead: '1981年、カリフォルニアの家の前に現れた、耳が後ろに反り返った黒い子猫「シュラミス」がはじまりの猫種。この耳は顕性の遺伝で現れ、その後ブリーダーたちが時間をかけて品種として育ててきた。短毛と長毛があり、色や柄はさまざま。大人になっても子猫のような好奇心をもち続けるといわれる。',
     features: [
       { t: '耳は生まれたときはまっすぐ', d: '子猫の耳は生まれたときはまっすぐで、生後3〜5日ほどで反り返りはじめ、16週ごろに形が固まる。反り具合は子によってかなり違う。' },
-      { t: 'カールは優性遺伝', d: 'カールした耳は、遺伝子を1つもっていれば現れる優性の遺伝。ショーの基準では90〜180度の弧を描くのが理想とされ、ほぼまっすぐな子もいる。' },
+      { t: 'カールは顕性遺伝', d: 'カールした耳は、遺伝子を1つもっていれば現れる顕性の遺伝。ショーの基準では90〜180度の弧を描くのが理想とされ、ほぼまっすぐな子もいる。' },
       { t: 'ほどよい大きさの体', d: '体はやや長方形の中型で、筋肉はほどよく、がっしりしすぎないのが特徴。目はクルミのような形で、しっぽは体と同じくらいの長さがある。' },
     ],
     myths: [
@@ -681,6 +618,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── ソマリ
   {
     slug: 'somali',
@@ -699,7 +637,7 @@ export const BREEDS: Breed[] = [
       { t: '活発で頭がいい', d: 'CFAの解説では、閉まった戸棚を開けてしまうほど頭がよく、好奇心旺盛で大胆な性格といわれる。ひとりで遊ぶのも上手だが、人と遊ぶのがいちばん好きとされる。' },
     ],
     myths: [
-      { q: 'ソマリはアビシニアンの長毛版?', j: 'hontou', label: '事実', a: 'アビシニアンの中に生まれた長毛の子から育てられた猫種で、長毛の遺伝子は劣性。体つきや毛色の特徴はアビシニアンと共通している。毛の長さ以外は、アビシニアンと同じ魅力をたっぷりもっている。' },
+      { q: 'ソマリはアビシニアンの長毛版?', j: 'hontou', label: '事実', a: 'アビシニアンの中に生まれた長毛の子から育てられた猫種で、長毛の遺伝子は潜性。体つきや毛色の特徴はアビシニアンと共通している。毛の長さ以外は、アビシニアンと同じ魅力をたっぷりもっている。' },
       { q: 'ソマリは水遊びが好き?', j: 'kotai', label: '個体差が大きい', a: 'CFAの解説では水に興味を示す子が多く、蛇口をひねって水が落ちるのを眺めることもあるという。ただし水が苦手な子もいるので、無理に濡らすのはやめよう。水飲み場をいくつか用意するのもおすすめだ。' },
     ],
     care: [
@@ -719,6 +657,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── セルカークレックス
   {
     slug: 'selkirk-rex',
@@ -730,7 +669,7 @@ export const BREEDS: Breed[] = [
     size: '中型',
     weight: 'オス5.5〜7kg前後・メスはやや小さめ(目安)',
     catch: '毎日が寝ぐせ、羊の皮をかぶった猫',
-    lead: 'アメリカ・モンタナ州で生まれた巻き毛の猫がはじまりの猫種。パーマをかけたような毛とカールしたひげをもつその猫を、ペルシャのブリーダーが引き取って繁殖したところ、巻き毛が優性の遺伝で現れることがわかった。「羊の皮をかぶった猫」とも呼ばれ、ひとつひとつがはっきりした巻き毛が特徴。短毛と長毛がいる。',
+    lead: 'アメリカ・モンタナ州で生まれた巻き毛の猫がはじまりの猫種。パーマをかけたような毛とカールしたひげをもつその猫を、ペルシャのブリーダーが引き取って繁殖したところ、巻き毛が顕性の遺伝で現れることがわかった。「羊の皮をかぶった猫」とも呼ばれ、ひとつひとつがはっきりした巻き毛が特徴。短毛と長毛がいる。',
     features: [
       { t: 'ほかのレックスとは違う巻き毛', d: 'コーニッシュレックスの細かい波や、デボンレックスのやわらかい波とは違い、一本一本がはっきりしたカールになる。短毛はややシャキッと、長毛はたっぷりとした巻き毛だ。' },
       { t: 'がっしりした丸い体', d: '中〜大きめの体に、骨も筋肉もしっかりしている。頭は丸くほおがふっくらしていて、丸い目が離れてついている。見た目以上にずっしりしている。' },
@@ -755,6 +694,7 @@ export const BREEDS: Breed[] = [
       { title: 'セルカークレックス(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/selkirk_rex.html' },
     ],
   },
+
 
   // ───────────────────────── デボンレックス
   {
@@ -790,43 +730,6 @@ export const BREEDS: Breed[] = [
       { title: 'Devon Rex(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/devon-rex/' },
       { title: 'デボンレックス(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/devon_rex.html' },
       { title: 'COLQ variant associated with Devon Rex and Sphynx feline hereditary myopathy(Animal Genetics, 2015)', url: 'https://pubmed.ncbi.nlm.nih.gov/26374066/' },
-    ],
-  },
-  // ───────────────────────── ミヌエット
-  {
-    slug: 'minuet',
-    name: 'ミヌエット',
-    en: 'Minuet',
-    nick: 'ナポレオン(旧名)',
-    origin: 'アメリカ',
-    hair: '短毛・長毛',
-    size: '中型',
-    weight: 'オス3〜4kg・メス2〜3kg(目安)',
-    catch: '丸い顔の短い脚',
-    lead: 'ペルシャ系の猫とマンチカンをかけ合わせて生まれた、新しい猫種。交配が始まったのは1996年のアメリカで、バセットハウンドのブリーダーだったジョセフ・スミスが作出したとされる。はじめは「ナポレオン」と呼ばれていたが、2015年にTICAで「ミヌエット」に改名された。ペルシャ寄りの丸い顔と大きな丸い目、マンチカン譲りのがっしりした体が特徴で、短毛と長毛の両方がいる。',
-    features: [
-      { t: '2つの猫種グループから', d: 'TICAの基準では、交配してよい相手がペルシャのグループとマンチカンのグループと定められている。丸く幅の広い頭、大きく丸い目、ほどよく短い鼻が求められる。' },
-      { t: '短毛と長毛がいる', d: '短毛タイプはぬいぐるみのように密で、体から立ち上がるような被毛。長毛タイプはセミロングからロングで、首まわりやしっぽにたっぷり毛がある。毛色や柄は幅広く認められている。' },
-      { t: '脚の長さは一匹ずつ違う', d: '短い脚の子が知られているが、TICAの基準(改定案)には脚が一般的な長さのタイプ(ミヌエット・トール)も含まれている。脚の長さ以外は同じ特徴をもつとされる。' },
-    ],
-    myths: [
-      { q: 'ミヌエットはみんな脚が短い?', j: 'uso', label: '誤り', a: 'TICAの基準(改定案)には、脚が一般的な長さのミヌエット・トールも含まれている。脚の長さには個体差がある。' },
-      { q: 'ナポレオンとミヌエットは同じ猫?', j: 'hontou', label: '事実', a: '同じ猫種で、以前の名前がナポレオンだった。2015年にTICAで名前がミヌエットに変わった。いまもナポレオンの名前で紹介されることがある。' },
-    ],
-    care: [
-      '長毛の子はできれば毎日、少なくとも週に2〜3回はブラッシングを。短毛の子も換毛期は回数を増やそう。',
-      '脚が短い子には、高い場所に上り下りしやすいステップやスロープを用意しておくと安心だ。',
-      '鼻が短めの子は涙が出やすい。目元をやわらかいガーゼなどでやさしくふいてあげよう。',
-    ],
-    health: 'ペルシャ系の血を引くため、流涙症、多発性嚢胞腎、肥大型心筋症、泌尿器の病気などが気をつけたい病気として紹介されている。短い脚のもとになったマンチカンの軟骨異形成では、UGDH遺伝子の変異が関わると報告されている。涙の量や水を飲む量、歩き方の変化に気づいたら、早めに獣医師に相談しよう。',
-    tsukkomi: '短い脚でとことこ歩く姿を見たら、長い脚でしなやかに跳ぶ猫にも会いたくなる。脚の長さは違っても、猫はみんないとしい。',
-    tendency: { play: 4, cuddle: 4, groom: 3, voice: 2, size: 1 },
-    art: { coat: 'cream', pattern: 'solid', eye: 'copper', ears: 'normal', hair: 'semi', expr: 'wow' },
-    sources: [
-      { title: 'ミヌエットってどんな猫?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/2950.html' },
-      { title: '【獣医師監修】ミヌエットってどんな猫?(PETOKOTO)', url: 'https://petokoto.com/articles/61' },
-      { title: 'Minuet Breed Group (MNT/MNL/MTT/MTL) Proposed Standard(The International Cat Association)', url: 'https://links.tica.org/2025/April/MNT-MNL-MTT-MTL/Proposed_Standard.pdf' },
-      { title: 'Chondrodysplasia, UGDH-related in Felis catus(OMIA)', url: 'https://omia.org/OMIA002541/9685/' },
     ],
   },
 
@@ -867,6 +770,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── ヒマラヤン
   {
     slug: 'himalayan',
@@ -897,7 +801,7 @@ export const BREEDS: Breed[] = [
     health: '尿石症(シュウ酸カルシウム結石など)、毛球症、流涙症が気をつけたい病気として紹介されている。ほかに白内障、銅蓄積による肝臓の病気、熱中症なども報告のある病気・注意点としてあげられている。鼻が短い骨格のため、涙の量や呼吸の変化にも気を配りたい。おしっこの回数や色、目の濁りなどの変化に気づいたら、早めに獣医師に相談しよう。',
     tsukkomi: 'ペルシャとシャムのいいところを見ていたら、両方の猫にも会いたくなる。猫の世界は、つながりを知るほど楽しい。',
     tendency: { play: 2, cuddle: 4, groom: 5, voice: 1, size: 3 },
-    art: { coat: 'seal', pattern: 'point', eye: 'blue', ears: 'normal', hair: 'long', expr: 'sleepy' },
+    art: { coat: 'lilac', pattern: 'point', eye: 'blue', ears: 'normal', hair: 'long', expr: 'sleepy' },
     sources: [
       { title: 'Persian Himalayan Article 1999(The Cat Fanciers’ Association)', url: 'https://cfa.org/persian-himalayan-article-1999/' },
       { title: 'Persian(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/persian/' },
@@ -905,6 +809,7 @@ export const BREEDS: Breed[] = [
       { title: 'ヒマラヤン(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/himalayan.html' },
     ],
   },
+
 
   // ───────────────────────── バーマン
   {
@@ -937,13 +842,14 @@ export const BREEDS: Breed[] = [
     health: 'CFAによると、肥大型心筋症などの検査が健康で多様な血統を保つのに役立ってきたという。ほかに尿石症、毛球症、皮膚病、白内障、股関節形成不全、脱臼などが報告のある病気・気をつけたい病気としてあげられている。疲れやすさや呼吸の変化、おしっこの異常、歩き方の変化に気づいたら、早めに動物病院に相談しよう。',
     tsukkomi: '白い手袋の足先を見ていたら、靴下柄のうちの猫の足もいとおしくなる。猫の足先は全部かわいい。',
     tendency: { play: 3, cuddle: 4, groom: 3, voice: 2, size: 4 },
-    art: { coat: 'seal', pattern: 'point', eye: 'blue', ears: 'normal', hair: 'semi', expr: 'normal' },
+    art: { coat: 'seal', pattern: 'gloves', eye: 'blue', ears: 'normal', hair: 'semi', expr: 'smug' },
     sources: [
       { title: 'Birman(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/birman/' },
       { title: 'バーマンってどんな猫?希少な聖猫!(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/2943.html' },
       { title: 'バーマン(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/birman.html' },
     ],
   },
+
 
   // ───────────────────────── ラガマフィン
   {
@@ -984,6 +890,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── ターキッシュアンゴラ
   {
     slug: 'turkish-angora',
@@ -1021,6 +928,7 @@ export const BREEDS: Breed[] = [
       { title: 'ターキッシュ アンゴラ(ロイヤルカナン)', url: 'https://www.royalcanin.com/jp/cats/breeds/turkish-angora' },
     ],
   },
+
 
   // ───────────────────────── ターキッシュバン
   {
@@ -1060,6 +968,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── ジャパニーズボブテイル
   {
     slug: 'japanese-bobtail',
@@ -1073,12 +982,12 @@ export const BREEDS: Breed[] = [
     catch: 'ぽんぽんしっぽの日本猫',
     lead: '日本の短いしっぽの猫をもとにした猫種。CFAによると、中世の絵巻や浮世絵、彫刻にも描かれ、1602年のお触れで蚕を守るために町へ放たれて広まったとされる。1960年代に日本の短尾猫にひかれたアメリカ人ブリーダーが繁殖を始め、1968年にアメリカへ初めて輸入された。1976年に短毛、1993年に長毛がCFAのチャンピオンシップに進んでいる。',
     features: [
-      { t: 'しっぽは指紋のよう', d: '短いしっぽは優性遺伝子によるもので、同じ形は二つとないといわれる。CFAの基準では、しっぽは体から約7.5cm以内で、ぽんぽんのように見える。' },
+      { t: 'しっぽは指紋のよう', d: '短いしっぽは顕性遺伝子によるもので、同じ形は二つとないといわれる。CFAの基準では、しっぽは体から約7.5cm以内で、ぽんぽんのように見える。' },
       { t: '短毛と長毛', d: '短毛は絹のようにやわらかく下毛が少ない。長毛はやや長めから長い被毛で、大人になると下毛はほとんど目立たない。どちらも絡まりにくいとされる。' },
       { t: '三毛が伝統の人気色', d: '単色、タビー、スモーク、ポイントカラーなど、さまざまな毛色が認められている。なかでも白・赤・黒の三毛(ミケ)が伝統的に人気だ。' },
     ],
     myths: [
-      { q: 'しっぽが短いのは切ったから?', j: 'uso', label: '誤り', a: '短いしっぽは生まれつきで、優性遺伝子によるものとされている。曲がり方や長さは一匹ずつ違い、同じ形のしっぽはないといわれる。' },
+      { q: 'しっぽが短いのは切ったから?', j: 'uso', label: '誤り', a: '短いしっぽは生まれつきで、顕性遺伝子によるものとされている。曲がり方や長さは一匹ずつ違い、同じ形のしっぽはないといわれる。' },
       { q: '短いしっぽは体に負担がある?', j: 'usoyori', label: '根拠は弱い', a: 'CFAは、このしっぽに関連する異常は知られていないと説明している。しっぽを触られるのを嫌がったり、痛がったりするときは、ほかの猫と同じく受診しよう。' },
       { q: 'ジャパニーズボブテイルはおしゃべり?', j: 'kotai', label: '個体差が大きい', a: 'CFAは、やわらかい声でいろいろな音を出し、うるさくない会話を楽しめると紹介している。よく鳴くと紹介する出典もあるが、鳴き方は一匹ずつ違う。' },
     ],
@@ -1098,6 +1007,7 @@ export const BREEDS: Breed[] = [
       { title: 'ジャパニーズ・ボブテイル(ペット保険の第一アイペット)', url: 'https://www.ipet-ins.com/cat-insurance/breed/21911/' },
     ],
   },
+
 
   // ───────────────────────── オリエンタル
   {
@@ -1136,6 +1046,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── トンキニーズ
   {
     slug: 'tonkinese',
@@ -1165,13 +1076,14 @@ export const BREEDS: Breed[] = [
     health: 'CFAは、高齢になると歯肉炎になりやすい傾向をあげ、若いうちから歯みがきに慣らすことで防げる可能性があるとしている。ほかに糖尿病、慢性腎不全、尿路結石、皮膚の病気も報告がある。口のにおいや歯ぐきの赤み、水を飲む量が増えるなどの変化に気づいたら、早めに相談しよう。',
     tsukkomi: 'シャムとバーミーズのいいとこ取りと聞くと、元になった2種にも会いたくなる。猫の輪はどこまでも広がる。',
     tendency: { play: 5, cuddle: 5, groom: 1, voice: 4, size: 3 },
-    art: { coat: 'seal', pattern: 'point', eye: 'aqua', ears: 'normal', hair: 'short', expr: 'normal' },
+    art: { coat: 'mink', pattern: 'point', eye: 'aqua', ears: 'normal', hair: 'short', expr: 'normal' },
     sources: [
       { title: 'Tonkinese(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/tonkinese/' },
       { title: 'トンキニーズってどんな猫?ミンクのような毛に輝く瞳を持つ猫!(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/1679.html' },
       { title: 'トンキニーズ(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/tonkinese.html' },
     ],
   },
+
 
   // ───────────────────────── バーミーズ
   {
@@ -1203,7 +1115,7 @@ export const BREEDS: Breed[] = [
     health: 'CFAは、高齢の猫に糖尿病の遺伝的な素因があるとする見方を紹介しつつ、遺伝するかどうかはまだはっきりしていないとしている。筋力が低下する低カリウム血症(WNK4遺伝子の変異。主にアメリカ以外の系統で報告)や、コンテンポラリーと呼ばれる短い顔のタイプに関わり、2つ受け継ぐと重い頭部の先天異常になる変異(ALX1遺伝子)は、遺伝子検査で調べられる。ほかに下部尿路の病気、緑内障、心臓の病気も報告がある。首が下がる、ふらつく、水をたくさん飲むなどの変化があれば、早めに相談しよう。',
     tsukkomi: '抱っこしてその重さに驚いたら、ほかの猫の重さも確かめたくなった。猫の重みはだいたい幸せの重みだ。',
     tendency: { play: 4, cuddle: 5, groom: 1, voice: 2, size: 3 },
-    art: { coat: 'brown', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' },
+    art: { coat: 'sable', pattern: 'sepia', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' },
     sources: [
       { title: 'Burmese(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/burmese/' },
       { title: 'European Burmese(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/european-burmese/' },
@@ -1212,6 +1124,7 @@ export const BREEDS: Breed[] = [
       { title: 'Burmese Head Defect(Laboratoire de génétique vétérinaire)', url: 'https://labgenvet.ca/en/disease/burmese-head-defect/' },
     ],
   },
+
 
   // ───────────────────────── シンガプーラ
   {
@@ -1242,7 +1155,7 @@ export const BREEDS: Breed[] = [
     health: 'CFAによると、街の猫の血を引くため丈夫な子が多く、ブリーダーは遺伝子検査で保因猫を繁殖から外している。ただし検査でわからない病気もあり、進行性網膜萎縮症については血統に発症歴がないか確認するよう勧めている。赤血球が壊れやすくなるピルビン酸キナーゼ欠損症も報告があり、EveryCatが紹介する研究では遺伝子検査をすすめる猫種にあげられている。ほかに肥大型心筋症や皮膚の病気も。元気や食欲の低下、歯ぐきの色が白っぽいなどの変化があれば早めに相談しよう。',
     tsukkomi: '小さなシンガプーラをなでていたら、大きな猫もなでたくなった。大小どちらも同じくらいいとおしい。',
     tendency: { play: 4, cuddle: 4, groom: 1, voice: 2, size: 1 },
-    art: { coat: 'brown', pattern: 'ticked', eye: 'hazel', ears: 'big', hair: 'short', expr: 'wow' },
+    art: { coat: 'sepia', pattern: 'ticked', eye: 'hazel', ears: 'big', hair: 'short', expr: 'wow', bigEyes: true, small: true },
     sources: [
       { title: 'Singapura(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/singapura/' },
       { title: 'シンガプーラってどんな猫?最も小さな猫種!(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/1310.html' },
@@ -1250,6 +1163,7 @@ export const BREEDS: Breed[] = [
       { title: 'Inherited hemolytic anemia in cats(EveryCat Health Foundation)', url: 'https://everycat.org/cat-health/inherited-hemolytic-anemia-in-cats/' },
     ],
   },
+
 
   // ───────────────────────── コーニッシュレックス
   {
@@ -1289,6 +1203,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── ラパーマ
   {
     slug: 'laperm',
@@ -1327,6 +1242,7 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+
   // ───────────────────────── ボンベイ
   {
     slug: 'bombay',
@@ -1363,6 +1279,7 @@ export const BREEDS: Breed[] = [
       { title: 'ボンベイ(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/bombay.html' },
     ],
   },
+
 
   // ───────────────────────── エジプシャンマウ
   {
@@ -1402,4 +1319,123 @@ export const BREEDS: Breed[] = [
       { title: 'Erythrocyte Pyruvate Kinase Deficiency mutation identified in multiple breeds of domestic cats(BMC Veterinary Research, 2012)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3534511/' },
     ],
   },
+
+  // ───────────────────────── ミヌエット
+  {
+    slug: 'minuet',
+    name: 'ミヌエット',
+    en: 'Minuet',
+    nick: 'ナポレオン(旧名)',
+    origin: 'アメリカ',
+    hair: '短毛・長毛',
+    size: '中型',
+    weight: 'オス3〜4kg・メス2〜3kg(目安)',
+    catch: '丸い顔の短い脚',
+    lead: 'ペルシャ系の猫とマンチカンをかけ合わせて生まれた、新しい猫種。交配が始まったのは1996年のアメリカで、バセットハウンドのブリーダーだったジョセフ・スミスが作出したとされる。はじめは「ナポレオン」と呼ばれていたが、2015年にTICAで「ミヌエット」に改名された。ペルシャ寄りの丸い顔と大きな丸い目、マンチカン譲りのがっしりした体が特徴で、短毛と長毛の両方がいる。',
+    features: [
+      { t: '2つの猫種グループから', d: 'TICAの基準では、交配してよい相手がペルシャのグループとマンチカンのグループと定められている。丸く幅の広い頭、大きく丸い目、ほどよく短い鼻が求められる。' },
+      { t: '短毛と長毛がいる', d: '短毛タイプはぬいぐるみのように密で、体から立ち上がるような被毛。長毛タイプはセミロングからロングで、首まわりやしっぽにたっぷり毛がある。毛色や柄は幅広く認められている。' },
+      { t: '脚の長さは一匹ずつ違う', d: '短い脚の子が知られているが、TICAの基準(改定案)には脚が一般的な長さのタイプ(ミヌエット・トール)も含まれている。脚の長さ以外は同じ特徴をもつとされる。' },
+    ],
+    myths: [
+      { q: 'ミヌエットはみんな脚が短い?', j: 'uso', label: '誤り', a: 'TICAの基準(改定案)には、脚が一般的な長さのミヌエット・トールも含まれている。脚の長さには個体差がある。' },
+      { q: 'ナポレオンとミヌエットは同じ猫?', j: 'hontou', label: '事実', a: '同じ猫種で、以前の名前がナポレオンだった。2015年にTICAで名前がミヌエットに変わった。いまもナポレオンの名前で紹介されることがある。' },
+    ],
+    care: [
+      '長毛の子はできれば毎日、少なくとも週に2〜3回はブラッシングを。短毛の子も換毛期は回数を増やそう。',
+      '脚が短い子には、高い場所に上り下りしやすいステップやスロープを用意しておくと安心だ。',
+      '鼻が短めの子は涙が出やすい。目元をやわらかいガーゼなどでやさしくふいてあげよう。',
+    ],
+    health: 'ペルシャ系の血を引くため、流涙症、多発性嚢胞腎、肥大型心筋症、泌尿器の病気などが気をつけたい病気として紹介されている。短い脚のもとになったマンチカンの軟骨異形成では、UGDH遺伝子の変異が関わると報告されている。涙の量や水を飲む量、歩き方の変化に気づいたら、早めに獣医師に相談しよう。',
+    tsukkomi: '短い脚でとことこ歩く姿を見たら、長い脚でしなやかに跳ぶ猫にも会いたくなる。脚の長さは違っても、猫はみんないとしい。',
+    tendency: { play: 4, cuddle: 4, groom: 3, voice: 2, size: 1 },
+    art: { coat: 'cream', pattern: 'solid', eye: 'copper', ears: 'normal', hair: 'semi', expr: 'wow' },
+    sources: [
+      { title: 'ミヌエットってどんな猫?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/2950.html' },
+      { title: '【獣医師監修】ミヌエットってどんな猫?(PETOKOTO)', url: 'https://petokoto.com/articles/61' },
+      { title: 'Minuet Breed Group (MNT/MNL/MTT/MTL) Proposed Standard(The International Cat Association)', url: 'https://links.tica.org/2025/April/MNT-MNL-MTT-MTL/Proposed_Standard.pdf' },
+      { title: 'Chondrodysplasia, UGDH-related in Felis catus(OMIA)', url: 'https://omia.org/OMIA002541/9685/' },
+    ],
+  },
+
+
+  // ───────────────────────── マンチカン
+  {
+    slug: 'munchkin',
+    name: 'マンチカン',
+    en: 'Munchkin',
+    nick: '',
+    origin: 'アメリカ',
+    hair: '短毛・長毛',
+    size: '小型',
+    weight: '約2〜4kg(目安)',
+    catch: '足は短め、好奇心は長め',
+    lead: '1983年にアメリカで見つかった短い足の猫「ブラックベリー」が起源とされる猫種。名前は『オズの魔法使い』に出てくる小さな人々にちなむといわれる。登録団体ではTICAが公認している。短い足は遺伝子の変異によるもので、学術的には軟骨の発達に関わる「軟骨異形成」の一種と考えられている。足の長い子も生まれ、どちらもマンチカンだ。',
+    features: [
+      { t: '短い足は遺伝子の変異から', d: '2020年の研究で、足の短いマンチカンに共通するUGDHという遺伝子の構造変異が見つかった。足が短い子はこの変異を1つもっていて、軟骨異形成と呼ばれる体つきになる。' },
+      { t: '足の長い子も生まれる', d: '親が短足でも、子猫がみんな短足になるわけではない。足の長いマンチカンも普通に生まれる。短足どうしのかけあわせは避けられている。' },
+      { t: '体は小さめ〜ふつう', d: 'TICAの規定では成猫の体重は約2〜4kgとされ、猫の中ではやや小さめ〜ふつうのサイズ。毛の長さは短毛と長毛の両方がいる。' },
+    ],
+    myths: [
+      { q: 'マンチカンはみんな短足?', j: 'uso', label: '誤り', a: '足の長いマンチカンも生まれる。短い足をつくる変異は1つあれば現れ、2つそろった子は研究で確認されておらず、胎児のうちに育たない可能性が指摘されている。だから短足どうしは交配しないのが基本だ。' },
+      { q: '短い足だとジャンプできない?', j: 'kotai', label: '個体差が大きい', a: '短い足でも元気に走り回り、ソファくらいなら登る子は多い。ただ、高いところからの飛び降りは足腰や背中の負担になりやすい。どこまで跳べるかは個体差なので、無理をさせない環境づくりを。' },
+    ],
+    care: [
+      'ステップや低めのキャットタワーを用意し、高いところから飛び降りなくてすむ動線にしてあげたい。',
+      '体重が増えると足腰や背中に負担がかかりやすい。ごはんの量を計り、体型を触って確かめる習慣をつけよう。',
+      '長毛の子は毛球症予防のためにもブラッシングを。短足で体をひねりにくい子は、お尻まわりの汚れもチェック。',
+    ],
+    health: '短い足は軟骨の発達に関わる変化によるもので、骨軟骨異形成症との関連を指摘する獣医師監修の記事もある。足腰の負担から椎間板ヘルニアに注意したいとされるほか、毛球症や尿路結石症も報告のある病気だ。歩き方の変化、段差を嫌がる、触ると痛がるといった様子があれば、早めに動物病院に相談しよう。',
+    tsukkomi: '短い足でトコトコ来られたら、足の長い猫のしなやかな歩き方にも会いたくなる。どの足の長さも正解だ。',
+    tendency: { play: 4, cuddle: 4, groom: 2, voice: 3, size: 2 },
+    art: { coat: 'red', pattern: 'tabby', eye: 'gold', ears: 'normal', hair: 'short', expr: 'wow' },
+    sources: [
+      { title: 'A structural UGDH variant associated with standard Munchkin cats(BMC Genetics, 2020)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7325026/' },
+      { title: 'マンチカンはどんな性格?特徴は?寿命やお迎え費用についても解説!(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/475.html' },
+      { title: '短足なマンチカンの起源は?病気と関係はあるの?(アニホック動物病院グループ)', url: 'https://anihoc.com/column/cat-knowledge/5093/' },
+      { title: 'マンチカン(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/munchkin.html' },
+    ],
+  },
+
+
+  // ───────────────────────── スコティッシュフォールド
+  {
+    slug: 'scottish-fold',
+    name: 'スコティッシュフォールド',
+    en: 'Scottish Fold',
+    nick: 'スコ',
+    origin: 'イギリス(スコットランド)',
+    hair: '短毛・長毛',
+    size: '中型',
+    weight: 'オス3〜6kg・メス3〜5kg(目安)',
+    catch: 'まんまる顔でフクロウ化する猫',
+    lead: '1961年、スコットランドの農場で見つかった折れ耳の白猫「スージー」がルーツの猫種。丸い顔と丸い目で、フクロウのような表情が魅力だ。折れ耳だけでなく立ち耳の子も生まれ、短毛と長毛がいる。一方で、折れ耳は骨や軟骨の発達に関わる遺伝子の変異によるもので、関節の病気と関係があることもわかっている。知っておけば、そばにいる子をもっと快適にしてあげられる。',
+    features: [
+      { t: '折れ耳と立ち耳がいる', d: '折れ耳は顕性(けんせい)の遺伝で現れる(以前は「優性」と呼ばれていたが、日本遺伝学会が2017年に「顕性」へ言い換えた)。同じ親からでも耳がまっすぐ立つ子が生まれ、立ち耳の子は「スコティッシュストレート」と呼ばれる。CFAでは2022年から立ち耳の子もショーに出られるようになった。' },
+      { t: '耳は生まれたときはまっすぐ', d: '子猫は生まれたときは耳がまっすぐで、折れはじめる時期は子によって違う。生後3〜4週ごろといわれることが多いが、早い子では生後10日ほどで折れていることもある。どんな耳になるかは、しばらく待たないとわからない。' },
+      { t: 'とにかく丸い', d: '頭も目も丸く、体はしっかりと肉づきがいい。CFAの基準でも「丸さ」が強調されていて、しっぽは柔らかく動くことが大事とされている。' },
+    ],
+    myths: [
+      { q: '耳が折れていると聞こえにくい?', j: 'uso', label: '誤り', a: 'CFAの解説では、折れた耳は聞こえ方には影響しないとされている。ただ、耳の中がこもりやすく汚れや湿気がたまりやすいので、耳のチェックはこまめにしてあげたい。外耳炎は報告のある病気のひとつでもある。' },
+      { q: '「スコ座り」はただのかわいいポーズ?', j: 'kotai', label: '個体差が大きい(よく観察)', a: '後ろ足を投げ出して座る姿は人気だが、獣医師監修の記事では、関節の痛みや負担をやわらげるための座り方の可能性も指摘されている。いつもこの座り方で、動きが減っていたら一度相談を。' },
+      { q: '折れ耳どうしを交配しても問題ない?', j: 'uso', label: '誤り', a: '折れ耳どうしをかけあわせると、骨や関節の症状が強く出やすいことが知られている。責任ある繁殖では、折れ耳は立ち耳の猫とかけあわせるのが基本だとCFAも説明している。' },
+    ],
+    care: [
+      'ジャンプしない、歩き方がぎこちない、しっぽや足先を触られるのを嫌がる、爪切りを嫌がるなどは関節のサインかもしれない。',
+      '段差を低くする、滑りにくい床にするなど、関節にやさしい部屋づくりが役立つ。体重を増やしすぎないことも大事だ。',
+      '折れ耳の子は耳の中が蒸れやすい。汚れやにおい、かゆがる様子がないか定期的にチェックしよう。',
+    ],
+    health: '折れ耳のもとになる遺伝子(TRPV4)の変異は、骨や軟骨の発達に影響する「骨軟骨異形成症」と関係があると報告されている。折れ耳の子は程度の差はあれ関節に変化が出る可能性があると考えられ、症状がほとんど目立たない子から、手足にこぶができて歩きにくくなる子まで幅がある。ほかに肥大型心筋症や尿路結石、外耳炎にも注意したい。痛みのサインに気づいたら、早めに獣医師に相談しよう。',
+    tsukkomi: '丸い顔に見つめられたら、もう全員の猫をなでたくなる。耳が立っても折れても、スコはスコだ。',
+    tendency: { play: 2, cuddle: 4, groom: 2, voice: 2, size: 3 },
+    art: { coat: 'brown', pattern: 'tabby', eye: 'gold', ears: 'fold', hair: 'short', expr: 'normal' },
+    sources: [
+      { title: 'Scottish Fold(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/scottish-fold/' },
+      { title: 'スコティッシュ・フォールドってどんな猫?性格や特徴は?かかりやすい病気は?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/471.html' },
+      { title: '猫の「骨軟骨異形成症候群」ってどんな病気?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/5340.html' },
+      { title: 'A dominant TRPV4 variant underlies osteochondrodysplasia in Scottish fold cats(Osteoarthritis and Cartilage, 2016)', url: 'https://pubmed.ncbi.nlm.nih.gov/27063440/' },
+      { title: 'Genetics and osteochondrodysplasia in Scottish fold cats(EveryCat Health Foundation)', url: 'https://everycat.org/cat-health/genetics-and-osteochondrodysplasia-in-scottish-fold-cats/' },
+    ],
+  },
+
 ];
