@@ -86,7 +86,7 @@ draft: false
 ## 関連項目
 
 - <a href="/columns/black-cat/">黒猫の言い伝えと毛色の遺伝</a>
-- <a href="/breeds/mix/">雑種(ミックス)</a>・<a href="/breeds/">猫種図鑑</a>
+- <a href="/breeds/mix/">ミックス(雑種)</a>・<a href="/breeds/">猫種図鑑</a>
 - <a href="/tools/seimei/">猫の姓名判断</a>
 
 オスでもメスでも、三毛でも茶トラでも、目の前の猫がかわいい確率は100%だ。

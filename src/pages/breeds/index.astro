@@ -22,7 +22,7 @@ const tags = (b: (typeof BREEDS)[number]) =>
 <Base title={`猫種図鑑:${BREEDS.length}種の性格・特徴・お手入れ|ネコキチ猫吉`} description={`アメショ、ラグドール、メインクーン、ブリティッシュショートヘア、ベンガル、バーマン、そして雑種まで。${BREEDS.length}種の特徴・よくある誤解・お手入れ・気をつけたい病気を、CFA・TICAや獣医師の解説から編集部がまとめた猫種図鑑。`}>
   <nav class="crumb"><a href="/">トップ</a> › 猫種図鑑</nav>
   <div class="band"><span class="no">図鑑</span><h1>猫種ずかん:集めたくなる{BREEDS.length}種</h1></div>
-  <p class="lede">人気の猫種と、雑種(ミックス)。性格は「よく言われる」だけで、実際はどの子も個体差です。そして全員かわいいので、編集部は比べるのをあきらめました。</p>
+  <p class="lede">人気の猫種と、ミックス(雑種)。性格は「よく言われる」だけで、実際はどの子も個体差です。そして全員かわいいので、編集部は比べるのをあきらめました。</p>
   <div class="bfilter" role="group" aria-label="しぼりこみ">
     {FILTERS.map((f, i) => <button type="button" class:list={['btn', { on: i === 0 }]} data-f={f.k} aria-pressed={i === 0 ? 'true' : 'false'}>{f.t}</button>)}
   </div>

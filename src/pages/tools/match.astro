@@ -91,7 +91,7 @@ const data = BREEDS.map((b) => ({ slug: b.slug, name: b.name, catch: b.catch, t:
       ($('m-link') as HTMLAnchorElement).href = link(top.slug);
       $('m-more').innerHTML = ranked.slice(1, 4).map(({ b }) => `<a class="tool-card" href="${link(b.slug)}"><span>${faceSvg(b.art)}</span><span><b>${b.name}</b><small>${b.catch}</small></span></a>`).join('');
       const mix = BREEDS.find((b) => b.slug === 'mix');
-      $('m-mix').innerHTML = mix ? `そして、<a href="${link('mix')}">雑種(ミックス)</a>は、どの答えでも候補です。見た目も性格も一匹ずつちがうので、あなたにぴったりの子がきっといます。` : '';
+      $('m-mix').innerHTML = mix ? `そして、<a href="${link('mix')}">ミックス(雑種)</a>は、どの答えでも候補です。見た目も性格も一匹ずつちがうので、あなたにぴったりの子がきっといます。` : '';
       const text = `猫種診断の結果、わたしと相性がいいのは「${top.name}」でした。でも結局ぜんぶの猫が好き。 #猫種診断 #ネコキチ猫吉`;
       const url = location.origin + location.pathname;
       ($('m-x') as HTMLAnchorElement).href = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
