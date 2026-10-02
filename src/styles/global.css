@@ -370,3 +370,13 @@ body { position: relative; overflow-x: clip; }
 .b-life { display: block; margin-top: 4px; font-size: .8rem; color: var(--gray); }
 .b-alias { display: block; } .b-alias + .b-alias { margin-top: 4px; } .b-alias b { margin-right: 4px; }
 .wanted h3.w-long { font-size: .82em; letter-spacing: -.02em; }
+.prose .tsukkomi { display: inline-block; margin-top: 4px; font-size: .88em; font-weight: 700; color: var(--violet); }
+/* 3列以上の表:スマホでは1行ずつのカードに(Base.astro が data-label を付ける) */
+@media (max-width: 600px) {
+  .prose table.t-stack, .prose .t-stack tbody, .prose .t-stack tr, .prose .t-stack td { display: block; width: auto; }
+  .prose .t-stack thead { display: none; }
+  .prose .t-stack tr { border: 2px solid var(--k); margin-bottom: 10px; background: #fff; }
+  .prose .t-stack td { border: 0; padding: 4px 12px; }
+  .prose .t-stack td:first-child { background: var(--k); color: var(--yellow); font-weight: 800; padding: 6px 12px; }
+  .prose .t-stack td + td::before { content: attr(data-label); display: block; font-size: .72rem; font-weight: 800; color: var(--gray); }
+}
