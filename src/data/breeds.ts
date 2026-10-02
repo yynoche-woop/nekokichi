@@ -32,46 +32,6 @@ export interface Breed {
 
 export const BREEDS: Breed[] = [
 
-  // ───────────────────────── 雑種・ミックス
-  {
-    slug: 'mix',
-    name: '雑種(ミックス)',
-    en: 'Mixed breed / Domestic cat',
-    nick: 'ミックス',
-    origin: '日本の町や家(世界中どこにでも)',
-    hair: '短毛・長毛',
-    size: '中型',
-    weight: 'オス4〜6kg・メス3〜5kg前後(目安。体格は猫それぞれ)',
-    catch: '血統書なし、かわいさ上限なし',
-    lead: '特定の品種に属さない猫たちで、日本でいちばん身近な猫といえる存在。日本には7〜9世紀ごろにはイエネコがいたと考えられ、いまの日本猫はアジア系統と欧米系統がまざった猫だとゲノム解析でわかってきている。保護猫として保健所や動物愛護センター、保護団体から家族に迎えられる子も多い。見た目も性格も一匹ずつまったく違うのが最大の特徴だ。なお、雑種を「日本猫」と呼ぶこともあるが、品種として登録されている日本生まれの猫にはジャパニーズボブテイルがいる(このずかんでは別に紹介している)。',
-    features: [
-      { t: '体つきは一匹ずつ違う', d: '品種の基準がないので、小柄でしなやかな子もいれば、どっしり大きな子もいる。顔の形、しっぽの長さ、毛の長さもさまざまで、同じ兄弟でも似ていないことがある。' },
-      { t: 'キジトラは野生の色に近い', d: '茶色っぽい地に黒いしま模様のキジトラは、「もともとはキジトラしかいなかった」といわれるほど、祖先のヤマネコに近い毛色とされる。ほかにも茶トラ、サバトラ、黒、白、ハチワレ、三毛、サビなど柄のバリエーションが豊富だ。' },
-      { t: '三毛猫はほぼメス', d: '黒と茶の毛色を決める遺伝子はX染色体にあるため、黒・茶・白がそろう三毛になるのは基本的にメス。オスの三毛は染色体の特殊な組み合わせなどで生まれる、とても珍しい存在だ。' },
-    ],
-    myths: [
-      { q: '雑種は丈夫で長生き?', j: 'kotai', label: '個体差が大きい', a: 'アニコムの集計では混血猫・日本猫の平均寿命は14.3歳で、猫全体の14.2歳とほぼ同じか少し上という程度。遺伝的な多様さは強みといわれるが、病気にならないわけではない。長生きは暮らし方と健康管理しだいだ。' },
-      { q: '三毛猫のオスはめったにいない?', j: 'hontou', label: '事実', a: '黒と茶の毛色を決める遺伝子はX染色体にあるため、三毛はほぼメスになる。オスの三毛は染色体の組み合わせが特殊な場合などに限られ、とても珍しい。1956〜1957年の第1次南極観測隊に同行し、1年の観測を終えて帰ってきたオスの三毛猫「タケシ」の話は有名だ。' },
-      { q: '茶トラはオスが多い?', j: 'warito', label: 'おおむね正しい', a: '茶色の毛色を決める遺伝子もX染色体にあるため、茶トラはオスに出やすく、メスの4倍ほどいるともいわれる。メスの茶トラもちゃんといるので、「茶トラ=オス」と決めつけるのは早い。' },
-    ],
-    care: [
-      '体格も毛の長さもさまざまなので、ごはんの量やお手入れはその子の体に合わせる。長毛の子はブラッシングを多めに。',
-      '保護猫として迎える場合は、健康状態やワクチン、不妊去勢手術の有無を譲渡元にしっかり確認しておくと安心だ。',
-      '外に出る猫は平均寿命が短くなる傾向があるという調査もある。室内で安全に暮らせる環境をつくってあげたい。',
-    ],
-    health: '品種特有の病気の情報は少ないが、腎臓の病気や尿路の病気、歯周病など、猫全体に多い病気には同じように気をつけたい。保護猫の場合は、猫エイズや猫白血病ウイルスの検査結果、寄生虫の有無なども確認しておきたい。定期的に健康診断を受け、気になる変化があれば早めに動物病院に相談しよう。',
-    tsukkomi: '血統書はなくても、毎日かわいいという実績だけは山ほどある。雑種も純血種も、結局ぜんぶの猫が優勝なのだ。',
-    tendency: { play: 3, cuddle: 3, groom: 2, voice: 3, size: 3 },
-    art: { coat: 'brown', pattern: 'kiji', eye: 'gold', ears: 'normal', hair: 'short', expr: 'smug' },
-    sources: [
-      { title: 'ネコの歴史を紐解く後編 日本への移入と広がり(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/9873.html' },
-      { title: '【猫の模様ガイド】猫にはどんな模様、色の種類がある?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/5057.html' },
-      { title: '猫の平均寿命は何歳?寿命の長い種類、短い種類は?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/604.html' },
-      { title: '南極から帰ってきた猫 タケシ(nekopedia/東京猫医療センター)', url: 'https://nekopedia.jp/takeshi/' },
-      { title: '統計資料「犬・猫の引取り及び負傷動物等の収容並びに処分の状況」(環境省)', url: 'https://www.env.go.jp/nature/dobutsu/aigo/2_data/statistics/dog-cat.html' },
-    ],
-  },
-
 
   // ───────────────────────── アメリカンショートヘア
   {
@@ -110,7 +70,6 @@ export const BREEDS: Breed[] = [
       { title: 'アメリカンショートヘア(ロイヤルカナン)', url: 'https://www.royalcanin.com/jp/cats/breeds/american-shorthair' },
     ],
   },
-
 
   // ───────────────────────── ラグドール
   {
@@ -160,7 +119,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── ブリティッシュショートヘア
   {
     slug: 'british-shorthair',
@@ -199,7 +157,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── ノルウェージャンフォレストキャット
   {
     slug: 'norwegian-forest',
@@ -237,7 +194,6 @@ export const BREEDS: Breed[] = [
       { title: 'ノルウェージャンフォレストキャット(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/norwegian_forest_cat.html' },
     ],
   },
-
 
   // ───────────────────────── メインクーン
   {
@@ -278,7 +234,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── ロシアンブルー
   {
     slug: 'russian-blue',
@@ -315,7 +270,6 @@ export const BREEDS: Breed[] = [
       { title: 'ロシアンブルー(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/russian_blue.html' },
     ],
   },
-
 
   // ───────────────────────── サイベリアン
   {
@@ -356,6 +310,45 @@ export const BREEDS: Breed[] = [
     ],
   },
 
+  // ───────────────────────── 雑種・ミックス
+  {
+    slug: 'mix',
+    name: '雑種(ミックス)',
+    en: 'Mixed breed / Domestic cat',
+    nick: 'ミックス',
+    origin: '日本の町や家(世界中どこにでも)',
+    hair: '短毛・長毛',
+    size: '中型',
+    weight: 'オス4〜6kg・メス3〜5kg前後(目安。体格は猫それぞれ)',
+    catch: '血統書なし、かわいさ上限なし',
+    lead: '特定の品種に属さない猫たちで、日本でいちばん身近な猫といえる存在。日本には7〜9世紀ごろにはイエネコがいたと考えられ、いまの日本猫はアジア系統と欧米系統がまざった猫だとゲノム解析でわかってきている。保護猫として保健所や動物愛護センター、保護団体から家族に迎えられる子も多い。見た目も性格も一匹ずつまったく違うのが最大の特徴だ。なお、雑種を「日本猫」と呼ぶこともあるが、品種として登録されている日本生まれの猫にはジャパニーズボブテイルがいる(このずかんでは別に紹介している)。',
+    features: [
+      { t: '体つきは一匹ずつ違う', d: '品種の基準がないので、小柄でしなやかな子もいれば、どっしり大きな子もいる。顔の形、しっぽの長さ、毛の長さもさまざまで、同じ兄弟でも似ていないことがある。' },
+      { t: 'キジトラは野生の色に近い', d: '茶色っぽい地に黒いしま模様のキジトラは、「もともとはキジトラしかいなかった」といわれるほど、祖先のヤマネコに近い毛色とされる。ほかにも茶トラ、サバトラ、黒、白、ハチワレ、三毛、サビなど柄のバリエーションが豊富だ。' },
+      { t: '三毛猫はほぼメス', d: '黒と茶の毛色を決める遺伝子はX染色体にあるため、黒・茶・白がそろう三毛になるのは基本的にメス。オスの三毛は染色体の特殊な組み合わせなどで生まれる、とても珍しい存在だ。' },
+    ],
+    myths: [
+      { q: '雑種は丈夫で長生き?', j: 'kotai', label: '個体差が大きい', a: 'アニコムの集計では混血猫・日本猫の平均寿命は14.3歳で、猫全体の14.2歳とほぼ同じか少し上という程度。遺伝的な多様さは強みといわれるが、病気にならないわけではない。長生きは暮らし方と健康管理しだいだ。' },
+      { q: '三毛猫のオスはめったにいない?', j: 'hontou', label: '事実', a: '黒と茶の毛色を決める遺伝子はX染色体にあるため、三毛はほぼメスになる。オスの三毛は染色体の組み合わせが特殊な場合などに限られ、とても珍しい。1956〜1957年の第1次南極観測隊に同行し、1年の観測を終えて帰ってきたオスの三毛猫「タケシ」の話は有名だ。' },
+      { q: '茶トラはオスが多い?', j: 'warito', label: 'おおむね正しい', a: '茶色の毛色を決める遺伝子もX染色体にあるため、茶トラはオスに出やすく、メスの4倍ほどいるともいわれる。メスの茶トラもちゃんといるので、「茶トラ=オス」と決めつけるのは早い。' },
+    ],
+    care: [
+      '体格も毛の長さもさまざまなので、ごはんの量やお手入れはその子の体に合わせる。長毛の子はブラッシングを多めに。',
+      '保護猫として迎える場合は、健康状態やワクチン、不妊去勢手術の有無を譲渡元にしっかり確認しておくと安心だ。',
+      '外に出る猫は平均寿命が短くなる傾向があるという調査もある。室内で安全に暮らせる環境をつくってあげたい。',
+    ],
+    health: '品種特有の病気の情報は少ないが、腎臓の病気や尿路の病気、歯周病など、猫全体に多い病気には同じように気をつけたい。保護猫の場合は、猫エイズや猫白血病ウイルスの検査結果、寄生虫の有無なども確認しておきたい。定期的に健康診断を受け、気になる変化があれば早めに動物病院に相談しよう。',
+    tsukkomi: '血統書はなくても、毎日かわいいという実績だけは山ほどある。雑種も純血種も、結局ぜんぶの猫が優勝なのだ。',
+    tendency: { play: 3, cuddle: 3, groom: 2, voice: 3, size: 3 },
+    art: { coat: 'brown', pattern: 'kiji', eye: 'gold', ears: 'normal', hair: 'short', expr: 'smug' },
+    sources: [
+      { title: 'ネコの歴史を紐解く後編 日本への移入と広がり(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/9873.html' },
+      { title: '【猫の模様ガイド】猫にはどんな模様、色の種類がある?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/5057.html' },
+      { title: '猫の平均寿命は何歳?寿命の長い種類、短い種類は?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/604.html' },
+      { title: '南極から帰ってきた猫 タケシ(nekopedia/東京猫医療センター)', url: 'https://nekopedia.jp/takeshi/' },
+      { title: '統計資料「犬・猫の引取り及び負傷動物等の収容並びに処分の状況」(環境省)', url: 'https://www.env.go.jp/nature/dobutsu/aigo/2_data/statistics/dog-cat.html' },
+    ],
+  },
 
   // ───────────────────────── ベンガル
   {
@@ -412,7 +405,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── エキゾチックショートヘア
   {
     slug: 'exotic-shorthair',
@@ -450,7 +442,6 @@ export const BREEDS: Breed[] = [
       { title: 'Feline polycystic kidney disease mutation identified in PKD1(JASN, 2004)', url: 'https://pubmed.ncbi.nlm.nih.gov/15466259/' },
     ],
   },
-
 
   // ───────────────────────── ペルシャ
   {
@@ -490,7 +481,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── アビシニアン
   {
     slug: 'abyssinian',
@@ -528,7 +518,6 @@ export const BREEDS: Breed[] = [
       { title: 'ソマリってどんな猫?実はアビシニアンの長毛種!(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/1718.html' },
     ],
   },
-
 
   // ───────────────────────── シャム
   {
@@ -568,7 +557,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── スフィンクス
   {
     slug: 'sphynx',
@@ -605,7 +593,6 @@ export const BREEDS: Breed[] = [
       { title: 'COLQ variant associated with Devon Rex and Sphynx feline hereditary myopathy(Animal Genetics, 2015)', url: 'https://pubmed.ncbi.nlm.nih.gov/26374066/' },
     ],
   },
-
 
   // ───────────────────────── アメリカンカール
   {
@@ -645,7 +632,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── ソマリ
   {
     slug: 'somali',
@@ -684,7 +670,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── セルカークレックス
   {
     slug: 'selkirk-rex',
@@ -721,7 +706,6 @@ export const BREEDS: Breed[] = [
       { title: 'セルカークレックス(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/selkirk_rex.html' },
     ],
   },
-
 
   // ───────────────────────── デボンレックス
   {
@@ -797,7 +781,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── ヒマラヤン
   {
     slug: 'himalayan',
@@ -836,7 +819,6 @@ export const BREEDS: Breed[] = [
       { title: 'ヒマラヤン(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/himalayan.html' },
     ],
   },
-
 
   // ───────────────────────── バーマン
   {
@@ -877,7 +859,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── ラガマフィン
   {
     slug: 'ragamuffin',
@@ -917,7 +898,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── ターキッシュアンゴラ
   {
     slug: 'turkish-angora',
@@ -956,7 +936,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── ターキッシュバン
   {
     slug: 'turkish-van',
@@ -994,7 +973,6 @@ export const BREEDS: Breed[] = [
       { title: 'ターキッシュ バン(ロイヤルカナン)', url: 'https://www.royalcanin.com/jp/cats/breeds/turkish-van' },
     ],
   },
-
 
   // ───────────────────────── ジャパニーズボブテイル
   {
@@ -1035,7 +1013,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── オリエンタル
   {
     slug: 'oriental',
@@ -1073,7 +1050,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── トンキニーズ
   {
     slug: 'tonkinese',
@@ -1110,7 +1086,6 @@ export const BREEDS: Breed[] = [
       { title: 'トンキニーズ(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/tonkinese.html' },
     ],
   },
-
 
   // ───────────────────────── バーミーズ
   {
@@ -1152,7 +1127,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── シンガプーラ
   {
     slug: 'singapura',
@@ -1190,7 +1164,6 @@ export const BREEDS: Breed[] = [
       { title: 'Inherited hemolytic anemia in cats(EveryCat Health Foundation)', url: 'https://everycat.org/cat-health/inherited-hemolytic-anemia-in-cats/' },
     ],
   },
-
 
   // ───────────────────────── コーニッシュレックス
   {
@@ -1230,7 +1203,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── ラパーマ
   {
     slug: 'laperm',
@@ -1269,7 +1241,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── ボンベイ
   {
     slug: 'bombay',
@@ -1306,7 +1277,6 @@ export const BREEDS: Breed[] = [
       { title: 'ボンベイ(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/bombay.html' },
     ],
   },
-
 
   // ───────────────────────── エジプシャンマウ
   {
@@ -1385,7 +1355,6 @@ export const BREEDS: Breed[] = [
     ],
   },
 
-
   // ───────────────────────── マンチカン
   {
     slug: 'munchkin',
@@ -1423,7 +1392,6 @@ export const BREEDS: Breed[] = [
       { title: 'マンチカン(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/munchkin.html' },
     ],
   },
-
 
   // ───────────────────────── スコティッシュフォールド
   {
@@ -1464,5 +1432,4 @@ export const BREEDS: Breed[] = [
       { title: 'Genetics and osteochondrodysplasia in Scottish fold cats(EveryCat Health Foundation)', url: 'https://everycat.org/cat-health/genetics-and-osteochondrodysplasia-in-scottish-fold-cats/' },
     ],
   },
-
 ];
