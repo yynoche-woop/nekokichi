@@ -3,7 +3,11 @@
 // - 肉球の足あとが画面を横切る
 // - 紙のパネルの上に置いたカップを、猫の手が机から落とす(1ページに1回)
 // - マウスのカーソルが画面の下のほうに来ると、猫の手がじゃれにくる
+// - しばらく画面を止めていると、画面のふちから猫がのぞく。スクロールするとサッと隠れる(2026-10-02 追加)
+// - 夜(21〜5時)は猫の目が光る(タペタム。習性事典「猫の目が光るのはなぜ?」へ案内)
 // 動きを減らす設定のときは、毛だけ置いて動きはなし。
+import { faceSvg } from '../data/cat-art';
+import type { Art } from '../data/art-schema';
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 // 演出はすべて #fx の中へ(画面からはみ出してもページの横幅を広げない。スマホで勝手に縮小表示される不具合の対策)
@@ -27,7 +31,7 @@ function popWord(x: number, y: number, text: string) {
 
 /* ---------- 猫の毛とコロコロ ---------- */
 const hairs: HTMLElement[] = [];
-const BLOCKS = 'main :is(p, h1, h2, h3, li, a, button, img, svg, table, figure, article, .band, .stile, .wanted, .news, .fes, .calm), header, footer';
+const BLOCKS = 'main :is(p, h1, h2, h3, li, a, button, img, svg, table, figure, article, .band, .stile, .wanted, .news, .fes, .calm, .stages, .wanted-grid, .cta, .stage-copy), header, footer'; // .pop-in は出る前は縮んでいるので、動かない親の枠でもよける
 function addHair() {
   const h = document.createElement('span');
   h.className = 'hair';
@@ -169,3 +173,69 @@ if (!reduce) {
     loop();
   }
 }
+
+/* ---------- 夜は目が光る ---------- */
+const hour = new Date().getHours();
+if (hour >= 21 || hour < 5) document.documentElement.classList.add('night');
+
+/* ---------- のぞき猫 ---------- */
+if (!reduce) {
+  const PEEKERS: Art[] = [
+    { coat: 'black', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' },
+    { coat: 'white', pattern: 'calico', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' },
+    { coat: 'red', pattern: 'tabby', eye: 'gold', ears: 'normal', hair: 'short', expr: 'wow' },
+    { coat: 'silver', pattern: 'tabby', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' },
+    { coat: 'seal', pattern: 'point', eye: 'blue', ears: 'big', hair: 'short', expr: 'normal' },
+    { coat: 'white', pattern: 'tuxedo', eye: 'gold', ears: 'normal', hair: 'short', expr: 'wow' },
+  ];
+  const SAY = ['……', 'じー', 'にゃ', '見てないです', 'なに読んでるの', 'ごはんまだ?'];
+  let peek: HTMLElement | null = null;
+  let idle: number | undefined;
+  let lastShown = 0;
+  const hide = (word?: string) => {
+    const p = peek;
+    if (!p) return;
+    peek = null;
+    if (word) {
+      const r = p.getBoundingClientRect();
+      popWord(r.left + scrollX + r.width / 2, r.top + scrollY - 6, word);
+    }
+    p.classList.remove('on');
+    setTimeout(() => p.remove(), 500);
+  };
+  const show = () => {
+    if (peek || document.hidden || Date.now() - lastShown < 25000) return;
+    lastShown = Date.now();
+    const side = ['b', 'l', 'r'][Math.floor(Math.random() * 3)];
+    const p = document.createElement('button');
+    p.type = 'button';
+    p.className = `peek peek-${side}`;
+    p.setAttribute('aria-label', '画面のふちからのぞいている猫');
+    p.innerHTML = faceSvg(PEEKERS[Math.floor(Math.random() * PEEKERS.length)], undefined, true);
+    const w = document.documentElement.clientWidth;
+    if (side === 'b') p.style.left = `${rand(w * .3, w - 120)}px`;
+    else p.style.top = `${rand(innerHeight * .25, innerHeight * .6)}px`;
+    p.addEventListener('click', (e) => { e.stopPropagation(); hide(SAY[Math.floor(Math.random() * SAY.length)]); });
+    fx.appendChild(p);
+    peek = p;
+    requestAnimationFrame(() => requestAnimationFrame(() => p.classList.add('on')));
+    // まばたき
+    const eyes = p.querySelector<SVGGElement>('.eyes');
+    const blink = () => {
+      if (peek !== p || !eyes) return;
+      eyes.animate([{ scale: '1 1' }, { scale: '1 .1' }, { scale: '1 1' }], { duration: 220 });
+      setTimeout(blink, rand(1800, 3600));
+    };
+    setTimeout(blink, 1200);
+    setTimeout(() => { if (peek === p) hide(); }, 14000);
+  };
+  const reset = () => {
+    if (peek) hide('サッ');
+    clearTimeout(idle);
+    idle = window.setTimeout(show, 7000);
+  };
+  addEventListener('scroll', reset, { passive: true });
+  addEventListener('pointerdown', (e) => { if (!(e.target as Element).closest('.peek')) reset(); });
+  reset();
+}
+

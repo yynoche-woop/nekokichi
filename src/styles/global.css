@@ -354,3 +354,19 @@ td, th { overflow-wrap: break-word; }
 html { overflow-x: hidden; overflow-x: clip; }
 body { position: relative; overflow-x: clip; }
 #fx { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 45; }
+
+/* のぞき猫(mischief.ts)。fx の中にあるが、画面に固定して出す */
+.peek { position: fixed; z-index: 58; width: 96px; padding: 0; background: none; border: 0; cursor: pointer; line-height: 0; transition: translate .45s cubic-bezier(.3, 1.3, .5, 1); }
+.peek svg { width: 100%; height: auto; }
+.peek :is(.eyes) { transform-box: fill-box; transform-origin: center; }
+.peek-b { bottom: 0; translate: 0 110%; }
+.peek-b.on { translate: 0 46%; }
+.peek-l { left: 0; rotate: 90deg; translate: -110% 0; }
+.peek-l.on { translate: -46% 0; }
+.peek-r { right: 0; rotate: -90deg; translate: 110% 0; }
+.peek-r.on { translate: 46% 0; }
+
+/* 夜(21〜5時)は猫の目が光る */
+html.night .cface .eyes circle:not([fill="#fff"]) { fill: #c8ff3c; } /* 暗いところで光を反射する目(タペタム)。黒目が黄緑に光る */
+.night-note { display: none; }
+html.night .night-note { display: inline-block; }
