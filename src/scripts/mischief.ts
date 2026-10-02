@@ -4,7 +4,6 @@
 // - 紙のパネルの上に置いたカップを、猫の手が机から落とす(1ページに1回)
 // - マウスのカーソルが画面の下のほうに来ると、猫の手がじゃれにくる
 // - しばらく画面を止めていると、画面のふちから猫がのぞく。スクロールするとサッと隠れる(2026-10-02 追加)
-// - 夜(21〜5時)はトップに「ライトを当てる」ボタン。押すと一瞬だけ猫の目が光る(タペタム。習性事典「猫の目が光るのはなぜ?」へ案内)
 // 動きを減らす設定のときは、毛だけ置いて動きはなし。
 import { faceSvg } from '../data/cat-art';
 import type { Art } from '../data/art-schema';
@@ -174,14 +173,6 @@ if (!reduce) {
   }
 }
 
-/* ---------- 夜は目が光る ---------- */
-const hour = new Date().getHours();
-if (hour >= 21 || hour < 5) document.documentElement.classList.add('night');
-document.getElementById('eye-light')?.addEventListener('click', () => {
-  const html = document.documentElement;
-  html.classList.add('flash');
-  setTimeout(() => html.classList.remove('flash'), 900);
-});
 
 /* ---------- のぞき猫 ---------- */
 if (!reduce) {

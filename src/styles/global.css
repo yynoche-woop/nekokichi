@@ -365,11 +365,3 @@ body { position: relative; overflow-x: clip; }
 .peek-l.on { translate: -46% 0; }
 .peek-r { right: 0; rotate: -90deg; translate: 110% 0; }
 .peek-r.on { translate: 46% 0; }
-
-/* 夜(21〜5時)は猫の目が光る */
-/* 夜(21〜5時)だけトップに「ライトを当てる」ボタン。押した一瞬だけ、黒目が光を反射して光る(タペタム)。
-   常に光らせると目の色が気持ち悪く見えたのでやめた(横田さん 2026-10-02) */
-.cface .eyes circle { transition: fill .2s; }
-html.flash .cface .eyes circle:not([fill="#fff"]) { fill: #d9f55a; }
-.night-note { display: none; }
-html.night .night-note { display: flex; }
