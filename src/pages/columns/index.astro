@@ -6,6 +6,7 @@ import { getColumns } from '../../lib';
 const all = await getColumns();
 const shuusei = all.filter((c) => c.data.category === 'shuusei');
 const jitsuyo = all.filter((c) => c.data.category === 'jitsuyo');
+const bunka = all.filter((c) => c.data.category === 'bunka');
 ---
 <Base title="記事一覧|ネコキチ猫吉" description="猫の習性事典と、暮らし・健康の実用記事の一覧。箱に入る理由、ゴロゴロのしくみ、三毛猫のオスが少ない遺伝の理由から、食べてはいけないもの・室温・受診の目安まで。">
   <nav class="crumb"><a href="/">トップ</a> › 記事一覧</nav>
@@ -15,4 +16,5 @@ const jitsuyo = all.filter((c) => c.data.category === 'jitsuyo');
   <ColumnList items={shuusei} />
   <h2 class="sub-band" id="jitsuyo">暮らし・健康</h2>
   <ColumnList items={jitsuyo} />
+  {bunka.length > 0 && <><h2 class="sub-band" id="bunka">猫と文化(歌・映画・絵)</h2><ColumnList items={bunka} /></>}
 </Base>
