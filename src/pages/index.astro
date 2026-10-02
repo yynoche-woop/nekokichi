@@ -40,7 +40,7 @@ const FES = [
   { k: 'okara', t: 'おから系', d: 'ちょっといい匂い、豆腐の民', color: '#ff3ea5' },
 ];
 
-const pickup = ['american-shorthair', 'ragdoll', 'maine-coon', 'british-shorthair', 'russian-blue', 'bengal', 'birman', 'mix']
+const pickup = ['american-shorthair', 'ragdoll', 'birman', 'british-shorthair', 'bengal', 'mix', 'maine-coon', 'russian-blue'] // 図鑑と同じ並び:アメショ・ラグドールのあとはあいうえお順
   .map((s) => BREEDS.find((b) => b.slug === s))
   .filter((b) => b !== undefined);
 ---
