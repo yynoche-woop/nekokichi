@@ -243,7 +243,7 @@ export function bodySvg(a: Art, label?: string): string {
 
 /** 香箱座り(前足を胸の下にしまって、丸いかたまりになる座り方)。正面から見た形で、しっぽと背中の柄は描かない(横田さん 2026-10-02)。
  *  bodySvg と同じ viewBox 0 0 220 300 */
-export function loafSvg(a: Art, label?: string): string {
+export function loafSvg(a: Art, label?: string, tuck: 'a' | 'b' | 'c' = 'b'): string {
   const c = COAT[a.coat];
   const s = `stroke="${K}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
   const base = a.pattern === 'calico' ? WHITE : a.pattern === 'tuxedo' ? COAT.black.body : a.hair === 'hairless' ? '#f1cdbd' : c.body;
@@ -259,9 +259,19 @@ export function loafSvg(a: Art, label?: string): string {
     ${patches}${sides}
     ${whiteChest ? `<path d="M66 288 C58 250 78 214 110 212 C142 214 162 250 154 288 Q110 292 66 288 Z" fill="${WHITE}"/>` : ''}
     ${a.paleChest && !whiteChest ? `<path d="M66 288 C58 250 78 214 110 212 C142 214 162 250 154 288 Q110 292 66 288 Z" fill="${c.soft}"/>` : ''}
+    ${tuckSvg(tuck, whiteChest || a.pattern === 'gloves' ? WHITE : a.paleChest || isPoint(a) ? c.soft : base)}
     <g transform="translate(32 54) scale(.78)">${faceGroup({ ...a, expr: a.expr === 'wow' ? 'normal' : a.expr })}</g>
     </g>
   </svg>`));
+}
+
+/** おててナイナイ(胸の下に前足をしまっている)の描き方。a=胸の下のふくらみ / b=ふくらみ+指先がちょこっと / c=しまった腕のライン */
+function tuckSvg(t: 'a' | 'b' | 'c', fill: string): string {
+  const line = `fill="none" stroke="${K}" stroke-width="4" stroke-linecap="round"`;
+  if (t === 'c') return `<path d="M34 266 Q70 250 104 272 M186 266 Q150 250 116 272" ${line}/>`;
+  const humps = `<path d="M76 291 C74 270 86 262 94 262 C102 262 110 270 109 291 Z M111 291 C110 270 118 262 126 262 C134 262 146 270 144 291 Z" fill="${fill}"/><path d="M76 290 C74 270 86 262 94 262 C102 262 110 270 109 290 M111 290 C110 270 118 262 126 262 C134 262 146 270 144 290" ${line}/>`;
+  if (t === 'a') return humps;
+  return humps + `<path d="M87 283 v7 M97 283 v7 M120 283 v7 M130 283 v7" stroke="${K}" stroke-width="3" stroke-linecap="round"/>`;
 }
 
 /** 編集長・猫吉(キジトラ白のオス) */
