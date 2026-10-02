@@ -17,6 +17,8 @@ sources:
   - { title: "PubMed:Evaluation of whisker stress in cats(Slovak & Foster, J Feline Med Surg 2021)", url: "https://pubmed.ncbi.nlm.nih.gov/32538246/" }
   - { title: "Petfoodology(タフツ大学):Whisker worry: Are cats' whiskers a key to their eating pleasure?", url: "https://sites.tufts.edu/petfoodology/2021/07/26/whisker-worry-are-cats-whiskers-a-key-to-their-eating-pleasure/" }
   - { title: "Wikipedia:Whiskers", url: "https://en.wikipedia.org/wiki/Whiskers" }
+  - { title: "千里桃山台動物病院:猫のヒゲを切ってはダメ!知られざる5つの重要な役割", url: "https://hs-gac.jp/info/life-support/cat-whiskers/" }
+  - { title: "ログミー(SciShow の解説):25センチ以内の物体を認識できない、猫の目のメカニズム", url: "https://logmi.jp/knowledge_culture/culture/320888" }
 draft: false
 ---
 
@@ -49,6 +51,12 @@ draft: false
 ### 暗い所と、狩りの瞬間に役立つ
 
 空気の流れを感じとれるので、暗い場所でも物にぶつかりにくい。狩りで獲物に飛びかかるときは、口のまわりのひげが前に向く。口元のひげは、くわえた獲物の様子を感じるのにも使われるとされる。
+
+猫の目は、25cmくらいより近い物にはピントが合いにくいといわれる。鼻先のすぐ近くの物は目よりもひげで感じとって、見えにくさを補っていると考えられている。くわしくは<a href="/columns/eye-shine/">猫の目が光るのはなぜ?</a>へ。
+
+### バランスをとるのにも役立つといわれる
+
+細い塀の上を歩いたり、高い所へ飛び乗ったりするとき、ひげで感じたまわりの様子は体の位置や動きの調整にも使われ、平衡感覚を補っていると獣医師は解説している。ひげを切ると動きがぎこちなくなることがある、と言われるのはこのためだ。
 
 ### 気持ちが少し出る
 

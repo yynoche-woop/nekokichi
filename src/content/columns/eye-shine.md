@@ -17,6 +17,8 @@ sources:
   - { title: "キャットクリニック イチハラ:猫の瞳孔が開く理由", url: "https://r.goope.jp/catclinic/diary/135225" }
   - { title: "PubMed:Why do animal eyes have pupils of different shapes?(Banks ほか, Science Advances 2015)", url: "https://pubmed.ncbi.nlm.nih.gov/26601232/" }
   - { title: "PubMed:Ocular pigmentation in white and Siamese cats(Thibos ほか, IOVS 1980)", url: "https://pubmed.ncbi.nlm.nih.gov/7372414/" }
+  - { title: "にゃんペディア(第一アイペット獣医師監修):猫の目・視力はどのくらい?", url: "https://nyanpedia.com/post-7764/" }
+  - { title: "ログミー(SciShow の解説):25センチ以内の物体を認識できない、猫の目のメカニズム", url: "https://logmi.jp/knowledge_culture/culture/320888" }
 draft: false
 ---
 
@@ -32,6 +34,7 @@ draft: false
 | 人との比較 | 人の目にタペタムはない。猫は人が必要とする明るさの6分の1ほどでも見えるとされる |
 | 瞳孔の形 | 明るい所では縦に細いすき間、暗い所では丸く大きく開く |
 | 視力の目安 | 止まっている物を見る力は人より低く、0.2〜0.3ほどと言われる |
+| ピントの合う距離 | 25cmくらいより近い物は合いにくく、物を見分けられるのは10mほど先までといわれる。近すぎる物はひげで感じて補う |
 
 ## しくみ
 
