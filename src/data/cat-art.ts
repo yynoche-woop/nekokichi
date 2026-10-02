@@ -199,33 +199,24 @@ export function bodySvg(a: Art, label?: string): string {
   </svg>`));
 }
 
-/** 香箱座り(前足を胸の下にしまって、香箱のように丸くなる座り方)。bodySvg と同じ viewBox 0 0 220 300 */
+/** 香箱座り(前足を胸の下にしまって、丸いかたまりになる座り方)。正面から見た形で、しっぽと背中の柄は描かない(横田さん 2026-10-02)。
+ *  bodySvg と同じ viewBox 0 0 220 300 */
 export function loafSvg(a: Art, label?: string): string {
   const c = COAT[a.coat];
   const s = `stroke="${K}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
   const base = a.pattern === 'calico' ? WHITE : a.pattern === 'tuxedo' ? COAT.black.body : a.hair === 'hairless' ? '#f1cdbd' : c.body;
-  const tailCol = isPoint(a) ? c.mark : a.pattern === 'calico' ? COAT.red.body : base;
-  const striped = ['tabby', 'kiji', 'classic', 'spotted'].includes(a.pattern);
   const whiteChest = ['bicolor', 'tuxedo', 'kiji', 'calico', 'mitted'].includes(a.pattern);
-  const tw = a.hair === 'long' || a.hair === 'semi' ? 30 : 20;
   const aria = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
-  const body = 'M44 288 C22 288 18 248 36 220 C56 188 108 176 150 180 C196 184 212 228 208 260 C206 282 194 290 176 290 Z';
-  const tail = 'M196 272 C214 284 200 296 168 294 L118 294';
-  const patches = a.pattern === 'calico' ? `<path d="M150 186 C184 190 204 220 204 246 C180 248 160 230 150 206 Z" fill="${COAT.black.body}"/><path d="M120 240 C140 236 160 250 158 272 C140 278 122 266 120 240 Z" fill="${COAT.red.body}"/>` : '';
-  const stripes = striped ? `<g fill="none" stroke="${c.mark}" stroke-width="5" stroke-linecap="round"><path d="M150 188 q6 16 0 30 M170 192 q8 16 2 32 M188 204 q8 14 4 30"/></g>` : '';
-  const shade = isPoint(a) ? `<path d="M150 182 C190 186 210 226 207 258 C190 250 170 226 158 200 Z" fill="${c.soft}" opacity=".7"/>` : '';
+  // 正面から見た、ころんとしたおもち形
+  const body = 'M110 150 C190 150 218 214 210 258 Q204 292 110 292 Q16 292 10 258 C2 214 30 150 110 150 Z';
+  const patches = a.pattern === 'calico' ? `<path d="M14 262 C6 222 26 178 60 162 C68 204 52 244 14 262 Z" fill="${COAT.red.body}"/><path d="M206 262 C214 222 194 178 160 162 C152 204 168 244 206 262 Z" fill="${COAT.black.body}"/>` : '';
+  const sides = isPoint(a) ? `<path d="M14 262 C6 222 26 178 64 160 C54 204 52 250 60 290 Z M206 262 C214 222 194 178 156 160 C166 204 168 250 160 290 Z" fill="${c.soft}" opacity=".55"/>` : '';
   return rough(thin(`<svg viewBox="0 0 220 300" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
     <g transform="${a.small ? 'translate(110 296) scale(.84) translate(-110 -296)' : ''}">
     <path d="${body}" fill="${base}" ${s}/>
-    ${patches}${shade}${stripes}
-    ${whiteChest ? `<path d="M52 284 C40 250 54 214 92 210 C120 214 132 250 124 286 Z" fill="${WHITE}"/>` : ''}
-    <ellipse cx="78" cy="288" rx="15" ry="7" fill="${a.pattern === 'gloves' || a.pattern === 'mitted' || whiteChest ? WHITE : isPoint(a) ? c.soft : base}" ${s}/>
-    <g class="tail">
-      <path d="${tail}" fill="none" stroke="${K}" stroke-width="${tw + 10}" stroke-linecap="round"/>
-      <path d="${tail}" fill="none" stroke="${tailCol}" stroke-width="${tw}" stroke-linecap="round"/>
-      ${striped ? `<path d="${tail}" fill="none" stroke="${c.mark}" stroke-width="${tw}" stroke-dasharray="6 12" opacity=".8"/>` : ''}
-    </g>
-    <g transform="translate(6 58) scale(.86)">${faceGroup({ ...a, expr: a.expr === 'wow' ? 'normal' : a.expr })}</g>
+    ${patches}${sides}
+    ${whiteChest ? `<path d="M66 288 C58 250 78 214 110 212 C142 214 162 250 154 288 Q110 292 66 288 Z" fill="${WHITE}"/>` : ''}
+    <g transform="translate(32 54) scale(.78)">${faceGroup({ ...a, expr: a.expr === 'wow' ? 'normal' : a.expr })}</g>
     </g>
   </svg>`));
 }
