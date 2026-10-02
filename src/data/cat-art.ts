@@ -88,8 +88,8 @@ function marks(a: Art, c: Tone): string {
   }
 }
 
-/** 小さな巻き毛の印(x, y を中心にくるっと) */
-const curl = (x: number, y: number, k = 1) => `M${x - 5 * k} ${y + 2 * k} c${1 * k} ${-7 * k} ${11 * k} ${-7 * k} ${10 * k} ${0} c${-1 * k} ${5 * k} ${-8 * k} ${5 * k} ${-7 * k} ${0}`;
+/** 縮れ毛の印:ひげのように波打つ短い線(x, y が中心)。丸い印は斑点・病気に見えたのでやめた(横田さん 2026-10-02) */
+const curl = (x: number, y: number, k = 1) => `M${(x - 9 * k).toFixed(1)} ${y} q${(3 * k).toFixed(1)} ${(-5 * k).toFixed(1)} ${(6 * k).toFixed(1)} 0 t${(6 * k).toFixed(1)} 0 t${(6 * k).toFixed(1)} 0`;
 
 /** 縮れ毛の体:輪郭を小さく波打たせる(ふつうの体の線にそって、外へふくらむ山を並べる) */
 const CURLY_BODY = (() => {
