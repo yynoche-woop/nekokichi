@@ -151,7 +151,8 @@ export function faceGroup(a: CatArt, sticker = false): string {
 const thin = (svg: string) => svg.replace(/stroke-width="([\d.]+)"/g, (_, w) => `stroke-width="${+(Number(w) * 1.25).toFixed(1)}"`).replace(/stroke="#1c1629"/g, `stroke="${K}"`);
 
 /** 手描きのゆらぎ:線を少しよれさせるフィルター(ゆるい手描き風。横田さんの参考イメージは「太い墨の線・白目に黒目・余白」) */
-const ROUGH = '<defs><filter id="nkr" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/></filter></defs>';
+// フィルターの範囲は線の太さを含まないので、太いしっぽが切れないよう広めにとる
+const ROUGH = '<defs><filter id="nkr" x="-30%" y="-20%" width="160%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/></filter></defs>';
 const rough = (svg: string) => svg.replace(/(<svg[^>]*>)/, `$1${ROUGH}<g filter="url(#nkr)">`).replace(/<\/svg>\s*$/, '</g></svg>');
 
 export const faceGroupThin = (a: CatArt, sticker = false) => thin(faceGroup(a, sticker));
@@ -171,13 +172,13 @@ export function bodySvg(a: Art, label?: string): string {
   const whiteChest = ['bicolor', 'tuxedo', 'kiji', 'calico', 'mitted'].includes(a.pattern);
   const legFill = a.paleChest && !['bicolor', 'tuxedo', 'kiji', 'calico', 'mitted'].includes(a.pattern) ? c.soft : a.pattern === 'mitted' ? WHITE : a.pattern === 'sepia' ? c.soft : isPoint(a) ? c.soft : whiteChest ? WHITE : base;
   const pawFill = a.pattern === 'gloves' ? WHITE : legFill; // バーマンは白い手袋
-  const tail = 'M160 272 C200 272 214 232 202 196';
+  const tail = 'M158 272 C194 272 206 234 196 198'; // 太いしっぽ(長毛)でも枠からはみ出さないよう、内側寄りに
   const tw = a.hair === 'long' || a.hair === 'semi' ? 34 : 22;
   const aria = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
   const patches = a.pattern === 'calico'
     ? `<path d="M60 170 C80 160 100 176 96 200 C80 206 62 196 58 186 Z" fill="${COAT.red.body}"/><path d="M160 176 C150 166 130 176 134 200 C146 210 164 200 164 190 Z" fill="${COAT.black.body}"/>` : '';
   const stripes = striped ? `<g fill="none" stroke="${c.mark}" stroke-width="5" stroke-linecap="round"><path d="M58 186 q14 4 16 16 M56 212 q16 4 18 18 M164 186 q-14 4 -16 16 M166 212 q-16 4 -18 18"/></g>` : '';
-  return rough(thin(`<svg viewBox="0 0 220 300" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+  return rough(thin(`<svg viewBox="-12 0 244 300" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
     <g transform="${a.small ? 'translate(110 296) scale(.84) translate(-110 -296)' : ''}">
     ${a.bobtail
       ? `<g class="tail"><path d="M164 262 c10 -14 30 -12 34 2 c8 2 8 20 -4 22 c-4 12 -26 12 -30 0 c-12 -4 -10 -20 0 -24 z" fill="${tailCol}" stroke="${K}" stroke-width="5" stroke-linejoin="round"/></g>`
