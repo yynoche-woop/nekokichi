@@ -108,7 +108,7 @@ export const BREEDS: Breed[] = [
     health: 'ラグドールでは、肥大型心筋症に関わるMYBPC3遺伝子の変異が2007年に報告されている。心筋が厚くなる病気で、疲れやすさや呼吸の変化などが出ることがあるが、初期は気づきにくい。遺伝子検査や心臓の超音波検査について、かかりつけの獣医師に相談しておくと安心だ。ほかに尿路結石症や毛球症も報告がある。',
     tsukkomi: 'でっかいぬいぐるみを抱えたら、小さな猫にも会いたくなる。大きさ違いで全員集合だ。',
     tendency: { play: 2, cuddle: 5, groom: 3, voice: 2, size: 5 },
-    art: { coat: 'seal', pattern: 'mitted', eye: 'blue', ears: 'normal', hair: 'semi', expr: 'sleepy' },
+    art: { coat: 'bluepoint', pattern: 'mitted', eye: 'blue', ears: 'normal', hair: 'semi', expr: 'sleepy' }, // ブルーポイント・バイカラー(横田さん 2026-10-02)
     sources: [
       { title: 'Ragdoll(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/ragdoll/' },
       { title: 'ラグドールってどんな性格?かかりやすい病気は?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/724.html' },

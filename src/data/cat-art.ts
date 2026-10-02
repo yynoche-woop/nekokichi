@@ -24,6 +24,7 @@ export const COAT: Record<Art['coat'], Tone> = {
   sable: { body: '#7e5236', mark: '#4f3020', soft: '#6a432b', label: 'セーブル' },
   mink: { body: '#d8b892', mark: '#6a4630', soft: '#b89070', label: 'ミンク' },
   sepia: { body: '#dcc3a0', mark: '#7a5a3e', soft: '#f2e6d4', label: 'セピア' },
+  bluepoint: { body: '#eef0f5', mark: '#6f7b8e', soft: '#b3bccb', label: 'ブルーポイント' },
 };
 const IRIS: Record<Art['eye'], string> = {
   gold: '#f2c230', copper: '#e68a2e', green: '#6cc26a', blue: '#3d8cf0', hazel: '#b9b03c', aqua: '#3fbfae', odd: '#3d8cf0',

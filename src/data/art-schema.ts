@@ -1,7 +1,7 @@
 import { z } from 'astro/zod';
 
 // 猫のイラストの指定(src/data/cat-art.ts が描く)。コラムの frontmatter `art:` と猫種図鑑で共通
-export const COATS = ['black', 'white', 'blue', 'silver', 'brown', 'red', 'cream', 'seal', 'chocolate', 'lilac', 'ruddy', 'cinnamon', 'fawn', 'sable', 'mink', 'sepia'] as const;
+export const COATS = ['black', 'white', 'blue', 'silver', 'brown', 'red', 'cream', 'seal', 'chocolate', 'lilac', 'ruddy', 'cinnamon', 'fawn', 'sable', 'mink', 'sepia', 'bluepoint'] as const; // bluepoint=ポイント柄用の、青みのある白い地とブルーグレーのポイント
 export const PATTERNS = ['solid', 'tabby', 'classic', 'spotted', 'ticked', 'bicolor', 'point', 'calico', 'tuxedo', 'kiji', 'mitted', 'gloves', 'sepia'] as const;
 // point=顔・耳・足・しっぽが濃い(シャム) / mitted=ポイント+白い鼻すじ・胸・足(ラグドールのミテッド・バイカラー)
 // gloves=ポイント+白い足先(バーマン) / sepia=ポイントのコントラストが弱く、顔と足先がほんのり濃いグラデ(バーミーズ)
