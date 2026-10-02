@@ -368,3 +368,5 @@ body { position: relative; overflow-x: clip; }
 .prose .b-coats th[scope="row"] { width: 8.5em; white-space: nowrap; }
 .loaf-tag { position: absolute; right: 6px; top: 6px; z-index: 2; background: var(--yellow); color: var(--k); border: 2px solid var(--k); font-size: .72rem; font-weight: 800; padding: 0 8px; rotate: 4deg; }
 .b-life { display: block; margin-top: 4px; font-size: .8rem; color: var(--gray); }
+.b-alias { display: block; } .b-alias + .b-alias { margin-top: 4px; } .b-alias b { margin-right: 4px; }
+.wanted h3.w-long { font-size: .82em; letter-spacing: -.02em; }

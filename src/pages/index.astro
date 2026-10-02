@@ -3,7 +3,7 @@
 // (週刊ラグドールの「一面→結論→ウワサ→指名手配→アンケート」構成は使わない。横田さん 2026-09-27)
 import Base from '../layouts/Base.astro';
 import { getColumns } from '../lib';
-import { BREEDS } from '../data/breeds';
+import { BREEDS, kanaBreak } from '../data/breeds';
 import { faceSvg, bodySvg, kickCatSvg, NEKOKICHI } from '../data/cat-art';
 import { sandSvg, sandPile } from '../data/splat';
 import type { Art } from '../data/art-schema';
@@ -127,8 +127,8 @@ const pickup = ['american-shorthair', 'ragdoll', 'singapura', 'tonkinese', 'pers
       <a class="wanted breed-card pop-in" href={`/breeds/${b.slug}/`} data-art={JSON.stringify(b.art)} data-name={b.name}>
         <div class="w-title">No.{String(BREEDS.indexOf(b) + 1).padStart(2, '0')} {b.hair}・{b.size}</div>
         <div class="w-pic"><Fragment set:html={sandSvg(100 + i, i % 2 ? ['#6c3cff', '#e9d6b0'] : ['#e6ff2e', '#e9d6b0'])} /><Fragment set:html={bodySvg(b.art, `${b.name}のイラスト`)} /></div>
-        <h3>{b.name}</h3>
-        <span class="crime">{b.catch}</span>
+        <h3 class:list={{ "w-long": b.name.length > 12 }} set:html={kanaBreak(b.name)} />
+        <span class="crime" set:html={kanaBreak(b.catch)} />
       </a>
     ))}
   </div>

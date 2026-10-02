@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { BREEDS } from '../../data/breeds';
+import { BREEDS, kanaBreak } from '../../data/breeds';
 import { bodySvg } from '../../data/cat-art';
 import { sandSvg } from '../../data/splat';
 
@@ -31,8 +31,8 @@ const tags = (b: (typeof BREEDS)[number]) =>
       <a class="wanted breed-card pop-in" href={`/breeds/${b.slug}/`} data-tags={tags(b)} data-art={JSON.stringify(b.art)} data-name={b.name}>
         <div class="w-title">No.{String(i + 1).padStart(2, '0')} {b.hair}・{b.size}</div>
         <div class="w-pic"><Fragment set:html={sandSvg(100 + i, [['#e6ff2e', '#6c3cff', '#16e0b0', '#ff3ea5'][i % 4], '#e9d6b0'])} /><Fragment set:html={bodySvg(b.art, `${b.name}のイラスト`)} /></div>
-        <h3>{b.name}</h3>
-        <span class="crime">{b.catch}</span>
+        <h3 class:list={{ "w-long": b.name.length > 12 }} set:html={kanaBreak(b.name)} />
+        <span class="crime" set:html={kanaBreak(b.catch)} />
       </a>
     ))}
   </div>

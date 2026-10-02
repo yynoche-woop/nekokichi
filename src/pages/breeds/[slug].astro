@@ -32,7 +32,7 @@ const LIFE_BREED: Record<string, string> = {
 const own = LIFE_BREED[b.slug];
 const LIFE = own ? [own, own, ...LIFE_ALL] : LIFE_ALL;
 const title = `${b.name}の性格・特徴・お手入れ|猫種図鑑|ネコキチ猫吉`;
-const description = `${b.name}(${b.en})ってどんな猫?${b.lead.slice(0, 70)}…特徴、よくある誤解、お手入れ、気をつけたい病気まで。`;
+const description = `${b.name}(${b.en})ってどんな猫?${b.alias ? `「${b.alias[0].t.replace(/\(.*\)$/, '')}」と呼ばれる猫種。` : ''}${b.lead.slice(0, 70)}…特徴、よくある誤解、お手入れ、気をつけたい病気まで。`;
 const jsonld = { '@context': 'https://schema.org', '@type': 'Article', headline: `${b.name}の性格・特徴・お手入れ`, author: { '@type': 'Organization', name: 'ネコキチ編集部' } };
 ---
 <Base title={title} description={description} jsonld={jsonld}>
@@ -55,6 +55,7 @@ const jsonld = { '@context': 'https://schema.org', '@type': 'Article', headline:
       <p class="b-lead">{b.lead}</p>
       <table class="b-spec">
         <tbody>
+          {b.alias && <tr><th scope="row">呼ばれ方</th><td>{b.alias.map((x) => <span class="b-alias"><b>「{x.t}」</b>{x.why}</span>)}</td></tr>}
           <tr><th scope="row">原産・発祥</th><td>{b.origin}</td></tr>
           <tr><th scope="row">毛の長さ</th><td>{b.hair}</td></tr>
           <tr><th scope="row">大きさ</th><td>{b.size}</td></tr>
@@ -119,7 +120,7 @@ const jsonld = { '@context': 'https://schema.org', '@type': 'Article', headline:
     {b.sources.length > 0 && (
       <section class="col-sources">
         <h2>編集部が見た資料</h2>
-        <ul>{[...b.sources, ...(b.coatsSources ?? [])].map((s) => <li><a href={s.url} target="_blank" rel="noopener">{s.title}</a></li>)}</ul>
+        <ul>{[...b.sources, ...(b.coatsSources ?? []), ...(b.aliasSources ?? [])].map((s) => <li><a href={s.url} target="_blank" rel="noopener">{s.title}</a></li>)}</ul>
       </section>
     )}
   </article>
