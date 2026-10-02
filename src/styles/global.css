@@ -365,3 +365,4 @@ body { position: relative; overflow-x: clip; }
 .peek-l.on { translate: -46% 0; }
 .peek-r { right: 0; rotate: -90deg; translate: 110% 0; }
 .peek-r.on { translate: 46% 0; }
+.prose .b-coats th[scope="row"] { width: 8.5em; white-space: nowrap; }

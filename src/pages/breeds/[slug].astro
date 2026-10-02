@@ -51,6 +51,17 @@ const jsonld = { '@context': 'https://schema.org', '@type': 'Article', headline:
         {b.features.map((f) => <article class="ev"><h3>{f.t}</h3><p>{f.d}</p></article>)}
       </div>
 
+      {b.coats && (
+        <>
+          <h2>毛色と模様の呼び名</h2>
+          <table class="b-coats">
+            <thead><tr><th scope="col">呼び名</th><th scope="col">どんな毛色・模様?</th></tr></thead>
+            <tbody>{b.coats.map((c) => <tr><th scope="row">{c.t}</th><td>{c.d}</td></tr>)}</tbody>
+          </table>
+          <p class="small">ほかの猫種にも出てくる呼び名(タビー・ポイントなど)は、<a href="/columns/coat-patterns/">猫の毛色と模様の呼び名</a>にまとめています。</p>
+        </>
+      )}
+
       <h2>よく言われる傾向</h2>
       <div class="tend">
         {T.map((t) => (
@@ -91,7 +102,7 @@ const jsonld = { '@context': 'https://schema.org', '@type': 'Article', headline:
     {b.sources.length > 0 && (
       <section class="col-sources">
         <h2>編集部が見た資料</h2>
-        <ul>{b.sources.map((s) => <li><a href={s.url} target="_blank" rel="noopener">{s.title}</a></li>)}</ul>
+        <ul>{[...b.sources, ...(b.coatsSources ?? [])].map((s) => <li><a href={s.url} target="_blank" rel="noopener">{s.title}</a></li>)}</ul>
       </section>
     )}
   </article>
