@@ -146,7 +146,7 @@ export const BREEDS: Breed[] = [
     health: 'アビシニアンとソマリでは、CEP290遺伝子の変異による網膜変性(進行性網膜萎縮)が知られ、遺伝子検査もある。ほかにアミロイドーシス、心筋症、甲状腺の病気、ピルビン酸キナーゼ欠損症(貧血を起こす遺伝性の病気)などが報告されている。見え方の変化や元気のなさに気づいたら、早めに動物病院に相談しよう。',
     tsukkomi: '走り回るアビを目で追っていたら、寝てばかりの猫にも会いたくなった。動も静もかわいい。',
     tendency: { play: 5, cuddle: 3, groom: 1, voice: 2, size: 2 },
-    art: { coat: 'ruddy', pattern: 'ticked', eye: 'gold', ears: 'big', hair: 'short', expr: 'wow' },
+    art: { coat: 'ruddy', pattern: 'ticked', eye: 'gold', ears: 'big', hair: 'short', expr: 'wow', slim: true },
     sources: [
       { title: 'Abyssinian(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/abyssinian/' },
       { title: 'アビシニアン(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/abyssinian.html' },
@@ -261,7 +261,7 @@ export const BREEDS: Breed[] = [
     health: 'CFAは、遺伝性の病気として貧血を起こすピルビン酸キナーゼ欠損症をあげ、ほかに腎臓や尿路に結石ができる尿路結石症も起こることがあるとしている。ピルビン酸キナーゼ欠損症は遺伝子の変異がわかっており、検査がすすめられる猫種のひとつだ。ほかに腎不全や膀胱炎も気をつけたいとされる。元気や食欲の低下、トイレの回数やおしっこの色の変化に気づいたら、早めに獣医師に相談しよう。',
     tsukkomi: '古代の猫の面影を見ていたら、いま隣で寝ているうちの猫もなんだか神々しく見えてきた。猫は昔もいまも全員かわいい。',
     tendency: { play: 4, cuddle: 3, groom: 1, voice: 2, size: 3 },
-    art: { coat: 'silver', pattern: 'spotted', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' },
+    art: { coat: 'silver', pattern: 'spotted', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal', slim: true },
     sources: [
       { title: 'Egyptian Mau(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/egyptian-mau/' },
       { title: 'エジプシャン・マウってどんな猫?ピラミッドに描かれてる猫!?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/739.html' },
@@ -299,7 +299,7 @@ export const BREEDS: Breed[] = [
     health: 'CFAは、遺伝子検査で調べられる進行性網膜萎縮症(PRA)と、遺伝と環境の両方が関わるアミロイドーシスを気をつけたい病気としてあげている。ほかに腎不全や慢性腎疾患などの泌尿器の病気、糖尿病、大動脈弁狭窄症も報告がある。見え方の変化や、水を飲む量・おしっこの量が増えたときは早めに動物病院に相談しよう。',
     tsukkomi: '600通りの色を見比べていたら、どの色の猫もそれぞれかわいく見えてきた。結局ぜんぶの猫が好きだ。',
     tendency: { play: 5, cuddle: 5, groom: 1, voice: 4, size: 2 },
-    art: { coat: 'chocolate', pattern: 'solid', eye: 'green', ears: 'big', hair: 'short', expr: 'smug' },
+    art: { coat: 'chocolate', pattern: 'solid', eye: 'green', ears: 'big', hair: 'short', expr: 'smug', slim: true },
     sources: [
       { title: 'Oriental(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/oriental/' },
       { title: 'オリエンタルショートヘアってどんな猫?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/842.html' },
@@ -337,7 +337,7 @@ export const BREEDS: Breed[] = [
     health: 'CFAは遺伝性の病気が知られていない丈夫な猫種と説明しているが、肥大型心筋症、下部尿路症候群、皮膚病、骨折などは報告のある病気としてあげられている。上毛がないぶん、日焼けや寒さによる体調の変化にも気をつけたい。皮膚の赤みや、おしっこの回数・色の変化、疲れやすさに気づいたら、早めに獣医師に相談しよう。',
     tsukkomi: 'さざ波みたいな毛をなでていたら、ふかふかの長毛の猫にも会いたくなった。手ざわりの違いも、猫の楽しみのうちだ。',
     tendency: { play: 5, cuddle: 5, groom: 2, voice: 3, size: 2 },
-    art: { coat: 'cream', pattern: 'solid', eye: 'gold', ears: 'big', hair: 'rex', expr: 'wow' },
+    art: { coat: 'cream', pattern: 'solid', eye: 'gold', ears: 'big', hair: 'rex', expr: 'wow', slim: true },
     sources: [
       { title: 'Cornish Rex(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/cornish-rex/' },
       { title: 'コーニッシュレックス(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/cornish_rex.html' },
@@ -452,7 +452,7 @@ export const BREEDS: Breed[] = [
     health: '喘息、慢性腎臓病、眼振(目が揺れる症状)などが気をつけたい病気として紹介されている。また、アビシニアンで知られる網膜変性(CEP290遺伝子の変異)が、シャムの集団でも比較的高い割合で見つかったという報告がある。咳や呼吸の変化、水を飲む量の増加、見え方の変化などに気づいたら、早めに動物病院に相談しよう。',
     tsukkomi: 'シャムにずっと話しかけられていたら、無口な猫の沈黙もいとおしくなる。猫は全員おしゃべり上手だ。',
     tendency: { play: 4, cuddle: 5, groom: 1, voice: 5, size: 2 },
-    art: { coat: 'seal', pattern: 'point', eye: 'blue', ears: 'big', hair: 'short', expr: 'smug' },
+    art: { coat: 'seal', pattern: 'point', eye: 'blue', ears: 'big', hair: 'short', expr: 'smug', slim: true },
     sources: [
       { title: 'Siamese(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/siamese/' },
       { title: 'シャム(サイアミーズ)ってどんな猫?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/1300.html' },
@@ -471,7 +471,7 @@ export const BREEDS: Breed[] = [
     hair: '短毛',
     size: '小型',
     weight: 'オス約2.7〜3.2kg・メス約1.8〜2.3kg(目安)',
-    catch: 'ちいさな体に大きな好奇心',
+    catch: '小さな妖精、大きな好奇心',
     lead: 'シンガポールの街の猫がもとになった自然発生の猫種。現地では「クシンタ(愛の猫)」とも呼ばれる。シンガポールで働いていたアメリカ人のハルとトミーのメドウ夫妻が1975年に5匹を連れ帰り、繁殖をはじめた。CFAのチャンピオンシップは1988年。純血種の猫のなかでも特に小さく、アイボリーの地に濃い茶色のティッキングが入る毛色だけが認められている。',
     features: [
       { t: '毛色はセピアのみ', d: 'CFAで認められているのは、温かみのあるアイボリーの地に濃い茶色のティッキングが入るセピアアグーティだけ。被毛はとても短く細く、体にぴったり沿う。' },
@@ -602,7 +602,7 @@ export const BREEDS: Breed[] = [
     health: 'アビシニアンと同じく、CEP290遺伝子の変異による網膜変性(進行性網膜萎縮)が知られている。ほかに、まれではあるもののピルビン酸キナーゼ欠損症(貧血を起こす遺伝性の病気)や、重症筋無力症、巨大食道症、尿路の病気なども報告がある。見え方や元気、食欲の変化に気づいたら、早めに動物病院に相談しよう。',
     tsukkomi: 'キツネしっぽを追いかけていたら、短いしっぽの猫にも会いたくなった。しっぽの長さは愛の量と無関係だ。',
     tendency: { play: 5, cuddle: 3, groom: 3, voice: 2, size: 2 },
-    art: { coat: 'ruddy', pattern: 'ticked', eye: 'green', ears: 'big', hair: 'semi', expr: 'normal' },
+    art: { coat: 'ruddy', pattern: 'ticked', eye: 'green', ears: 'big', hair: 'semi', expr: 'normal', slim: true },
     sources: [
       { title: 'Somali(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/somali/' },
       { title: 'ソマリってどんな猫?実はアビシニアンの長毛種!(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/1718.html' },
@@ -641,7 +641,7 @@ export const BREEDS: Breed[] = [
     health: 'CFAは特定の病気で知られる猫種ではないとしつつ、白い猫、とくに青い目の猫は難聴になりやすいと説明している。ほかに肥大型心筋症、尿路結石、運動失調症、新生子溶血が気をつけたい病気としてあげられ、血液型がB型の子が多いとして血液型の確認もすすめられている。呼びかけへの反応や歩き方の変化に気づいたら、早めに受診しよう。',
     tsukkomi: 'タンスの上から見下ろされるのも悪くない。床でごろごろする猫にも、高いところ好きの猫にも会いたくなる。',
     tendency: { play: 5, cuddle: 4, groom: 2, voice: 3, size: 2 },
-    art: { coat: 'white', pattern: 'solid', eye: 'odd', ears: 'tufted', hair: 'semi', expr: 'smug' },
+    art: { coat: 'white', pattern: 'solid', eye: 'odd', ears: 'tufted', hair: 'semi', expr: 'smug', slim: true },
     sources: [
       { title: 'Turkish Angora(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/turkish-angora/' },
       { title: 'ターキッシュアンゴラ(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/turkish_angora.html' },
@@ -716,7 +716,7 @@ export const BREEDS: Breed[] = [
     health: '肥大型心筋症、下部尿路の病気、脱臼、てんかんなどが報告のある病気としてあげられている。また、デボンレックスとスフィンクスでは、筋力が低下する遺伝性の病気(先天性筋無力症候群)に関わるCOLQ遺伝子の変異が報告されている。疲れやすさや食べ物の飲み込みにくさ、歩き方の変化に気づいたら、早めに獣医師に相談しよう。',
     tsukkomi: '妖精みたいな猫に見とれていたら、うちの猫も急に妖精に見えてきた。つまり猫は全員妖精だ。',
     tendency: { play: 5, cuddle: 5, groom: 2, voice: 3, size: 1 },
-    art: { coat: 'black', pattern: 'solid', eye: 'gold', ears: 'big', hair: 'rex', expr: 'wow' },
+    art: { coat: 'black', pattern: 'solid', eye: 'gold', ears: 'big', hair: 'rex', expr: 'wow', slim: true },
     sources: [
       { title: 'Devon Rex(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/devon-rex/' },
       { title: 'デボンレックス(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/devon_rex.html' },

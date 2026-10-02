@@ -216,6 +216,7 @@ export function bodySvg(a: Art, label?: string): string {
   const stripes = striped ? `<g fill="none" stroke="${c.mark}" stroke-width="5" stroke-linecap="round"><path d="M58 186 q14 4 16 16 M56 212 q16 4 18 18 M164 186 q-14 4 -16 16 M166 212 q-16 4 -18 18"/></g>` : '';
   return rough(thin(`<svg viewBox="-12 0 244 300" ${aria} xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
     <g transform="${a.small ? 'translate(110 296) scale(.84) translate(-110 -296)' : ''}">
+    <g transform="${a.slim ? 'translate(110 0) scale(.84 1) translate(-110 0)' : ''}">
     ${a.bobtail
       ? `<g class="tail"><path d="M164 262 c10 -14 30 -12 34 2 c8 2 8 20 -4 22 c-4 12 -26 12 -30 0 c-12 -4 -10 -20 0 -24 z" fill="${tailCol}" stroke="${K}" stroke-width="5" stroke-linejoin="round"/></g>`
       : `<g class="tail">
@@ -234,9 +235,11 @@ export function bodySvg(a: Art, label?: string): string {
     ${a.pattern === 'gloves' ? `<g fill="${WHITE}"><rect x="78.5" y="256" width="23" height="28"/><rect x="118.5" y="256" width="23" height="28"/></g><path d="M77 256 h26 M117 256 h26" stroke="${K}" stroke-width="2.4" stroke-linecap="round" opacity=".5"/>` : ''}
     <ellipse cx="90" cy="286" rx="19" ry="11" fill="${pawFill}" ${s}/>
     <ellipse cx="130" cy="286" rx="19" ry="11" fill="${pawFill}" ${s}/>
+    ${a.hair === 'rex' ? `<path d="${[[62, 186], [158, 190], [60, 222], [160, 228], [108, 200]].map(([x, y]) => curl(x, y, .9)).join(' ')}" fill="none" stroke="${K}" stroke-width="2.6" stroke-linecap="round" opacity=".45"/>` : ''}
     ${a.hair === 'curly' ? `<path d="${[[64, 178], [156, 182], [58, 214], [162, 220], [62, 252], [158, 256], [108, 196], [180, 262], [200, 232], [198, 208]].map(([x, y]) => curl(x, y, 1.3)).join(' ')}" fill="none" stroke="${K}" stroke-width="3" stroke-linecap="round" opacity=".55"/>` : ''}
     <path d="M84 281 v9 M96 281 v9 M124 281 v9 M136 281 v9" stroke="${K}" stroke-width="3" stroke-linecap="round"/>
-    <g transform="translate(14 0) scale(.96)">${faceGroup(a)}</g>
+    </g>
+    <g transform="${a.slim ? 'translate(110 0) scale(.9 1) translate(-110 0) ' : ''}translate(14 0) scale(.96)">${faceGroup(a)}</g>
   </g>
   </svg>`));
 }

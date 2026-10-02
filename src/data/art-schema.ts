@@ -22,6 +22,7 @@ export const ART_SCHEMA = z
     small: z.boolean().optional(), // 全身を小さめに描く(小柄な猫種)
     bobtail: z.boolean().optional(), // ぽんぽんの短いしっぽ(ジャパニーズボブテイル)
     paleChest: z.boolean().optional(), // 胸・お腹が淡い色(シンガプーラ)
+    slim: z.boolean().optional(), // ほっそりした体と顔(シャム・オリエンタル・アビシニアン・レックスなど)
   })
   .default({ coat: 'brown', pattern: 'kiji', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' });
 
