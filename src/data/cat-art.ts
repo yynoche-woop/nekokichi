@@ -243,7 +243,7 @@ export function bodySvg(a: Art, label?: string): string {
 
 /** 香箱座り(前足を胸の下にしまって、丸いかたまりになる座り方)。正面から見た形で、しっぽと背中の柄は描かない(横田さん 2026-10-02)。
  *  bodySvg と同じ viewBox 0 0 220 300 */
-export function loafSvg(a: Art, label?: string, tuck: 'a' | 'b' | 'c' = 'b'): string {
+export function loafSvg(a: Art, label?: string, tuck: 'c' | 'd' = 'c'): string {
   const c = COAT[a.coat];
   const s = `stroke="${K}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
   const base = a.pattern === 'calico' ? WHITE : a.pattern === 'tuxedo' ? COAT.black.body : a.hair === 'hairless' ? '#f1cdbd' : c.body;
@@ -265,13 +265,16 @@ export function loafSvg(a: Art, label?: string, tuck: 'a' | 'b' | 'c' = 'b'): st
   </svg>`));
 }
 
-/** おててナイナイ(胸の下に前足をしまっている)の描き方。a=胸の下のふくらみ / b=ふくらみ+指先がちょこっと / c=しまった腕のライン */
-function tuckSvg(t: 'a' | 'b' | 'c', fill: string): string {
-  const line = `fill="none" stroke="${K}" stroke-width="4" stroke-linecap="round"`;
-  if (t === 'c') return `<path d="M34 266 Q70 250 104 272 M186 266 Q150 250 116 272" ${line}/>`;
-  const humps = `<path d="M76 291 C74 270 86 262 94 262 C102 262 110 270 109 291 Z M111 291 C110 270 118 262 126 262 C134 262 146 270 144 291 Z" fill="${fill}"/><path d="M76 290 C74 270 86 262 94 262 C102 262 110 270 109 290 M111 290 C110 270 118 262 126 262 C134 262 146 270 144 290" ${line}/>`;
-  if (t === 'a') return humps;
-  return humps + `<path d="M87 283 v7 M97 283 v7 M120 283 v7 M130 283 v7" stroke="${K}" stroke-width="3" stroke-linecap="round"/>`;
+/** おててナイナイ(胸の下に前足をしまっている)の描き方。
+ *  c=しまった腕のラインが、胸のふわふわの下にもぐっていく / d=cに、ひじのふくらみを足す
+ *  (a=胸の下のふくらみ、b=指先がのぞく は不採用。横田さん 2026-10-02) */
+function tuckSvg(t: 'c' | 'd', chest: string): string {
+  const line = `fill="none" stroke="${K}" stroke-width="4.5" stroke-linecap="round"`;
+  const arms = `<path d="M22 268 C44 256 74 256 98 268 M198 268 C176 256 146 256 122 268" ${line}/>`;
+  const elbows = t === 'd' ? `<path d="M14 262 C18 276 30 282 44 280 M206 262 C202 276 190 282 176 280" ${line}/>` : '';
+  // 胸のふわふわ:腕の先をかくす
+  const bib = `<path d="M74 291 C72 262 88 244 110 244 C132 244 148 262 146 291 Z" fill="${chest}"/>`;
+  return arms + elbows + bib;
 }
 
 /** 編集長・猫吉(キジトラ白のオス) */
