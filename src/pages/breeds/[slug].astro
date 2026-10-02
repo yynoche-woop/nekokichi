@@ -20,7 +20,17 @@ const T = [
   { k: 'size', t: '体の大きさ', lo: '小さめ', hi: 'でかい' },
 ] as const;
 // 寿命は数字を書かず、ひとことをランダムに(横田さん 2026-10-02)。ページごとに決めておき、開くたびに入れかえる
-const LIFE = ['長生きしてね。', '永遠。', '猫又になるかも。'];
+const LIFE_ALL = ['長生きしてね。', '永遠。', '猫又になるかも。', '猫又になる(多分)。', '氷河期が来るまで。', '一生死にません。', '天使の類に寿命はない。', '神様の類に寿命はない。', 'そんなことより、可愛い。'];
+// 猫種だけのひとこと(出やすくするため2回入れる)
+const LIFE_BREED: Record<string, string> = {
+  'american-shorthair': 'アメリカンロングライフ。',
+  'exotic-shorthair': 'エキゾチックロングライフ。',
+  'british-shorthair': 'ブリティッシュロングライフ。',
+  'british-longhair': 'ブリティッシュロングライフ。',
+  abyssinian: 'アビ死なへん。',
+};
+const own = LIFE_BREED[b.slug];
+const LIFE = own ? [own, own, ...LIFE_ALL] : LIFE_ALL;
 const title = `${b.name}の性格・特徴・お手入れ|猫種図鑑|ネコキチ猫吉`;
 const description = `${b.name}(${b.en})ってどんな猫?${b.lead.slice(0, 70)}…特徴、よくある誤解、お手入れ、気をつけたい病気まで。`;
 const jsonld = { '@context': 'https://schema.org', '@type': 'Article', headline: `${b.name}の性格・特徴・お手入れ`, author: { '@type': 'Organization', name: 'ネコキチ編集部' } };
@@ -49,7 +59,7 @@ const jsonld = { '@context': 'https://schema.org', '@type': 'Article', headline:
           <tr><th scope="row">毛の長さ</th><td>{b.hair}</td></tr>
           <tr><th scope="row">大きさ</th><td>{b.size}</td></tr>
           <tr><th scope="row">体重</th><td>{b.weight}</td></tr>
-          <tr><th scope="row">寿命</th><td><span class="life-word" data-words={JSON.stringify(LIFE)}>{LIFE[[...b.slug].reduce((n, ch) => n + ch.charCodeAt(0), 0) % LIFE.length]}</span><small class="b-life">寿命は一匹ずつの体質や暮らし方でも大きく変わります。猫全体の平均は14歳前後(アニコムの集計)。<a href="/tools/age/">猫の年齢換算</a></small></td></tr>
+          <tr><th scope="row">寿命</th><td><span class="life-word" data-words={JSON.stringify(LIFE)}>{own ?? LIFE[[...b.slug].reduce((n, ch) => n + ch.charCodeAt(0), 0) % LIFE.length]}</span><small class="b-life">寿命は一匹ずつの体質や暮らし方でも大きく変わります。猫全体の平均は14歳前後(アニコムの集計)。<a href="/tools/age/">猫の年齢換算</a></small></td></tr>
         </tbody>
       </table>
 
