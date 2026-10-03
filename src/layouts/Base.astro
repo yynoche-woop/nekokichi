@@ -7,7 +7,7 @@ interface Props {
   title: string;
   description: string;
   /** 構造化データ(JSON-LD)。記事ページなどで渡す */
-  jsonld?: object;
+  jsonld?: object | object[];
 }
 const { title, description, jsonld } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');

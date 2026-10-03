@@ -54,6 +54,27 @@ const wmap = worldMapSvg(pins(world, japan.length + 1), { title: '世界の猫�
       </li>
     ))}
   </ol>
+  {trips.some((c) => c.data.trip!.time) && (
+    <>
+      <h2 class="sub-band" id="hikaku">15か所の比較表</h2>
+      <p class="lede">東京からの近さ順。所要時間は乗り継ぎを含む目安で、便数や季節で変わります。エサやりのルールは2026年10月時点の公式情報や現地の案内によるものです。</p>
+      <div class="tabi-table">
+        <table>
+          <thead><tr><th>旅先</th><th>東京から</th><th>船</th><th>エサやり</th></tr></thead>
+          <tbody>
+            {trips.map((c) => (
+              <tr>
+                <td><a href={`/columns/${c.id}/`}>{short(c.data.title)}</a></td>
+                <td>{c.data.trip!.time ?? '—'}<br /><small>約{kmFromTokyo(c.data.trip!).toLocaleString()}km</small></td>
+                <td>{c.data.trip!.ship ? 'あり' : 'なし'}</td>
+                <td>{c.data.trip!.feed ?? '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  )}
   <p class="small">地図の地形は Natural Earth のデータをもとに描いています。距離は東京駅からの直線距離の目安です。</p>
   <p class="back"><a class="btn" href="/columns/">記事一覧へ</a> <a class="btn btn-pink" href="/">トップへ</a></p>
 </Base>
@@ -71,4 +92,10 @@ const wmap = worldMapSvg(pins(world, japan.length + 1), { title: '世界の猫�
   .tabi-body b { font-family: var(--font-head); font-size: 1.08rem; line-height: 1.35; }
   .tabi-body small { font-size: .78rem; font-weight: 700; color: var(--gray); }
   .tabi-body span { font-size: .84rem; line-height: 1.6; }
+  .tabi-table { background: var(--paper); color: var(--k); border: 3px solid var(--k); box-shadow: var(--shadow); margin: 10px 0 24px; overflow-x: auto; }
+  .tabi-table table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+  @media (max-width: 520px) { .tabi-table table { font-size: .76rem; } .tabi-table th, .tabi-table td { padding: 5px 5px; } }
+  .tabi-table th { background: var(--k); color: var(--white); text-align: left; padding: 6px 8px; white-space: nowrap; }
+  .tabi-table td { padding: 6px 8px; border-top: 1px solid var(--hair); vertical-align: top; line-height: 1.5; }
+  .tabi-table td small { color: var(--gray); }
 </style>

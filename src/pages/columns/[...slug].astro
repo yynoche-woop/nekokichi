@@ -24,7 +24,16 @@ const related = [
   ...all.filter((a) => a.id !== entry.id && a.data.category === d.category),
   ...all.filter((a) => a.id !== entry.id),
 ].filter((a, i, arr) => arr.findIndex((b) => b.id === a.id) === i).slice(0, 4);
-const jsonld = {
+// 「## よくある質問」の「### Q. 〜」と答えの段落から FAQPage の構造化データを作る(猫の旅など)
+const plain = (t: string) => t.replace(/<[^>]+>/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/\*\*/g, '').trim();
+const faqBlock = (entry.body ?? '').split(/^## /m).find((b) => b.startsWith('よくある質問'));
+const faqs = faqBlock
+  ? faqBlock.split(/^### /m).slice(1).map((q) => {
+      const [head, ...rest] = q.split(/\r?\n/);
+      return { q: plain(head.replace(/^Q[..]\s*/, '')), a: plain(rest.join('\n').replace(/^[-*]\s+/gm, '')).replace(/\s*\n+\s*/g, ' ') };
+    }).filter((f) => f.q && f.a)
+  : [];
+const article = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: d.title,
@@ -34,6 +43,9 @@ const jsonld = {
   author: { '@type': 'Organization', name: 'ネコキチ編集部' },
   publisher: { '@type': 'Organization', name: 'ネコキチ猫吉' },
 };
+const jsonld = faqs.length
+  ? [article, { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }]
+  : article;
 ---
 <Base title={`${d.title}|ネコキチ猫吉`} description={d.description} jsonld={jsonld}>
   <nav class="crumb"><a href="/">トップ</a> › <a href="/columns/">記事一覧</a> › <a href={d.category === 'tabi' ? '/tabi/' : `/columns/#${d.category}`}>{CATEGORY_LABEL[d.category]}</a></nav>
