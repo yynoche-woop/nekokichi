@@ -1,7 +1,7 @@
 ---
 // 猫の旅:泊まるならこの宿(楽天トラベルのアフィリエイト。旅先ごとにいちばんおしゃれな1軒)
 // <template> で出し、ビルド後に scripts/stay-move.mjs が本文の「モデルコース」の直前へ移す。記事に1か所だけ。
-// 広告なので「PR」を表示(ステマ規制)。写真は楽天トラベルの宿の画像を、楽天の画像サーバーで 640px に縮めて表示。見た目は global.css の .stay
+// ボタンに「楽天トラベル」とあるのでPR表記は付けない(横田さん 2026-10-04)。写真は楽天トラベルの宿の画像を、楽天の画像サーバーで 640px に縮めて表示。見た目は global.css の .stay
 import type { Column } from '../lib';
 
 interface Props {
@@ -20,7 +20,7 @@ const place = entry.data.title.replace(/[::|｜(（].*$/, '');
     <aside class="stay" aria-label="泊まるならこの宿">
       {img && <a class="stay-photo" href={href} target="_blank" rel="sponsored noopener"><img src={img} alt={`${s.name}の写真`} width="640" height="427" loading="lazy" decoding="async" /></a>}
       <div class="stay-body">
-        <p class="stay-kicker"><span class="stay-pr">PR</span>{place}の旅、泊まるならここ</p>
+        <p class="stay-kicker">{place}の旅、泊まるならここ</p>
         <p class="stay-name">{s.name}</p>
         <p class="stay-why">{s.why}</p>
         {s.access && <p class="stay-access">{s.access}</p>}
