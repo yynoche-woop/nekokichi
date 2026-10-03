@@ -18,7 +18,7 @@ const tripPin = (c: (typeof trips)[number]) => ({ lat: c.data.trip!.lat, lng: c.
 const tabiJ = trips.filter((c) => c.data.trip!.region === 'japan');
 const tabiW = trips.filter((c) => c.data.trip!.region === 'world');
 const tabiJMap = japanMapSvg(tabiJ.map(tripPin), { title: '日本の猫の旅先', labels: false, w: 520, h: 460 });
-const tabiWMap = worldMapSvg(tabiW.map(tripPin), { title: '世界の猫の旅先', labels: false, w: 620, h: 330 });
+const tabiWMap = worldMapSvg(tabiW.map(tripPin), { title: '世界の猫の旅先', labels: false, w: 620, h: 330, deco: 'both', top: 76 }); // 猫耳とカップを落とす猫で、日本地図と高さをそろえる(横田さん 2026-10-04)
 
 const MIKE: Art = { coat: 'white', pattern: 'calico', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' };
 const KURO: Art = { coat: 'black', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'wow' };
@@ -134,6 +134,7 @@ const pickup = ['american-shorthair', 'ragdoll', 'singapura', 'tonkinese', 'pers
       </a>
     ))}
   </div>
+  <p class="zukan-note">元・広告運用の入力係(人間)いわく、犬の広告は飼い主と同じ犬種の写真がよく反応する。でも猫の広告は、どの猫を出しても猫好きがクリックする。だから{BREEDS.length}種、同率1位。<a href="/about/#ningen">入力係の話</a></p>
   <p class="more"><a class="btn btn-pink" href="/breeds/">ぜんぶ見る({BREEDS.length}種、同率1位)</a></p>
 
   <!-- 6. 真面目な話 -->
@@ -260,6 +261,9 @@ const pickup = ['american-shorthair', 'ragdoll', 'singapura', 'tonkinese', 'pers
       .stile-art { width: 54%; right: 4px; top: 10px; }
       .stile b { font-size: clamp(1.15rem, 5.6vw, 1.6rem); }
     }
+
+    .zukan-note { margin: 16px 0 0; color: var(--white); font-size: .88rem; font-weight: 700; line-height: 1.8; }
+    .zukan-note a { color: var(--yellow); margin-left: .4em; }
 
     /* 猫の旅 */
     .tabi-top { background: var(--paper); color: var(--k); border: 3px solid var(--k); box-shadow: 8px 8px 0 var(--mint); padding: 18px; }

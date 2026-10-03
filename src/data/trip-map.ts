@@ -5,6 +5,7 @@ import { feature } from 'topojson-client';
 import land10 from 'world-atlas/land-10m.json' with { type: 'json' };
 import land50 from 'world-atlas/land-50m.json' with { type: 'json' };
 import land110 from 'world-atlas/land-110m.json' with { type: 'json' };
+import { bodySvg } from './cat-art';
 
 export const TOKYO = { lat: 35.68124, lng: 139.76712, label: '東京' }; // 東京駅
 
@@ -89,12 +90,51 @@ export function japanMapSvg(pins: Pin[], opt: { title: string; w?: number; h?: n
 }
 
 /** 世界地図(東京が真ん中の、日本でよく見る並び)。弧は東京からの大圏航路 */
-export function worldMapSvg(pins: Pin[], opt: { title: string; w?: number; h?: number; labels?: boolean } = { title: '' }) {
+export function worldMapSvg(pins: Pin[], opt: { title: string; w?: number; h?: number; labels?: boolean; deco?: 'ears' | 'cup' | 'both'; top?: number } = { title: '' }) {
   const w = opt.w ?? 760, h = opt.h ?? 400;
-  const proj = geoNaturalEarth1().rotate([-150, 0]).fitExtent([[6, 6], [w - 6, h - 6]], { type: 'Sphere' } as any);
+  const top = opt.deco ? (opt.top ?? 70) : 0; // 飾り(猫耳・猫)のぶん上を空ける
+  const gutter = opt.deco === 'cup' || opt.deco === 'both' ? 56 : 0; // カップが地球の外へ落ちるための右の余白
+  const proj = geoNaturalEarth1().rotate([-150, 0]).fitExtent([[6, 6 + top], [w - 6 - gutter, h + top - 6]], { type: 'Sphere' } as any);
   const path = geoPath(proj);
   const s = Math.max(6, Math.min(10, w / 80));
-  let out = `<svg class="tripmap" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(opt.title)}" xmlns="http://www.w3.org/2000/svg"><path d="${path({ type: 'Sphere' } as any)}" fill="${SEA}" stroke="${INK}" stroke-width="2"/><path d="${path(LAND[110])}" fill="${LANDC}" stroke="${INK}" stroke-width="1" stroke-linejoin="round"/>`;
+  const [bx0, by0] = [path.bounds({ type: 'Sphere' } as any)[0][0], path.bounds({ type: 'Sphere' } as any)[0][1]];
+  const bx1 = path.bounds({ type: 'Sphere' } as any)[1][0];
+  const sw = bx1 - bx0;
+  let deco = '', decoTop = '';
+  if (opt.deco === 'ears' || opt.deco === 'both') {
+    // 地球の上に猫耳。耳は地球のあとに描き、付け根は地球の輪郭線を消す(頭から生えて見えるように。前足の付け根と同じ考え方)
+    // 耳の外側の付け根は、地球の上の平らな辺の端(輪郭が曲がり始める所)にそろえる。左右対称
+    const poleL = proj([-29.999, 90])!, poleR = proj([329.999 - 360, 90])!;
+    const flatL = Math.min(poleL[0], poleR[0]), flatR = Math.max(poleL[0], poleR[0]);
+    const ear = (outer: number, dir: number) => {
+      // dir=1:左の耳(外側が左)、-1:右の耳
+      const inner = outer + 112 * dir, tipX = outer + 46 * dir;
+      const tip = `Q${outer + 18 * dir} ${by0 - 40} ${tipX} ${by0 - 66} Q${outer + 78 * dir} ${by0 - 30} ${inner} ${by0}`;
+      return `<path d="M${outer} ${by0 + 3} L${outer} ${by0} ${tip} L${inner} ${by0 + 3} Z" fill="${SEA}"/>`
+        + `<path d="M${outer} ${by0} ${tip}" fill="none" stroke="${INK}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`
+        + `<path d="M${outer + 26 * dir} ${by0 + 2} Q${outer + 34 * dir} ${by0 - 22} ${tipX} ${by0 - 42} Q${outer + 62 * dir} ${by0 - 18} ${outer + 86 * dir} ${by0 + 2} Z" fill="#ffb3cf"/>`;
+    };
+    decoTop += ear(flatL + 2, 1) + ear(flatR - 2, -1);
+  }
+  if (opt.deco === 'cup' || opt.deco === 'both') {
+    // 地球のふちに座った猫が、カップを宇宙へ落とす(落ちるアニメーションつき。動きを減らす設定では止まる)
+    const rimY = (x: number) => { for (let lat = 0; lat <= 90; lat += 0.25) { const p = proj([-30.001, lat]); if (p && p[0] <= x) return p[1]; } return by0; };
+    const cx = bx0 + sw * 0.86, base = rimY(cx) + 3;
+    const catW = 84;
+    decoTop += bodySvg({ coat: 'white', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'smug' }).replace(/^<svg /, `<svg x="${cx - catW / 2}" y="${base - (catW * 300) / 220 + 6}" width="${catW}" height="${(catW * 300) / 220}" `);
+    const ux = cx + 38, uy = rimY(ux) - 1; // カップの置き場所(猫の右、ふちの上)
+    const cup = `<path d="M-11-22h22l-3 22h-16z" fill="#fff" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/><path d="M-9-18h18" stroke="#c9733a" stroke-width="4"/><path d="M11-16q8 0 7 7t-8 6" fill="none" stroke="${INK}" stroke-width="2.5"/>`;
+    const tea = `<path d="M10-14q16 6 18 26" fill="none" stroke="#c9733a" stroke-width="5" stroke-linecap="round"/><circle cx="30" cy="22" r="3.5" fill="#c9733a"/><circle cx="24" cy="32" r="2.5" fill="#c9733a"/>`;
+    decoTop += `<style>
+      @keyframes tmCup { 0%, 35% { transform: translate(0, 0) rotate(0deg); opacity: 1 } 45% { transform: translate(14px, -6px) rotate(55deg); opacity: 1 } 80% { transform: translate(58px, 130px) rotate(250deg); opacity: 1 } 88%, 100% { transform: translate(62px, 150px) rotate(280deg); opacity: 0 } }
+      @keyframes tmTea { 0%, 42% { opacity: 0; transform: translate(0, 0) } 50% { opacity: 1; transform: translate(16px, 0) } 85% { opacity: 1; transform: translate(56px, 120px) } 92%, 100% { opacity: 0; transform: translate(60px, 140px) } }
+      .tm-cup, .tm-tea { transform-box: view-box; animation: 5s ease-in infinite; }
+      .tm-cup { animation-name: tmCup; transform-origin: ${ux}px ${uy}px; }
+      .tm-tea { animation-name: tmTea; }
+      @media (prefers-reduced-motion: reduce) { .tm-cup { animation: none; transform: translate(14px, -6px) rotate(55deg); } .tm-tea { animation: none; opacity: 1; transform: translate(16px, 0); } }
+    </style><g class="tm-cup"><g transform="translate(${ux} ${uy})">${cup}</g></g><g class="tm-tea"><g transform="translate(${ux} ${uy})">${tea}</g></g>`;
+  }
+  let out = `<svg class="tripmap" viewBox="0 0 ${w} ${h + top}" role="img" aria-label="${esc(opt.title)}" xmlns="http://www.w3.org/2000/svg">${deco}<path d="${path({ type: 'Sphere' } as any)}" fill="${SEA}" stroke="${INK}" stroke-width="2"/><path d="${path(LAND[110])}" fill="${LANDC}" stroke="${INK}" stroke-width="1" stroke-linejoin="round"/>`;
   const [tx, ty] = proj([TOKYO.lng, TOKYO.lat])!;
   pins.forEach((p) => { out += `<path d="${path(arc(TOKYO, p) as any)}" fill="none" stroke="#ff3ea5" stroke-width="2.4" stroke-dasharray="6 5" stroke-linecap="round" opacity=".9"/>`; });
   out += star(tx, ty, s * 1.4) + label(tx + s * 1.6, ty + s * 2, '東京', s * 1.6);
@@ -104,5 +144,5 @@ export function worldMapSvg(pins: Pin[], opt: { title: string; w?: number; h?: n
     out += p.href ? `<a href="${p.href}">${m}<title>${esc(p.label ?? '')}</title></a>` : m;
     if (p.label && opt.labels !== false) out += label(x + s * 1.6, y - s * 2.1, p.label, s * 1.6);
   });
-  return out + '</svg>';
+  return out + decoTop + '</svg>';
 }
