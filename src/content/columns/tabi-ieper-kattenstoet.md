@@ -19,6 +19,7 @@ trip:
   time: "約18時間"
   ship: false
   feed: "—(祭りは張りぼて)"
+  stay: { name: "ゲント・マリオット・ホテル(ベルギー・ゲント)", url: "https://travel.rakuten.co.jp/HOTEL/163967/", why: "中世の街並みが残るゲントの、レイエ川沿いのコーレンレイを見渡せる立地。イーペルの近くでは、楽天トラベルでいちばん景色のいい宿。", access: "イーペルまで電車で約1時間(目安)" }
   scene: festival
   photo: { src: "/tabi/ieper-kattenstoet.webp", alt: "イーペル猫祭りのパレードを進む黒猫と白猫の大きな張りぼて", author: "Zeisterre", license: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:Kattenstoet_2012.JPG" }
 sources:

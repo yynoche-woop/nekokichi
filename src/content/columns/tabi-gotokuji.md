@@ -19,6 +19,7 @@ trip:
   time: "約40分"
   ship: false
   feed: "—"
+  stay: { name: "由縁別邸 代田(世田谷代田)", url: "https://travel.rakuten.co.jp/HOTEL/179886/", why: "箱根から温泉を運ぶ、都心の温泉旅館。世田谷にあった築100年を超える茅葺き民家の建具や石を受け継いで建てられた。", access: "世田谷代田駅から徒歩1分。豪徳寺駅まで小田急線で2駅" }
   scene: temple
   photo: { src: "/tabi/gotokuji.webp", alt: "豪徳寺の招福殿の横に奉納された、たくさんの白い招き猫", author: "Niwrat", license: "CC0", url: "https://commons.wikimedia.org/wiki/File:Maneki-neko_(Japanese_Lucky_Cat)_Statues_at_Gotokuji_Temple,_Tokyo.jpg" }
 sources:

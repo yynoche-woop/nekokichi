@@ -19,6 +19,7 @@ trip:
   time: "約4時間"
   ship: true
   feed: "観光客は禁止(島全体のルール)"
+  stay: { name: "松島佐勘 松庵(宮城・松島町)", url: "https://travel.rakuten.co.jp/HOTEL/139889/", why: "奥松島の入口、小さな岬に建つ全11室の大人の宿。縁側のある和室から、松島湾の島々をひとり占めできる。", access: "石巻の船乗り場まで車で約40分(目安)" }
   scene: catshrine
   photo: { src: "/tabi/tashirojima.webp", alt: "田代島の岸壁を歩く猫", author: "Kirin7739", license: "CC BY 4.0", url: "https://commons.wikimedia.org/wiki/File:Walking_cat_(Tashiro_Island).jpg" }
 sources:

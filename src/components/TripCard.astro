@@ -3,6 +3,7 @@
 import type { Column } from '../lib';
 import { japanMapSvg, worldMapSvg, kmFromTokyo } from '../data/trip-map';
 import { tripSceneSvg } from '../data/trip-scene';
+import StayBox from './StayBox.astro';
 
 interface Props {
   entry: Column;
@@ -26,6 +27,7 @@ const scene = tripSceneSvg(t.scene, d.art, name, entry.id.length);
         <dt>東京から</dt><dd>{t.access}</dd>
         <dt>距離</dt><dd>東京から直線で約{km.toLocaleString()}km</dd>
       </dl>
+      <StayBox entry={entry} />
       {t.photo && (
         <figure class="trip-photo">
           <img src={t.photo.src} alt={t.photo.alt} width="480" height="320" loading="lazy" decoding="async" />

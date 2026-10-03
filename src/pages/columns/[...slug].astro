@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ColumnList from '../../components/ColumnList.astro';
 import TripCard from '../../components/TripCard.astro';
+import StayBox from '../../components/StayBox.astro';
 import { getColumns, CATEGORY_LABEL, fmtDate, type Column } from '../../lib';
 import { faceSvg } from '../../data/cat-art';
 import { sandSvg } from '../../data/splat';
@@ -69,6 +70,7 @@ const jsonld = faqs.length
     <div class="prose">
       <Content />
     </div>
+    {d.trip?.stay && <StayBox entry={entry} variant="end" />}
     {d.sources.length > 0 && (
       <section class="col-sources">
         <h2>出典・参考資料</h2>

@@ -19,6 +19,7 @@ trip:
   time: "約6時間"
   ship: false
   feed: "観光客は禁止"
+  stay: { name: "キンプトン大安ホテル(台北)", url: "https://travel.rakuten.co.jp/HOTEL/177163/", why: "上海の設計事務所 Neri&Hu が手がけた、全129室のブティックホテル。台北の路地や建物の表情をデザインに取り込んでいる。", access: "台北駅から台湾鉄道で猴硐まで約1時間(目安)" }
   scene: mining
   photo: { src: "/tabi/houtong.webp", alt: "猴硐猫村の路地でくつろぐ茶白・ハチワレ・黒の猫(2026年2月)", author: "4300streetcar", license: "CC BY 4.0", url: "https://commons.wikimedia.org/wiki/File:Cats_at_Houtong_Cat_Village_February_2026.jpg" }
 sources:

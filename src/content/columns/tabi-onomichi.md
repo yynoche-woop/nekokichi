@@ -19,6 +19,7 @@ trip:
   time: "約4時間"
   ship: false
   feed: "公式の記載なし。見守る"
+  stay: { name: "LOG(尾道)", url: "https://travel.rakuten.co.jp/HOTEL/182864/", why: "1963年築のアパートを、インドの建築事務所スタジオ・ムンバイが改修した宿。千光寺へ続く石段の途中にある。", access: "猫の細道と同じ千光寺山の斜面、徒歩数分(石段あり)" }
   scene: alley
   photo: { src: "/tabi/onomichi.webp", alt: "「猫の細道」の看板の上でくつろぐ白黒の猫", author: "Asturio Cantabrio", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Neko-no-Hosomichi_2021-08_ac_(1).jpg" }
 sources:

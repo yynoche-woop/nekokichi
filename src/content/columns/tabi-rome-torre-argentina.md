@@ -19,6 +19,7 @@ trip:
   time: "直行便で約16時間"
   ship: false
   feed: "ボランティアに任せる"
+  stay: { name: "ボスコロ・エクセドラ・ローマ(オートグラフ・コレクション)", url: "https://travel.rakuten.co.jp/HOTEL/164003/", why: "共和国広場に面した19世紀の宮殿を改装したホテル。屋上テラスからローマの街を見渡せる。", access: "トッレ・アルジェンティーナ広場までバスで10分前後(目安)" }
   scene: ruins
   photo: { src: "/tabi/rome-torre-argentina.webp", alt: "ローマのトッレ・アルジェンティーナ広場の遺跡でくつろぐ猫たち", author: "Wknight94", license: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:Largo_di_Torre_Argentina_cats.jpg" }
 sources:

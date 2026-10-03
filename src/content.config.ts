@@ -38,6 +38,8 @@ const columns = defineCollection({
         ship: z.boolean().optional(), // 比較表用:船に乗る
         feed: z.string().optional(), // 比較表用:エサやりのルール(短く)
         scene: z.enum(SCENES).default('town'), // 記事の顔のイラスト(src/data/trip-scene.ts)
+        // 泊まるならこの宿(楽天トラベルのアフィリエイト。いちばんおしゃれな1軒。横田さん 2026-10-04)
+        stay: z.object({ name: z.string(), url: z.string().url(), why: z.string(), access: z.string().optional() }).optional(),
         photo: z.object({ src: z.string(), alt: z.string(), author: z.string(), license: z.string(), url: z.string().url() }).optional(),
       })
       .optional(),
