@@ -15,20 +15,16 @@ const pin = { lat: t.lat, lng: t.lng, label: name.replace(/[((].*$/, '') };
 const map = t.region === 'japan' ? japanMapSvg([pin], { title: `東京と${name}の位置` }) : worldMapSvg([pin], { title: `東京と${name}の位置`, labels: false });
 const km = kmFromTokyo(t);
 const gmap = `https://maps.google.com/maps?q=${encodeURIComponent(t.mapQuery)}&ll=${t.lat},${t.lng}&z=${t.region === 'japan' ? 13 : 14}&hl=ja&output=embed`;
-const route = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent('東京駅')}&destination=${t.lat},${t.lng}&travelmode=transit`;
 const scene = tripSceneSvg(t.scene, d.art, name, entry.id.length);
 ---
 <section class="trip" aria-label="旅のデータ">
-  <figure class="trip-hero"><Fragment set:html={scene} /></figure>
-  <div class="trip-grid">
-    <div class="trip-map">
-      <Fragment set:html={map} />
-      <p class="trip-km">東京から直線で<b>約{km.toLocaleString()}km</b></p>
-    </div>
-    <div>
+  <div class="trip-row">
+    <figure class="trip-hero"><Fragment set:html={scene} /></figure>
+    <div class="trip-info">
       <dl class="trip-facts">
         <dt>場所</dt><dd>{t.place}</dd>
         <dt>東京から</dt><dd>{t.access}</dd>
+        <dt>距離</dt><dd>東京から直線で約{km.toLocaleString()}km</dd>
       </dl>
       {t.photo && (
         <figure class="trip-photo">
@@ -38,31 +34,32 @@ const scene = tripSceneSvg(t.scene, d.art, name, entry.id.length);
       )}
     </div>
   </div>
-  <div class="trip-gmap">
-    <iframe src={gmap} title={`${name}のGoogleマップ`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+  <div class="trip-row trip-maps">
+    <div class="trip-map"><Fragment set:html={map} /></div>
+    <div class="trip-gmap">
+      <iframe src={gmap} title={`${name}のGoogleマップ`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    </div>
   </div>
-  <p class="trip-route"><a class="btn" href={route} target="_blank" rel="noopener">東京駅からの行き方をGoogleマップで見る</a></p>
 </section>
 
 <style>
   .trip { display: grid; gap: 14px; margin: 18px 0 26px; }
-  .trip-hero { margin: 0; border: 3px solid var(--k); box-shadow: var(--shadow); background: var(--white); }
+  .trip-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: stretch; }
+  .trip-hero { margin: 0; border: 3px solid var(--k); box-shadow: var(--shadow); background: var(--white); align-self: start; }
   .trip-hero :global(svg) { display: block; width: 100%; height: auto; }
-  .trip-photo { margin: 10px 0 0; max-width: 240px; border: 2px solid var(--k); background: var(--white); }
-  .trip-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
-  .trip-photo figcaption { font-size: .66rem; padding: 3px 6px; color: var(--gray); line-height: 1.4; }
-  .trip-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 14px; align-items: start; }
-  .trip-map { border: 3px solid var(--k); background: var(--white); }
-  .trip-map :global(svg) { display: block; width: 100%; height: auto; }
-  .trip-km { margin: 0; padding: 6px 10px; font-size: .9rem; font-weight: 700; border-top: 3px solid var(--k); background: var(--yellow); }
+  .trip-info { display: grid; align-content: start; gap: 10px; }
   .trip-facts { margin: 0; display: grid; gap: 4px; font-size: .92rem; }
   .trip-facts dt { font-weight: 900; background: var(--k); color: var(--white); padding: 2px 8px; width: fit-content; }
-  .trip-facts dd { margin: 0 0 8px; line-height: 1.7; }
-  .trip-gmap { border: 3px solid var(--k); aspect-ratio: 16 / 9; background: var(--blue-soft); }
-  .trip-gmap iframe { display: block; width: 100%; height: 100%; border: 0; }
-  .trip-route { margin: 0; text-align: center; }
+  .trip-facts dd { margin: 0 0 6px; line-height: 1.7; }
+  .trip-photo { margin: 0; max-width: 220px; border: 2px solid var(--k); background: var(--white); }
+  .trip-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+  .trip-photo figcaption { font-size: .66rem; padding: 3px 6px; color: var(--gray); line-height: 1.4; }
+  .trip-map { border: 3px solid var(--k); background: var(--blue-soft); display: grid; align-items: center; }
+  .trip-map :global(svg) { display: block; width: 100%; height: 100%; max-height: 100%; }
+  .trip-gmap { border: 3px solid var(--k); background: var(--blue-soft); min-height: 260px; }
+  .trip-gmap iframe { display: block; width: 100%; height: 100%; min-height: 260px; border: 0; }
   @media (max-width: 700px) {
-    .trip-grid { grid-template-columns: 1fr; }
-    .trip-gmap { aspect-ratio: 4 / 3; }
+    .trip-row { grid-template-columns: 1fr; }
+    .trip-gmap, .trip-gmap iframe { min-height: 280px; }
   }
 </style>
