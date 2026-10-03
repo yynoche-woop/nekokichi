@@ -19,7 +19,7 @@ trip:
   time: "約4時間"
   ship: false
   feed: "不可(駅長は駅長室の中)"
-  stay: { name: "美園のおやど(ろ)(和歌山市)", url: "https://travel.rakuten.co.jp/HOTEL/197494/", why: "商店街の空き家を改装した、1日1組限定の和モダンな一棟貸し。高野槙の木のお風呂がある。", access: "JR和歌山駅から徒歩5分。貴志川線で貴志駅まで約30分" }
+  stay: { name: "花山温泉 薬師の湯", url: "https://travel.rakuten.co.jp/HOTEL/14290/", why: "炭酸鉄泉の湯宿。温かい源泉と冷たい源泉に交互に入れる、温泉好きに知られた宿。", access: "和歌山駅まで車で約10分、貴志川線で貴志駅まで約30分" }
   scene: station
   photo: { src: "/tabi/kishi-station.webp", alt: "猫の顔の形をした貴志駅の駅舎", author: "Niiryoku2910", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Wakayama_railway_Kishi_station_building.jpg" }
 sources:

@@ -19,7 +19,7 @@ trip:
   time: "約3時間半〜4時間"
   ship: true
   feed: "NPOが世話。控えたい"
-  stay: { name: "ホテル イル・パラッツォ(福岡・春吉)", url: "https://travel.rakuten.co.jp/HOTEL/2771/", why: "建築家アルド・ロッシと内田繁が手がけ、1989年に開業した「日本初のデザインホテル」。2023年に改装されている。", access: "新宮漁港まで電車とバスで1時間前後(目安)" }
+  stay: { name: "ザ・リッツ・カールトン福岡", url: "https://travel.rakuten.co.jp/HOTEL/187405/", why: "2023年に天神で開業したラグジュアリーホテル。レストランとバーが6つ、スパとクラブラウンジもある。", access: "新宮漁港まで電車とバスで約40〜50分(目安)" }
   scene: island
   photo: { src: "/tabi/ainoshima.webp", alt: "相島で寄り添って眠るキジトラとキジ白の猫", author: "ShinguTown", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:%E7%9B%B8%E5%B3%B6%E3%81%AE%E7%8C%AB.jpg" }
 sources:

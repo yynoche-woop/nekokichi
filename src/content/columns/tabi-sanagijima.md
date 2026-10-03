@@ -19,7 +19,7 @@ trip:
   time: "約5時間半〜6時間"
   ship: true
   feed: "ドライフードのみ・少量"
-  stay: { name: "ネコノシマホステル(佐柳島)", url: "https://travel.rakuten.co.jp/HOTEL/165808/", why: "海辺に建つ木造の廃校舎をリノベーションした、島で唯一の宿。泊まれば、日帰りの人が帰ったあとの静かな島と猫に会える。", access: "佐柳本浦港から徒歩約15分" }
+  stay: { name: "NINE STORIES HOTEL(琴平)", url: "https://travel.rakuten.co.jp/HOTEL/196103/", why: "こんぴらさんの参道近く、川沿いに建つ2室だけのリノベーションホテル。", access: "JRで多度津まで約15分、多度津港から船で約50分" }
   scene: jump
 sources:
   - { title: "たどつ汽船(公式):運航情報・お知らせ", url: "https://tadotsu-kisen.jp/" }

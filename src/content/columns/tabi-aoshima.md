@@ -19,7 +19,7 @@ trip:
   time: "約5〜6時間(前泊が現実的)"
   ship: true
   feed: "決まった場所で少しだけ"
-  stay: { name: "NIPPONIA HOTEL 大洲 城下町", url: "https://travel.rakuten.co.jp/HOTEL/179179/", why: "城下町に残る豪商の屋敷や蔵、元料亭を客室にした分散型のホテル。大洲城の天守が見える部屋もあり、全室に檜風呂か客室風呂が付く。", access: "青島行きの船が出る長浜港まで車・JRで20〜30分(目安)" }
+  stay: { name: "瀬戸内リトリート青凪 by温故知新", url: "https://travel.rakuten.co.jp/HOTEL/151481/", why: "ミシュランキーを3年続けて獲得した、客室の少ないリトリート。瀬戸内海を見下ろす高台に建つ。", access: "松山駅まで車で約35分。長浜港へはそこから1時間ほど(目安)" }
   scene: port
   photo: { src: "/tabi/aoshima.webp", alt: "青島で島の人のまわりに集まる茶トラや白黒の猫たち(2015年撮影)", author: "暇・カキコ", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Cats_in_aoshima_island_1.JPG" }
 sources:

@@ -19,7 +19,7 @@ trip:
   time: "約1時間"
   ship: false
   feed: "控える"
-  stay: { name: "江の島ホテル(江の島アイランドスパ)", url: "https://travel.rakuten.co.jp/HOTEL/179415/", why: "2021年開業、全17室の和モダンなホテル。階ごとに内装のテーマが変わり、島のスパも使える。島に泊まれば、朝夕の静かな時間に歩ける。", access: "江の島の入口。島の奥まで徒歩20分前後(目安)" }
+  stay: { name: "UMITO KAMAKURA KOSHIGOE", url: "https://travel.rakuten.co.jp/HOTEL/196338/", why: "江の島を目の前に望む、腰越の海辺の一棟貸しの宿。", access: "江の島の対岸、腰越エリア" }
   scene: enoshima
   photo: { src: "/tabi/enoshima.webp", alt: "江の島の石垣の上に座るキジトラの猫", author: "Guilhem Vellut", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Cat_@_Enoshima_(13897723632).jpg" }
 sources:
