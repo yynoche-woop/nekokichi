@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ColumnList from '../../components/ColumnList.astro';
+import TripCard from '../../components/TripCard.astro';
 import { getColumns, CATEGORY_LABEL, fmtDate, type Column } from '../../lib';
 import { faceSvg } from '../../data/cat-art';
 import { sandSvg } from '../../data/splat';
@@ -35,7 +36,7 @@ const jsonld = {
 };
 ---
 <Base title={`${d.title}|ネコキチ猫吉`} description={d.description} jsonld={jsonld}>
-  <nav class="crumb"><a href="/">トップ</a> › <a href="/columns/">記事一覧</a> › <a href={`/columns/#${d.category}`}>{CATEGORY_LABEL[d.category]}</a></nav>
+  <nav class="crumb"><a href="/">トップ</a> › <a href="/columns/">記事一覧</a> › <a href={d.category === 'tabi' ? '/tabi/' : `/columns/#${d.category}`}>{CATEGORY_LABEL[d.category]}</a></nav>
   <article class="col-article">
     <header class="col-head">
       <Fragment set:html={sandSvg(entry.id.length * 7 + 3, ['#e6ff2e', '#6c3cff'])} />
@@ -52,6 +53,7 @@ const jsonld = {
       <span class={`judge judge-${d.verdict.type}`}>{d.verdict.label}</span>
       <p>{d.verdict.summary}</p>
     </aside>
+    {d.trip && <TripCard entry={entry} />}
     <div class="prose">
       <Content />
     </div>

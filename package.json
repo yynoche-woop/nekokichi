@@ -17,8 +17,13 @@
     "kuromoji": "^0.1.2"
   },
   "devDependencies": {
+    "@types/d3-geo": "^3.1.1",
+    "@types/topojson-client": "^3.1.5",
     "budoux": "^0.9.2",
+    "d3-geo": "^3.1.1",
     "puppeteer-core": "^23.11.1",
-    "tsx": "^4.23.15"
+    "topojson-client": "^3.1.0",
+    "tsx": "^4.23.15",
+    "world-atlas": "^2.0.2"
   }
 }

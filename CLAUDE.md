@@ -22,6 +22,7 @@
 - `src/content/columns/*.md` → `/columns/<slug>/`。書き方は `ops/column-spec.md`(shuusei=猫の習性事典、jitsuyo=暮らし・健康。旧 kensho=ウワサ検証は 2026-09-28 に習性事典へ書き直し済み。URLは変えていない)
 - `src/data/breeds.ts` → 猫種図鑑 `/breeds/<slug>/`(36種、雑種 mix を含む。`myths`=よくある誤解、label は 事実・おおむね正しい・個体差が大きい・言いすぎ・誤り・根拠は弱い)。`tendency` は猫種診断 `/tools/match/` に使う
 - `src/data/cat-art.ts` → イラスト。毛色×柄×目×耳×毛の長さ(型は `art-schema.ts`)で、どの猫もステッカー調で描ける。編集長・猫吉はキジトラ白
+- 猫の旅 `/tabi/`(2026-10-03 横田さん指示):猫に会える日本と世界の旅先15か所。記事は `columns/tabi-*.md`(category: tabi、trip に地図・写真)。Googleマップ埋め込み+東京基準の自前の絵地図(d3-geo+world-atlas でビルド時に SVG)。写真は Wikimedia Commons の自由ライセンスのみ(作者表示)。トップの NEWS の下に「猫の旅」枠。書き方は `ops/column-spec.md`
 - ツール:`/tools/match/`(猫種診断)`/tools/seimei/`(姓名判断。計算は seimei.ts、文章は seimei-text.ts)`/tools/age/` `/tools/bcs/` `/tools/food/`
   - age/bcs/food はアメショの森と似たツールなので、ネコキチ版は全猫種向けにする:`src/components/BreedPick.astro` の猫種セレクタで、breeds.ts の体重の目安と `grown`(成長がゆっくりな猫種)を結果に添える。計算式(RER=70×体重^0.75 など)は猫種で変えない
 - `.scratch/assets.mts` → favicon・OG画像・イラスト確認シート(`npx tsx .scratch/assets.mts`)
@@ -44,7 +45,7 @@
 - スプラトゥーン風の勢い。ただしインクではなく「猫砂のかけあい」。夜の地(#1c1629)に色つき猫砂(ネオンイエロー・バイオレット・ミント・ピンク)が飛び散る。読む所は紙のパネル
 - 砂の絵は `src/data/splat.ts`(sandSvg / sandPile / sandGround)。タップ・編集長を押すと砂が飛ぶ(Base.astro の kick)
 - 文字:見出し Reggae One、英字 Bungee、本文 M PLUS 1p
-- トップの構成:ステージ → コーナー選択 → ネコキチニュース(猫吉とミケ子の掛け合い)→ 猫砂フェス → ずかん → 真面目な話。週刊ラグドールの構成(一面→結論→ウワサ→指名手配→アンケート)は使わない(横田さん「サボりはやめて」)
+- トップの構成:ステージ → コーナー選択 → ネコキチニュース(猫吉とミケ子の掛け合い)→ 猫の旅 → 猫砂フェス → ずかん → 真面目な話。週刊ラグドールの構成(一面→結論→ウワサ→指名手配→アンケート)は使わない(横田さん「サボりはやめて」)
 - 却下案:ねこの庭(弱い)、ちいかわ・mofusand系(色はmofusandが近いが方向が違う)
 - `set:html` で入れたSVGにはページの scoped CSS が当たらない。クラスで効かせるときは `:global()` を使う
 - 猫の動きは機械っぽくしない(横田さんから何度も指摘あり):足を付け根で回さず、手描きのポーズをコマで切り替える。足の付け根は胴体の裏に隠し、先細りの形に。頭は胸に重ねて首をつなげる。しっぽは真上。砂かけ猫は `kickCatSvg`(.kf0 かまえ / .kf1 手前の足でけり / .kf2 奥の足でけり)

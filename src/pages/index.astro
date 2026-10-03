@@ -1,16 +1,24 @@
 ---
-// トップページ。構成は「猫砂のかけあい」の町:ステージ → コーナー選択 → ネコキチニュース → 猫砂フェス → ずかん → 真面目な話。
+// トップページ。構成は「猫砂のかけあい」の町:ステージ → コーナー選択 → ネコキチニュース → 猫の旅(2026-10-03 追加)→ 猫砂フェス → ずかん → 真面目な話。
 // (週刊ラグドールの「一面→結論→ウワサ→指名手配→アンケート」構成は使わない。横田さん 2026-09-27)
 import Base from '../layouts/Base.astro';
 import { getColumns } from '../lib';
 import { BREEDS, kanaBreak } from '../data/breeds';
 import { faceSvg, bodySvg, kickCatSvg, NEKOKICHI } from '../data/cat-art';
 import { sandSvg, sandPile } from '../data/splat';
+import { japanMapSvg, worldMapSvg } from '../data/trip-map';
 import type { Art } from '../data/art-schema';
 
 const all = await getColumns();
 const shuusei = all.filter((c) => c.data.category === 'shuusei');
 const jitsuyo = all.filter((c) => c.data.category === 'jitsuyo');
+// 猫の旅:日本と世界の地図にピン(押すと記事へ)。並びは東京から近い順
+const trips = all.filter((c) => c.data.category === 'tabi' && c.data.trip);
+const tripPin = (c: (typeof trips)[number]) => ({ lat: c.data.trip!.lat, lng: c.data.trip!.lng, href: `/columns/${c.id}/`, label: c.data.title.replace(/[::|｜].*$/, '') });
+const tabiJ = trips.filter((c) => c.data.trip!.region === 'japan');
+const tabiW = trips.filter((c) => c.data.trip!.region === 'world');
+const tabiJMap = japanMapSvg(tabiJ.map(tripPin), { title: '日本の猫の旅先', labels: false, w: 520, h: 460 });
+const tabiWMap = worldMapSvg(tabiW.map(tripPin), { title: '世界の猫の旅先', labels: false, w: 620, h: 330 });
 
 const MIKE: Art = { coat: 'white', pattern: 'calico', eye: 'green', ears: 'normal', hair: 'short', expr: 'normal' };
 const KURO: Art = { coat: 'black', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'wow' };
@@ -104,6 +112,22 @@ const pickup = ['american-shorthair', 'ragdoll', 'singapura', 'tonkinese', 'pers
     </div>
     <script type="application/json" id="news-data" set:html={JSON.stringify(NEWS)} />
   </section>
+
+  {trips.length > 0 && (
+    <>
+      <!-- 3.5 猫の旅 -->
+      <div class="band"><span class="no">TABI</span><h2>猫の旅:猫に会いに行こう</h2></div>
+      <section class="tabi-top pop-in" aria-label="猫の旅">
+        <p class="tabi-lead">猫島、招き猫のお寺、猫の駅長、遺跡の猫。日本と世界の<b>{trips.length}か所</b>を、東京からの地図つきで。ピンを押すと記事へ。</p>
+        <div class="tabi-maps">
+          <div class="tabi-m"><span>日本 {tabiJ.length}か所</span><Fragment set:html={tabiJMap} /></div>
+          <div class="tabi-m"><span>世界 {tabiW.length}か所</span><Fragment set:html={tabiWMap} /></div>
+        </div>
+        <ul class="tabi-chips">{trips.map((c) => <li><a href={`/columns/${c.id}/`}>{c.data.title.replace(/[::|｜].*$/, '')}</a></li>)}</ul>
+        <p class="more"><a class="btn btn-pink" href="/tabi/">猫の旅コーナーへ</a></p>
+      </section>
+    </>
+  )}
 
   <!-- 4. 猫砂フェス -->
   <div class="band"><span class="no">FES</span><h2>猫砂フェス:下僕はどの砂を買うべき?</h2></div>
@@ -283,6 +307,19 @@ const pickup = ['american-shorthair', 'ragdoll', 'singapura', 'tonkinese', 'pers
       .stile-art { width: 54%; right: 4px; top: 10px; }
       .stile b { font-size: clamp(1.15rem, 5.6vw, 1.6rem); }
     }
+
+    /* 猫の旅 */
+    .tabi-top { background: var(--paper); color: var(--k); border: 3px solid var(--k); box-shadow: 8px 8px 0 var(--mint); padding: 18px; }
+    .tabi-lead { margin: 0 0 12px; font-weight: 700; }
+    .tabi-maps { display: grid; grid-template-columns: 1fr 1.35fr; gap: 12px; align-items: start; }
+    .tabi-m { position: relative; border: 3px solid var(--k); background: var(--white); }
+    .tabi-m > span { position: absolute; left: 8px; top: 8px; background: var(--k); color: var(--white); font-size: .78rem; font-weight: 800; padding: 2px 8px; }
+    .tabi-m :global(svg) { display: block; width: 100%; height: auto; }
+    .tabi-m :global(a:hover path) { fill: var(--pink); }
+    .tabi-chips { list-style: none; padding: 0; margin: 14px 0 6px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tabi-chips a { display: inline-block; padding: 3px 10px; border: 2px solid var(--k); border-radius: 999px; background: var(--white); color: var(--k); font-size: .84rem; font-weight: 700; text-decoration: none; }
+    .tabi-chips a:hover { background: var(--yellow); }
+    @media (max-width: 760px) { .tabi-maps { grid-template-columns: 1fr; } }
 
     /* ネコキチニュース */
     .news { background: var(--night-2); border: 3px solid var(--k); box-shadow: 8px 8px 0 var(--yellow); padding: 18px; }

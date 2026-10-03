@@ -1,0 +1,68 @@
+---
+// 猫の旅の記事の頭に出す「旅のカード」:写真(なければイラスト)・東京からの位置の地図・Googleマップ
+import type { Column } from '../lib';
+import { bodySvg } from '../data/cat-art';
+import { japanMapSvg, worldMapSvg, sceneSvg, kmFromTokyo } from '../data/trip-map';
+
+interface Props {
+  entry: Column;
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const t = d.trip!;
+const name = d.title.replace(/[::|｜].*$/, '');
+const pin = { lat: t.lat, lng: t.lng, label: name.replace(/[((].*$/, '') };
+const map = t.region === 'japan' ? japanMapSvg([pin], { title: `東京と${name}の位置` }) : worldMapSvg([pin], { title: `東京と${name}の位置`, labels: false });
+const km = kmFromTokyo(t);
+const gmap = `https://maps.google.com/maps?q=${encodeURIComponent(t.mapQuery)}&ll=${t.lat},${t.lng}&z=${t.region === 'japan' ? 13 : 14}&hl=ja&output=embed`;
+const route = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent('東京駅')}&destination=${t.lat},${t.lng}&travelmode=transit`;
+const scene = t.photo ? '' : sceneSvg(t.scene, bodySvg(d.art), name, entry.id.length);
+---
+<section class="trip" aria-label="旅のデータ">
+  <figure class="trip-photo">
+    {t.photo ? (
+      <>
+        <img src={t.photo.src} alt={t.photo.alt} width="1200" height="800" loading="eager" decoding="async" />
+        <figcaption>写真:<a href={t.photo.url} target="_blank" rel="noopener">{t.photo.author}</a>({t.photo.license}/Wikimedia Commons)</figcaption>
+      </>
+    ) : (
+      <Fragment set:html={scene} />
+    )}
+  </figure>
+  <div class="trip-grid">
+    <div class="trip-map">
+      <Fragment set:html={map} />
+      <p class="trip-km">東京から直線で<b>約{km.toLocaleString()}km</b></p>
+    </div>
+    <dl class="trip-facts">
+      <dt>場所</dt><dd>{t.place}</dd>
+      <dt>東京から</dt><dd>{t.access}</dd>
+    </dl>
+  </div>
+  <div class="trip-gmap">
+    <iframe src={gmap} title={`${name}のGoogleマップ`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+  </div>
+  <p class="trip-route"><a class="btn" href={route} target="_blank" rel="noopener">東京駅からの行き方をGoogleマップで見る</a></p>
+</section>
+
+<style>
+  .trip { display: grid; gap: 14px; margin: 18px 0 26px; }
+  .trip-photo { margin: 0; border: 3px solid var(--k); background: var(--white); box-shadow: var(--shadow); }
+  .trip-photo img, .trip-photo :global(svg) { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+  .trip-photo :global(.tripscene) { aspect-ratio: 8 / 5; }
+  .trip-photo figcaption { font-size: .72rem; padding: 4px 8px; color: var(--gray); }
+  .trip-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 14px; align-items: start; }
+  .trip-map { border: 3px solid var(--k); background: var(--white); }
+  .trip-map :global(svg) { display: block; width: 100%; height: auto; }
+  .trip-km { margin: 0; padding: 6px 10px; font-size: .9rem; font-weight: 700; border-top: 3px solid var(--k); background: var(--yellow); }
+  .trip-facts { margin: 0; display: grid; gap: 4px; font-size: .92rem; }
+  .trip-facts dt { font-weight: 900; background: var(--k); color: var(--white); padding: 2px 8px; width: fit-content; }
+  .trip-facts dd { margin: 0 0 8px; line-height: 1.7; }
+  .trip-gmap { border: 3px solid var(--k); aspect-ratio: 16 / 9; background: var(--blue-soft); }
+  .trip-gmap iframe { display: block; width: 100%; height: 100%; border: 0; }
+  .trip-route { margin: 0; text-align: center; }
+  @media (max-width: 700px) {
+    .trip-grid { grid-template-columns: 1fr; }
+    .trip-gmap { aspect-ratio: 4 / 3; }
+  }
+</style>

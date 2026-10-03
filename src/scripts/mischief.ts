@@ -31,7 +31,7 @@ function popWord(x: number, y: number, text: string) {
 
 /* ---------- 猫の毛とコロコロ ---------- */
 const hairs: HTMLElement[] = [];
-const BLOCKS = 'main :is(p, h1, h2, h3, li, a, button, img, svg, table, figure, article, .band, .stile, .wanted, .news, .fes, .calm, .stages, .wanted-grid, .cta, .stage-copy), header, footer'; // .pop-in は出る前は縮んでいるので、動かない親の枠でもよける
+const BLOCKS = 'main :is(p, h1, h2, h3, li, a, button, img, svg, table, figure, article, .band, .stile, .wanted, .news, .fes, .calm, .stages, .wanted-grid, .cta, .stage-copy, .trip, .tabi-top, .tabi-map, iframe), header, footer'; // .pop-in は出る前は縮んでいるので、動かない親の枠でもよける
 function addHair() {
   const h = document.createElement('span');
   h.className = 'hair';

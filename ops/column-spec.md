@@ -77,3 +77,11 @@ draft: false
 - 歌詞・台詞・原作の文章は一切引用しない(著作権)。あらすじや内容は自分の言葉で短く。結末は書かない
 - 曲名・作品名・発表年・収録作・受賞などの事実は出典で確認する。聴く・見る先は公式(アーティスト公式チャンネル、公式サイト、美術館の作品ページ)だけにリンク。非公式アップロードには張らない
 - 絵の画像は載せない(所蔵先のページにリンク)
+
+## 猫の旅(tabi。2026-10-03 追加)
+- 猫に会える日本と世界の旅先。slug は `tabi-<地名>`、`category: tabi`、verdict の label は「まとめ:〜」
+- frontmatter に `trip`(region japan/world・place・lat/lng・mapQuery・access・scene・photo)。記事の頭に「旅のカード」(写真・東京からの地図・Googleマップ)が自動で出る(`src/components/TripCard.astro`、地図は `src/data/trip-map.ts`)
+- 写真は Wikimedia Commons の CC0 / CC BY / CC BY-SA / PD だけ。作者・ライセンス・ファイルページを photo に書く。原画像は `.scratch/tabi/`、`node .scratch/tabi-photos.mjs` で `public/tabi/<slug>.webp`(1200×800)にする。写真がなければ photo を省くとイラスト(scene)になる
+- 本文:冒頭 → 基本データ表 → 由来・歴史 → 見どころ → 東京からの行き方(表) → 訪ねるときのマナー → 編集部のひとこと → 関連項目
+- 船の便数・運休・駅長の交代・エサやりのルールは変わりやすい。公式(自治体・船会社・施設)で確かめ、「2026年10月時点」のように時点を書く
+- コーナーのページは `/tabi/`(地図と一覧)。トップの「猫の旅」枠から入る
