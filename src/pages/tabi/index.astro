@@ -2,7 +2,7 @@
 // 猫の旅コーナー:猫に会える旅先を、日本地図・世界地図(どちらも東京が基準)と一覧で見せる
 import Base from '../../layouts/Base.astro';
 import { getColumns } from '../../lib';
-import { faceSvg } from '../../data/cat-art';
+import { tripSceneSvg } from '../../data/trip-scene';
 import { japanMapSvg, worldMapSvg, kmFromTokyo } from '../../data/trip-map';
 
 const all = await getColumns();
@@ -26,7 +26,7 @@ const wmap = worldMapSvg(pins(world, japan.length + 1), { title: '世界の猫�
       <li>
         <a class="tabi-card" href={`/columns/${c.id}/`}>
           <span class="tabi-n">{i + 1}</span>
-          <span class="tabi-face" set:html={faceSvg(c.data.art)} />
+          <span class="tabi-scene" set:html={tripSceneSvg(c.data.trip!.scene, c.data.art, short(c.data.title), c.id.length)} />
           <span class="tabi-body">
             <b>{short(c.data.title)}</b>
             <small>{c.data.trip!.place}・東京から約{kmFromTokyo(c.data.trip!).toLocaleString()}km</small>
@@ -44,7 +44,7 @@ const wmap = worldMapSvg(pins(world, japan.length + 1), { title: '世界の猫�
       <li>
         <a class="tabi-card" href={`/columns/${c.id}/`}>
           <span class="tabi-n">{japan.length + i + 1}</span>
-          <span class="tabi-face" set:html={faceSvg(c.data.art)} />
+          <span class="tabi-scene" set:html={tripSceneSvg(c.data.trip!.scene, c.data.art, short(c.data.title), c.id.length)} />
           <span class="tabi-body">
             <b>{short(c.data.title)}</b>
             <small>{c.data.trip!.place}・東京から約{kmFromTokyo(c.data.trip!).toLocaleString()}km</small>
@@ -83,11 +83,13 @@ const wmap = worldMapSvg(pins(world, japan.length + 1), { title: '世界の猫�
   .tabi-map { border: 3px solid var(--k); background: var(--white); box-shadow: var(--shadow); margin: 10px 0 18px; }
   .tabi-map :global(svg) { display: block; width: 100%; height: auto; }
   .tabi-map :global(a:hover path) { fill: var(--pink); }
-  .tabi-list { list-style: none; padding: 0; margin: 0 0 28px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
-  .tabi-card { position: relative; display: grid; grid-template-columns: 74px 1fr; gap: 10px; align-items: start; height: 100%; padding: 12px; background: var(--paper); color: var(--k); text-decoration: none; border: 3px solid var(--k); box-shadow: var(--shadow); transition: translate .15s; }
+  .tabi-list { list-style: none; padding: 0; margin: 0 0 28px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .tabi-card { position: relative; display: grid; grid-template-rows: auto 1fr; gap: 10px; align-content: start; height: 100%; padding: 12px; background: var(--paper); color: var(--k); text-decoration: none; border: 3px solid var(--k); box-shadow: var(--shadow); transition: translate .15s; }
   .tabi-card:hover { translate: 0 -3px; color: var(--k); }
-  .tabi-n { position: absolute; left: -8px; top: -10px; width: 30px; height: 30px; display: grid; place-items: center; background: var(--yellow); border: 3px solid var(--k); border-radius: 50%; font-family: var(--font-latin); font-weight: 900; }
-  .tabi-face { width: 74px; }
+  .tabi-n { position: absolute; left: -8px; top: -10px; width: 30px; height: 30px; z-index: 1; display: grid; place-items: center; background: var(--yellow); border: 3px solid var(--k); border-radius: 50%; font-family: var(--font-latin); font-weight: 900; }
+  .tabi-scene { display: block; margin: -12px -12px 0; border-bottom: 3px solid var(--k); overflow: hidden; }
+  .tabi-scene :global(svg) { display: block; width: 100%; height: auto; }
+  .tabi-scene :global(svg > rect:last-child) { display: none; }
   .tabi-body { display: grid; gap: 3px; }
   .tabi-body b { font-family: var(--font-head); font-size: 1.08rem; line-height: 1.35; }
   .tabi-body small { font-size: .78rem; font-weight: 700; color: var(--gray); }
