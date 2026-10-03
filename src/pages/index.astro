@@ -1,5 +1,5 @@
 ---
-// トップページ。構成は「猫砂のかけあい」の町:ステージ → コーナー選択 → ネコキチニュース → 猫の旅(2026-10-03 追加)→ 猫砂フェス → ずかん → 真面目な話。
+// トップページ。構成は「猫砂のかけあい」の町:ステージ → コーナー選択 → ネコキチニュース → 猫の旅(2026-10-03 追加)→ ずかん(猫砂フェスは 2026-10-04 横田さんの指示で削除) → 真面目な話。
 // (週刊ラグドールの「一面→結論→ウワサ→指名手配→アンケート」構成は使わない。横田さん 2026-09-27)
 import Base from '../layouts/Base.astro';
 import { getColumns } from '../lib';
@@ -40,13 +40,6 @@ const NEWS = shuusei.slice(0, 6).map((c, i) => ({
   a: `${OPEN[i % OPEN.length]} ${c.data.title.replace(/[::].*$/, '').replace(/ .*$/, '')}`,
   b: c.data.verdict.summary,
 }));
-
-// 猫砂フェス:3つの陣営
-const FES = [
-  { k: 'kouseki', t: '鉱物系', d: 'ずっしり固まる、ベントナイトの民', color: '#e6ff2e' },
-  { k: 'kami', t: '紙・木系', d: '軽くて流せる、ペレットの民', color: '#16e0b0' },
-  { k: 'okara', t: 'おから系', d: 'ちょっといい匂い、豆腐の民', color: '#ff3ea5' },
-];
 
 const pickup = ['american-shorthair', 'ragdoll', 'singapura', 'tonkinese', 'persian', 'bombay', 'mix', 'russian-blue'] // 図鑑と同じ並び:アメショ・ラグドールのあとはあいうえお順
   .map((s) => BREEDS.find((b) => b.slug === s))
@@ -129,21 +122,6 @@ const pickup = ['american-shorthair', 'ragdoll', 'singapura', 'tonkinese', 'pers
     </>
   )}
 
-  <!-- 4. 猫砂フェス -->
-  <div class="band"><span class="no">FES</span><h2>猫砂フェス:下僕はどの砂を買うべき?</h2></div>
-  <section class="fes pop-in" aria-labelledby="fes-h">
-    <p id="fes-h" class="fes-lead">猫が投票します。人間も押していい。押した陣営の砂で、トイレが埋まっていく。なお猫は、どの砂でもだいたい一回は文句を言う。</p>
-    <div class="fes-box" id="fes-box" aria-hidden="true"></div>
-    <div class="fes-teams">
-      {FES.map((f) => (
-        <button class="fes-btn" type="button" data-k={f.k} data-color={f.color} style={`--c:${f.color}`}>
-          <b>{f.t}</b><small>{f.d}</small><span class="fes-pct" data-p={f.k}>0%</span>
-        </button>
-      ))}
-    </div>
-    <p class="small fes-note">※この端末で押した回数です。猫砂選びの本当のコツは、猫が気に入るかどうか。変えるときは少しずつ混ぜて。</p>
-  </section>
-
   <!-- 5. ずかん -->
   <div class="band"><span class="no">ZUKAN</span><h2>にゃかま図鑑:みんな世界一</h2></div>
   <div class="wanted-grid">
@@ -216,31 +194,6 @@ const pickup = ['american-shorthair', 'ragdoll', 'singapura', 'tonkinese', 'pers
     };
     document.getElementById('news-next')!.addEventListener('click', () => { i = (i + 1) % NEWS.length; show(); });
 
-    // 猫砂フェス:押した陣営の砂が、トイレに積もる
-    const box = document.getElementById('fes-box')!;
-    const btns = [...document.querySelectorAll<HTMLButtonElement>('.fes-btn')];
-    const counts: Record<string, number> = Object.fromEntries(btns.map((b) => [b.dataset.k!, 0]));
-    try { Object.assign(counts, JSON.parse(localStorage.getItem('nk-fes') ?? '{}')); } catch {}
-    const colorOf: Record<string, string> = Object.fromEntries(btns.map((b) => [b.dataset.k!, b.dataset.color!]));
-    const render = () => {
-      const total = Object.values(counts).reduce((a, b) => a + b, 0);
-      for (const b of btns) b.querySelector('.fes-pct')!.textContent = `${total ? Math.round((counts[b.dataset.k!] / total) * 100) : 0}%`;
-      let acc = 0;
-      const stops = Object.entries(counts).filter(([, v]) => v > 0).map(([k, v]) => { const a0 = acc; acc += (v / total) * 100; return `${colorOf[k]} ${a0}% ${acc}%`; });
-      box.style.setProperty('--fill', total ? `linear-gradient(90deg, ${stops.join(', ')})` : 'none');
-      box.style.setProperty('--h', `${Math.min(100, 12 + total * 4)}%`);
-    };
-    render();
-    for (const b of btns) {
-      b.addEventListener('click', () => {
-        counts[b.dataset.k!]++;
-        try { localStorage.setItem('nk-fes', JSON.stringify(counts)); } catch {}
-        render();
-        if (reduce || !kick) return;
-        const r = b.getBoundingClientRect();
-        kick(r.left + scrollX + r.width / 2, r.top + scrollY, Math.random() < .5 ? 1 : -1, 18);
-      });
-    }
   </script>
 
   <style>
@@ -339,19 +292,6 @@ const pickup = ['american-shorthair', 'ragdoll', 'singapura', 'tonkinese', 'pers
       .mc { width: 90px; } .mc-b { justify-self: end; }
     }
 
-    /* 猫砂フェス */
-    .fes { background: var(--paper); border: 3px solid var(--k); box-shadow: 8px 8px 0 var(--mint); padding: 20px; }
-    .fes-lead { margin: 0 0 14px; font-weight: 700; }
-    .fes-box { position: relative; height: 150px; border: 4px solid var(--k); border-top: 0; border-radius: 0 0 26px 26px; background: #f1ecff; overflow: hidden; }
-    .fes-box::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: var(--h, 12%); background: var(--fill, var(--sand)); transition: height .5s cubic-bezier(.3, 1.4, .5, 1); }
-    .fes-teams { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
-    .fes-btn { display: grid; gap: 2px; text-align: left; font: inherit; padding: 12px 14px; background: var(--c); color: var(--k); border: 3px solid var(--k); box-shadow: 4px 4px 0 var(--k); cursor: pointer; transition: translate .1s, box-shadow .1s; }
-    .fes-btn:active { translate: 3px 3px; box-shadow: 1px 1px 0 var(--k); }
-    .fes-btn b { font-family: var(--font-head); font-weight: 900; font-size: 1.3rem; }
-    .fes-btn small { font-weight: 700; font-size: .8rem; }
-    .fes-pct { font-family: var(--font-latin); font-size: 1.4rem; }
-    .fes-note { margin: 12px 0 0; }
-    @media (max-width: 640px) { .fes-teams { grid-template-columns: 1fr; } }
 
     /* 真面目な話 */
     .calm { margin-top: 80px; background: var(--paper); border: 3px solid var(--k); padding: 22px 24px; box-shadow: 8px 8px 0 var(--sand); }
