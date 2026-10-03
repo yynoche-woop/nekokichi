@@ -5,6 +5,8 @@ import { feature } from 'topojson-client';
 import land10 from 'world-atlas/land-10m.json' with { type: 'json' };
 import land50 from 'world-atlas/land-50m.json' with { type: 'json' };
 import land110 from 'world-atlas/land-110m.json' with { type: 'json' };
+import countries10 from 'world-atlas/countries-10m.json' with { type: 'json' };
+import countries50 from 'world-atlas/countries-50m.json' with { type: 'json' };
 import { bodySvg } from './cat-art';
 
 export const TOKYO = { lat: 35.68124, lng: 139.76712, label: '東京' }; // 東京駅
@@ -13,6 +15,9 @@ export type Pin = { lat: number; lng: number; label?: string; n?: number; href?:
 
 const toLand = (t: any) => feature(t, t.objects.land) as any;
 const LAND = { 10: toLand(land10), 50: toLand(land50), 110: toLand(land110) };
+// 日本地図は日本だけを描く(韓国などは描かない。横田さん 2026-10-04)。ISO 3166 の 392 = 日本
+const toJapan = (t: any) => (feature(t, t.objects.countries) as any).features.find((f: any) => String(f.id) === '392');
+const JAPAN = { 10: toJapan(countries10), 50: toJapan(countries50) };
 
 const SEA = '#ece6ff';
 const LANDC = '#fbfaf0';
@@ -60,16 +65,19 @@ export function japanMapSvg(pins: Pin[], opt: { title: string; w?: number; h?: n
   const all = [TOKYO, ...pins];
   let minLng = Math.min(...all.map((p) => p.lng)), maxLng = Math.max(...all.map((p) => p.lng));
   let minLat = Math.min(...all.map((p) => p.lat)), maxLat = Math.max(...all.map((p) => p.lat));
-  if (pins.length > 1) { minLng = Math.min(minLng, 129.3); maxLng = Math.max(maxLng, 142.2); minLat = Math.min(minLat, 31); maxLat = Math.max(maxLat, 41.6); }
+  // 複数のピン(一覧の地図)は、九州から北海道まで全部が入る範囲(沖縄などの離島は省く)
+  if (pins.length > 1) { minLng = Math.min(minLng, 129.6); maxLng = Math.max(maxLng, 145.6); minLat = Math.min(minLat, 31); maxLat = Math.max(maxLat, 45.5); }
   // 余白と最小の範囲
   const span = Math.max(maxLng - minLng, (maxLat - minLat) * 1.25, 2.4); // 近場でも関東が見える広さは残す
   const cx = (minLng + maxLng) / 2, cy = (minLat + maxLat) / 2;
   const pad = span * 0.32;
-  const box = { type: 'MultiPoint', coordinates: [[cx - span / 2 - pad, cy - span / 2.5 - pad / 1.3], [cx + span / 2 + pad, cy + span / 2.5 + pad / 1.3]] };
+  const box = pins.length > 1
+    ? { type: 'MultiPoint', coordinates: [[minLng - 0.3, minLat - 0.3], [maxLng + 0.3, maxLat + 0.3]] }
+    : { type: 'MultiPoint', coordinates: [[cx - span / 2 - pad, cy - span / 2.5 - pad / 1.3], [cx + span / 2 + pad, cy + span / 2.5 + pad / 1.3]] };
   const proj = geoMercator().fitExtent([[10, 10], [w - 10, h - 10]], box as any).clipExtent([[0, 0], [w, h]]);
   const path = geoPath(proj);
   const res = span < 3 ? 10 : 50;
-  const land = path(LAND[res]) ?? '';
+  const land = path(JAPAN[res]) ?? '';
   const s = Math.max(7, Math.min(11, w / 60));
   let out = `<svg class="tripmap" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(opt.title)}" xmlns="http://www.w3.org/2000/svg"><rect width="${w}" height="${h}" fill="${SEA}"/><path d="${land}" fill="${LANDC}" stroke="${INK}" stroke-width="1.4" stroke-linejoin="round"/>`;
   const [tx, ty] = proj([TOKYO.lng, TOKYO.lat])!;
@@ -119,19 +127,21 @@ export function worldMapSvg(pins: Pin[], opt: { title: string; w?: number; h?: n
   if (opt.deco === 'cup' || opt.deco === 'both') {
     // 地球のふちに座った猫が、カップを宇宙へ落とす(落ちるアニメーションつき。動きを減らす設定では止まる)
     const rimY = (x: number) => { for (let lat = 0; lat <= 90; lat += 0.25) { const p = proj([-30.001, lat]); if (p && p[0] <= x) return p[1]; } return by0; };
-    const cx = bx0 + sw * 0.86, base = rimY(cx) + 3;
+    const cx = bx0 + sw * 0.78, base = rimY(cx) + 3;
     const catW = 84;
     decoTop += bodySvg({ coat: 'white', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'smug' }).replace(/^<svg /, `<svg x="${cx - catW / 2}" y="${base - (catW * 300) / 220 + 6}" width="${catW}" height="${(catW * 300) / 220}" `);
-    const ux = cx + 38, uy = rimY(ux) - 1; // カップの置き場所(猫の右、ふちの上)
+    const ux = cx + catW / 2 + 6, uy = rimY(cx + catW / 2 + 6) + 1; // カップの置き場所(猫のすぐ横、地球のふちの上)
+    const dx = bx1 + 26 - ux; // 地球の右の外まで飛ばす
     const cup = `<path d="M-11-22h22l-3 22h-16z" fill="#fff" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/><path d="M-9-18h18" stroke="#c9733a" stroke-width="4"/><path d="M11-16q8 0 7 7t-8 6" fill="none" stroke="${INK}" stroke-width="2.5"/>`;
     const tea = `<path d="M10-14q16 6 18 26" fill="none" stroke="#c9733a" stroke-width="5" stroke-linecap="round"/><circle cx="30" cy="22" r="3.5" fill="#c9733a"/><circle cx="24" cy="32" r="2.5" fill="#c9733a"/>`;
     decoTop += `<style>
-      @keyframes tmCup { 0%, 35% { transform: translate(0, 0) rotate(0deg); opacity: 1 } 45% { transform: translate(14px, -6px) rotate(55deg); opacity: 1 } 80% { transform: translate(58px, 130px) rotate(250deg); opacity: 1 } 88%, 100% { transform: translate(62px, 150px) rotate(280deg); opacity: 0 } }
-      @keyframes tmTea { 0%, 42% { opacity: 0; transform: translate(0, 0) } 50% { opacity: 1; transform: translate(16px, 0) } 85% { opacity: 1; transform: translate(56px, 120px) } 92%, 100% { opacity: 0; transform: translate(60px, 140px) } }
-      .tm-cup, .tm-tea { transform-box: view-box; animation: 5s ease-in infinite; }
+      @keyframes tmCup { 0%, 30% { transform: translate(0, 0) rotate(0deg); opacity: 1 } 42% { transform: translate(${dx * 0.3}px, -10px) rotate(70deg); opacity: 1 } 85% { transform: translate(${dx}px, 150px) rotate(260deg); opacity: 1 } 100% { transform: translate(${dx + 4}px, 175px) rotate(290deg); opacity: 0 } }
+      @keyframes tmTea { 0%, 38% { opacity: 0; transform: translate(0, 0) } 46% { opacity: 1; transform: translate(${dx * 0.32}px, -6px) } 88% { opacity: 1; transform: translate(${dx - 4}px, 140px) } 100% { opacity: 0; transform: translate(${dx}px, 165px) } }
+      .tm-cup, .tm-tea { transform-box: view-box; animation: 3.2s ease-in 1 both paused; }
+      .play .tm-cup, .play .tm-tea { animation-play-state: running; }
       .tm-cup { animation-name: tmCup; transform-origin: ${ux}px ${uy}px; }
       .tm-tea { animation-name: tmTea; }
-      @media (prefers-reduced-motion: reduce) { .tm-cup { animation: none; transform: translate(14px, -6px) rotate(55deg); } .tm-tea { animation: none; opacity: 1; transform: translate(16px, 0); } }
+      @media (prefers-reduced-motion: reduce) { .tm-cup, .tm-tea { animation: none; } .tm-tea { opacity: 0; } }
     </style><g class="tm-cup"><g transform="translate(${ux} ${uy})">${cup}</g></g><g class="tm-tea"><g transform="translate(${ux} ${uy})">${tea}</g></g>`;
   }
   let out = `<svg class="tripmap" viewBox="0 0 ${w} ${h + top}" role="img" aria-label="${esc(opt.title)}" xmlns="http://www.w3.org/2000/svg">${deco}<path d="${path({ type: 'Sphere' } as any)}" fill="${SEA}" stroke="${INK}" stroke-width="2"/><path d="${path(LAND[110])}" fill="${LANDC}" stroke="${INK}" stroke-width="1" stroke-linejoin="round"/>`;

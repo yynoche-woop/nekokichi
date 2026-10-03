@@ -149,6 +149,9 @@ const pickup = ['american-shorthair', 'ragdoll', 'singapura', 'tonkinese', 'pers
 
   <script>
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // 猫の旅の世界地図:見えたら1回だけ、猫がカップを落とす
+    const tabiTop = document.querySelector('.tabi-top');
+    if (tabiTop) new IntersectionObserver(([e], o) => { if (e.isIntersecting) { tabiTop.classList.add('play'); o.disconnect(); } }, { threshold: 0.5 }).observe(tabiTop);
     const kick = (window as any).nkKick as ((x: number, y: number, dir: number, n?: number) => void) | undefined;
 
     // 編集長を押すと砂をかける。ひとことしゃべる
