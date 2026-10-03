@@ -69,8 +69,8 @@ const jsonld = faqs.length
     {d.trip && <TripCard entry={entry} />}
     <div class="prose">
       <Content />
+      {d.trip?.stay && <StayBox entry={entry} />}
     </div>
-    {d.trip?.stay && <StayBox entry={entry} variant="end" />}
     {d.sources.length > 0 && (
       <section class="col-sources">
         <h2>出典・参考資料</h2>

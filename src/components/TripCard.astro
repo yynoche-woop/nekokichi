@@ -1,9 +1,8 @@
 ---
 // 猫の旅の記事の頭に出す「旅のカード」:イラスト(記事の顔)・東京からの位置の地図・小さな現地写真・Googleマップ
 import type { Column } from '../lib';
-import { japanMapSvg, worldMapSvg, kmFromTokyo } from '../data/trip-map';
+import { japanMapSvg, worldMapSvg } from '../data/trip-map';
 import { tripSceneSvg } from '../data/trip-scene';
-import StayBox from './StayBox.astro';
 
 interface Props {
   entry: Column;
@@ -14,7 +13,6 @@ const t = d.trip!;
 const name = d.title.replace(/[::|｜].*$/, '');
 const pin = { lat: t.lat, lng: t.lng, label: name.replace(/[((].*$/, '') };
 const map = t.region === 'japan' ? japanMapSvg([pin], { title: `東京と${name}の位置` }) : worldMapSvg([pin], { title: `東京と${name}の位置`, labels: false });
-const km = kmFromTokyo(t);
 const gmap = `https://maps.google.com/maps?q=${encodeURIComponent(t.mapQuery)}&ll=${t.lat},${t.lng}&z=${t.region === 'japan' ? 13 : 14}&hl=ja&output=embed`;
 const scene = tripSceneSvg(t.scene, d.art, name, entry.id.length);
 ---
@@ -24,10 +22,7 @@ const scene = tripSceneSvg(t.scene, d.art, name, entry.id.length);
     <div class="trip-info">
       <dl class="trip-facts">
         <dt>場所</dt><dd>{t.place}</dd>
-        <dt>東京から</dt><dd>{t.access}</dd>
-        <dt>距離</dt><dd>東京から直線で約{km.toLocaleString()}km</dd>
       </dl>
-      <StayBox entry={entry} />
       {t.photo && (
         <figure class="trip-photo">
           <img src={t.photo.src} alt={t.photo.alt} width="480" height="320" loading="lazy" decoding="async" />

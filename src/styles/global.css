@@ -380,3 +380,23 @@ body { position: relative; overflow-x: clip; }
   .prose .t-stack td:first-child { background: var(--k); color: var(--yellow); font-weight: 800; padding: 6px 12px; }
   .prose .t-stack td + td::before { content: attr(data-label); display: block; font-size: .72rem; font-weight: 800; color: var(--gray); }
 }
+
+/* 猫の旅:泊まるならこの宿(本文の見どころとモデルコースの間。scripts/rehype-stay.mjs が差し込む) */
+.prose .stay { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); margin: 28px 0; border: 3px solid var(--k); background: var(--white); box-shadow: 6px 6px 0 #bf0000; overflow: hidden; }
+.prose .stay-photo { display: block; border-right: 3px solid var(--k); background: var(--blue-soft); }
+.prose .stay-photo img { display: block; width: 100%; height: 100%; min-height: 220px; object-fit: cover; margin: 0; border: 0; }
+.prose .stay-body { padding: 14px 16px 16px; display: grid; align-content: start; gap: 6px; }
+.prose .stay-body p { margin: 0; }
+.prose .stay-kicker { font-size: .8rem; font-weight: 800; color: #bf0000; display: flex; align-items: center; gap: 6px; }
+.prose .stay-pr { font-size: .64rem; font-weight: 800; color: var(--gray); border: 1px solid var(--gray); border-radius: 3px; padding: 0 4px; line-height: 1.5; }
+.prose .stay-name { font-family: var(--font-head); font-weight: 900; font-size: 1.25rem; line-height: 1.35; }
+.prose .stay-why { font-size: .9rem; line-height: 1.75; }
+.prose .stay-access { font-size: .8rem; color: var(--gray); }
+.prose .stay-btn { display: block; margin-top: 6px; text-align: center; background: #bf0000; color: #fff; font-weight: 900; text-decoration: none; padding: 11px 12px; border: 3px solid var(--k); border-radius: 999px; box-shadow: 3px 3px 0 var(--k); }
+.prose .stay-btn:hover { color: #fff; translate: 0 -2px; }
+.prose .stay-credit { font-size: .66rem; color: var(--gray); }
+@media (max-width: 640px) {
+  .prose .stay { grid-template-columns: 1fr; }
+  .prose .stay-photo { border-right: 0; border-bottom: 3px solid var(--k); }
+  .prose .stay-photo img { height: auto; min-height: 0; aspect-ratio: 3 / 2; }
+}

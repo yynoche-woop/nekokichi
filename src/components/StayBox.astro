@@ -1,35 +1,32 @@
 ---
 // 猫の旅:泊まるならこの宿(楽天トラベルのアフィリエイト。旅先ごとにいちばんおしゃれな1軒)
-// 広告なので「PR」を必ず表示する(ステマ規制)。rel="sponsored"
-import { rakutenAff, type Column } from '../lib';
+// <template> で出し、ビルド後に scripts/stay-move.mjs が本文の「モデルコース」の直前へ移す。記事に1か所だけ。
+// 広告なので「PR」を表示(ステマ規制)。写真は楽天トラベルの宿の画像を、楽天の画像サーバーで 640px に縮めて表示。見た目は global.css の .stay
+import type { Column } from '../lib';
 
 interface Props {
   entry: Column;
-  variant?: 'top' | 'end';
 }
-const { entry, variant = 'top' } = Astro.props;
+const { entry } = Astro.props;
 const s = entry.data.trip?.stay;
+const AFF = '57ed04be.8b7052f1.57ed04bf.f902b143'; // 楽天アフィリエイト(アカウント共通のID)
+const href = s ? `https://hb.afl.rakuten.co.jp/hgc/${AFF}/?pc=${encodeURIComponent(s.url)}&m=${encodeURIComponent(s.url)}` : '';
+const no = s?.url.match(/HOTEL\/(\d+)/)?.[1];
+const img = no ? `https://trvimg.r10s.jp/share/HOTEL/${no}/${no}.jpg?fit=inside%7C640:640` : '';
 const place = entry.data.title.replace(/[::|｜(（].*$/, '');
 ---
 {s && (
-  <aside class={`stay stay-${variant}`} aria-label="泊まるならこの宿">
-    <p class="stay-kicker"><span class="stay-pr">PR</span>{variant === 'top' ? '泊まるならこの宿' : `${place}の旅、泊まるならここ`}</p>
-    <p class="stay-name">{s.name}</p>
-    <p class="stay-why">{s.why}</p>
-    {s.access && <p class="stay-access">{s.access}</p>}
-    <a class="stay-btn" href={rakutenAff(s.url)} target="_blank" rel="sponsored noopener">楽天トラベルで空室・料金を見る</a>
-  </aside>
+  <template data-stay>
+    <aside class="stay" aria-label="泊まるならこの宿">
+      {img && <a class="stay-photo" href={href} target="_blank" rel="sponsored noopener"><img src={img} alt={`${s.name}の写真`} width="640" height="427" loading="lazy" decoding="async" /></a>}
+      <div class="stay-body">
+        <p class="stay-kicker"><span class="stay-pr">PR</span>{place}の旅、泊まるならここ</p>
+        <p class="stay-name">{s.name}</p>
+        <p class="stay-why">{s.why}</p>
+        {s.access && <p class="stay-access">{s.access}</p>}
+        <a class="stay-btn" href={href} target="_blank" rel="sponsored noopener">楽天トラベルで空室・料金を見る</a>
+        {img && <p class="stay-credit">写真:楽天トラベル</p>}
+      </div>
+    </aside>
+  </template>
 )}
-
-<style>
-  .stay { position: relative; border: 3px solid var(--k); background: var(--white); box-shadow: 5px 5px 0 #bf0000; padding: 12px 14px 14px; }
-  .stay-end { margin: 28px 0; padding: 18px; background: linear-gradient(135deg, #fff 60%, #fff3f3); }
-  .stay-kicker { margin: 0 0 4px; font-size: .78rem; font-weight: 800; color: #bf0000; display: flex; align-items: center; gap: 6px; }
-  .stay-pr { display: inline-block; font-size: .64rem; font-weight: 800; color: var(--gray); border: 1px solid var(--gray); border-radius: 3px; padding: 0 4px; line-height: 1.5; }
-  .stay-name { margin: 0 0 6px; font-family: var(--font-head); font-weight: 900; font-size: 1.12rem; line-height: 1.35; }
-  .stay-end .stay-name { font-size: 1.3rem; }
-  .stay-why { margin: 0 0 6px; font-size: .88rem; line-height: 1.7; }
-  .stay-access { margin: 0 0 10px; font-size: .8rem; color: var(--gray); }
-  .stay-btn { display: block; text-align: center; background: #bf0000; color: #fff; font-weight: 900; text-decoration: none; padding: 10px 12px; border: 3px solid var(--k); border-radius: 999px; box-shadow: 3px 3px 0 var(--k); transition: translate .12s; }
-  .stay-btn:hover { translate: 0 -2px; color: #fff; }
-</style>
