@@ -3,9 +3,11 @@
 import Base from '../../layouts/Base.astro';
 import { getColumns } from '../../lib';
 import { tripSceneSvg } from '../../data/trip-scene';
+import { faceSvg } from '../../data/cat-art';
 import { japanMapSvg, worldMapSvg, kmFromTokyo } from '../../data/trip-map';
 
 const all = await getColumns();
+const specials = all.filter((c) => c.data.category === 'tabi' && !c.data.trip); // 地図のない特集(猫の宿など)
 const trips = all.filter((c) => c.data.category === 'tabi' && c.data.trip).sort((a, b) => kmFromTokyo(a.data.trip!) - kmFromTokyo(b.data.trip!));
 const japan = trips.filter((c) => c.data.trip!.region === 'japan');
 const world = trips.filter((c) => c.data.trip!.region === 'world');
@@ -18,6 +20,17 @@ const wmap = worldMapSvg(pins(world, japan.length + 1), { title: '世界の猫�
   <nav class="crumb"><a href="/">トップ</a> › 猫の旅</nav>
   <div class="band"><span class="no">TABI</span><h1>猫の旅</h1></div>
   <p class="lede">猫島、招き猫のお寺、猫の駅長、遺跡に暮らす猫たち。猫に会える旅先を、東京からの位置と行き方の目安つきでまとめました。どこも猫たちの暮らしの場所です。エサやりのルールは土地ごとに違うので、各ページの「マナー」を読んでから出かけてください。</p>
+
+  {specials.length > 0 && (
+    <>
+      <h2 class="sub-band" id="tokushu">特集</h2>
+      <ul class="tabi-specials">
+        {specials.map((c) => (
+          <li><a class="tabi-special" href={`/columns/${c.id}/`}><span class="tabi-sp-face" set:html={faceSvg(c.data.art)} /><span><b>{c.data.title}</b><small>{c.data.description}</small></span></a></li>
+        ))}
+      </ul>
+    </>
+  )}
 
   <h2 class="sub-band" id="japan">日本の猫の旅({japan.length}か所)</h2>
   <div class="tabi-map"><Fragment set:html={jmap} /></div>
@@ -80,6 +93,11 @@ const wmap = worldMapSvg(pins(world, japan.length + 1), { title: '世界の猫�
 </Base>
 
 <style>
+  .tabi-specials { list-style: none; padding: 0; margin: 10px 0 24px; display: grid; gap: 12px; }
+  .tabi-special { display: grid; grid-template-columns: 90px 1fr; gap: 14px; align-items: center; padding: 14px; background: var(--paper); color: var(--k); text-decoration: none; border: 3px solid var(--k); box-shadow: 6px 6px 0 var(--pink); }
+  .tabi-special:hover { color: var(--k); translate: 0 -3px; }
+  .tabi-special b { display: block; font-family: var(--font-head); font-size: 1.15rem; line-height: 1.4; }
+  .tabi-special small { display: block; margin-top: 4px; font-size: .84rem; line-height: 1.6; }
   .tabi-map { border: 3px solid var(--k); background: var(--white); box-shadow: var(--shadow); margin: 10px 0 18px; }
   .tabi-map :global(svg) { display: block; width: 100%; height: auto; }
   .tabi-map :global(a:hover path) { fill: var(--pink); }

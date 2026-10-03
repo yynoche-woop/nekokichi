@@ -400,3 +400,12 @@ body { position: relative; overflow-x: clip; }
   .prose .stay-photo { border-right: 0; border-bottom: 3px solid var(--k); }
   .prose .stay-photo img { height: auto; min-height: 0; aspect-ratio: 3 / 2; }
 }
+
+/* 猫の旅:猫の宿の記事(PR表記・アクセス・予約ボタン) */
+.prose .pr-note { font-size: .8rem; color: var(--gray); display: flex; align-items: center; gap: 6px; }
+.prose .stay-pr { font-size: .64rem; font-weight: 800; color: var(--gray); border: 1px solid var(--gray); border-radius: 3px; padding: 0 4px; line-height: 1.5; }
+.prose .inn-access { display: block; font-size: .84rem; color: var(--gray); }
+.prose .inn-link { display: flex; align-items: center; gap: 8px; margin: 8px 0 22px; }
+.prose .inn-link .stay-btn { flex: 1 1 auto; max-width: 360px; margin: 0; }
+.prose .inn-photo { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border: 3px solid var(--k); margin: 4px 0 0; }
+.prose .inn-credit { display: block; font-size: .66rem; color: var(--gray); margin-bottom: 4px; }

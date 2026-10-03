@@ -116,7 +116,7 @@ const pickup = ['american-shorthair', 'ragdoll', 'singapura', 'tonkinese', 'pers
           <div class="tabi-m"><span>日本 {tabiJ.length}か所</span><Fragment set:html={tabiJMap} /></div>
           <div class="tabi-m"><span>世界 {tabiW.length}か所</span><Fragment set:html={tabiWMap} /></div>
         </div>
-        <ul class="tabi-chips">{trips.map((c) => <li><a href={`/columns/${c.id}/`}>{c.data.title.replace(/[::|｜].*$/, '')}</a></li>)}</ul>
+        <ul class="tabi-chips">{trips.map((c) => <li><a href={`/columns/${c.id}/`}>{c.data.title.replace(/[::|｜].*$/, '')}</a></li>)}<li><a class="chip-sp" href="/columns/tabi-cat-inns/">特集:猫と泊まれる宿・看板猫に会える宿</a></li></ul>
         <p class="more"><a class="btn btn-pink" href="/tabi/">猫の旅コーナーへ</a></p>
       </section>
     </>
@@ -279,6 +279,7 @@ const pickup = ['american-shorthair', 'ragdoll', 'singapura', 'tonkinese', 'pers
     .tabi-chips { list-style: none; padding: 0; margin: 14px 0 6px; display: flex; flex-wrap: wrap; gap: 6px; }
     .tabi-chips a { display: inline-block; padding: 3px 10px; border: 2px solid var(--k); border-radius: 999px; background: var(--white); color: var(--k); font-size: .84rem; font-weight: 700; text-decoration: none; }
     .tabi-chips a:hover { background: var(--yellow); }
+    .tabi-chips a.chip-sp { background: var(--pink); color: var(--white); }
     @media (max-width: 760px) { .tabi-maps { grid-template-columns: 1fr; } }
 
     /* ネコキチニュース */
