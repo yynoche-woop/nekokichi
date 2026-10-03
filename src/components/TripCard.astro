@@ -17,7 +17,7 @@ const map = t.region === 'japan' ? japanMapSvg([pin], { title: `東京と${name}
 const gmap = `https://maps.google.com/maps?q=${encodeURIComponent(t.mapQuery)}&ll=${t.lat},${t.lng}&z=${t.region === 'japan' ? 13 : 14}&hl=ja&output=embed`;
 const scene = tripSceneSvg(t.scene, d.art, name, entry.id.length);
 // 写真の横:カメラを抱えたハチワレ(サイトの絵柄。キャラクターの模倣はしない)
-const camCat = bodySvg({ coat: 'black', pattern: 'tuxedo', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' }, 'カメラを抱えたハチワレ猫').replace(/<\/svg>\s*$/, `<g stroke="#1c1629" stroke-width="5" stroke-linejoin="round"><rect x="66" y="186" width="88" height="58" rx="12" fill="#5f5870"/><rect x="80" y="176" width="26" height="14" rx="4" fill="#5f5870"/><circle cx="118" cy="215" r="20" fill="#2a2433"/><circle cx="118" cy="215" r="11" fill="#9be7ff"/><circle cx="84" cy="200" r="4" fill="#e6ff2e" stroke-width="3"/><ellipse cx="70" cy="226" rx="14" ry="11" fill="#fff"/><ellipse cx="150" cy="226" rx="14" ry="11" fill="#fff"/></g></svg>`);
+const camCat = bodySvg({ coat: 'white', pattern: 'solid', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' }, 'カメラを抱えた白猫').replace(/<\/svg>\s*$/, `<g stroke="#1c1629" stroke-width="5" stroke-linejoin="round"><path d="M40 150 Q110 200 180 150" fill="none" stroke="#ff3ea5" stroke-width="6"/><rect x="52" y="172" width="116" height="74" rx="12" fill="#2a2433"/><rect x="52" y="172" width="116" height="20" rx="8" fill="#c9c2b3"/><rect x="70" y="160" width="30" height="16" rx="4" fill="#2a2433"/><circle cx="112" cy="214" r="28" fill="#c9c2b3"/><circle cx="112" cy="214" r="18" fill="#2a2433"/><circle cx="112" cy="214" r="9" fill="#6fd3ff" stroke-width="3"/><circle cx="107" cy="209" r="3" fill="#fff" stroke="none"/><rect x="142" y="178" width="16" height="9" rx="2" fill="#e6ff2e" stroke-width="3"/><ellipse cx="54" cy="228" rx="15" ry="12" fill="#fff"/><ellipse cx="166" cy="228" rx="15" ry="12" fill="#fff"/></g></svg>`);
 ---
 <section class="trip" aria-label="旅のデータ">
   <div class="trip-row">
@@ -51,7 +51,7 @@ const camCat = bodySvg({ coat: 'black', pattern: 'tuxedo', eye: 'gold', ears: 'n
   .trip-hero { margin: 0; border: 3px solid var(--k); box-shadow: var(--shadow); background: var(--white); align-self: start; }
   .trip-hero :global(svg) { display: block; width: 100%; height: auto; }
   .trip-info { display: grid; align-content: start; gap: 10px; padding: 4px 6px 0 14px; }
-  .trip-photo-row { display: flex; align-items: flex-end; gap: 6px; }
+  .trip-photo-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 6px; }
   .trip-camcat { flex: 0 0 auto; width: 104px; }
   .trip-camcat :global(svg) { display: block; width: 100%; height: auto; }
   .trip-facts { margin: 0; display: grid; gap: 4px; font-size: .92rem; }
