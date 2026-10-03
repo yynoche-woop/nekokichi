@@ -3,6 +3,7 @@
 import type { Column } from '../lib';
 import { japanMapSvg, worldMapSvg } from '../data/trip-map';
 import { tripSceneSvg } from '../data/trip-scene';
+import { bodySvg } from '../data/cat-art';
 
 interface Props {
   entry: Column;
@@ -15,6 +16,8 @@ const pin = { lat: t.lat, lng: t.lng, label: name.replace(/[((].*$/, '') };
 const map = t.region === 'japan' ? japanMapSvg([pin], { title: `東京と${name}の位置` }) : worldMapSvg([pin], { title: `東京と${name}の位置`, labels: false });
 const gmap = `https://maps.google.com/maps?q=${encodeURIComponent(t.mapQuery)}&ll=${t.lat},${t.lng}&z=${t.region === 'japan' ? 13 : 14}&hl=ja&output=embed`;
 const scene = tripSceneSvg(t.scene, d.art, name, entry.id.length);
+// 写真の横:カメラを抱えたハチワレ(サイトの絵柄。キャラクターの模倣はしない)
+const camCat = bodySvg({ coat: 'black', pattern: 'tuxedo', eye: 'gold', ears: 'normal', hair: 'short', expr: 'normal' }, 'カメラを抱えたハチワレ猫').replace(/<\/svg>\s*$/, `<g stroke="#1c1629" stroke-width="5" stroke-linejoin="round"><rect x="66" y="186" width="88" height="58" rx="12" fill="#5f5870"/><rect x="80" y="176" width="26" height="14" rx="4" fill="#5f5870"/><circle cx="118" cy="215" r="20" fill="#2a2433"/><circle cx="118" cy="215" r="11" fill="#9be7ff"/><circle cx="84" cy="200" r="4" fill="#e6ff2e" stroke-width="3"/><ellipse cx="70" cy="226" rx="14" ry="11" fill="#fff"/><ellipse cx="150" cy="226" rx="14" ry="11" fill="#fff"/></g></svg>`);
 ---
 <section class="trip" aria-label="旅のデータ">
   <div class="trip-row">
@@ -24,10 +27,13 @@ const scene = tripSceneSvg(t.scene, d.art, name, entry.id.length);
         <dt>場所</dt><dd>{t.place}</dd>
       </dl>
       {t.photo && (
-        <figure class="trip-photo">
-          <img src={t.photo.src} alt={t.photo.alt} width="480" height="320" loading="lazy" decoding="async" />
-          <figcaption>現地の写真:<a href={t.photo.url} target="_blank" rel="noopener">{t.photo.author}</a>({t.photo.license})</figcaption>
-        </figure>
+        <div class="trip-photo-row">
+          <figure class="trip-photo">
+            <img src={t.photo.src} alt={t.photo.alt} width="480" height="320" loading="lazy" decoding="async" />
+            <figcaption>現地の写真:<a href={t.photo.url} target="_blank" rel="noopener">{t.photo.author}</a>({t.photo.license})</figcaption>
+          </figure>
+          <span class="trip-camcat" set:html={camCat} />
+        </div>
       )}
     </div>
   </div>
@@ -44,11 +50,14 @@ const scene = tripSceneSvg(t.scene, d.art, name, entry.id.length);
   .trip-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: stretch; }
   .trip-hero { margin: 0; border: 3px solid var(--k); box-shadow: var(--shadow); background: var(--white); align-self: start; }
   .trip-hero :global(svg) { display: block; width: 100%; height: auto; }
-  .trip-info { display: grid; align-content: start; gap: 10px; }
+  .trip-info { display: grid; align-content: start; gap: 10px; padding: 4px 6px 0 14px; }
+  .trip-photo-row { display: flex; align-items: flex-end; gap: 6px; }
+  .trip-camcat { flex: 0 0 auto; width: 104px; }
+  .trip-camcat :global(svg) { display: block; width: 100%; height: auto; }
   .trip-facts { margin: 0; display: grid; gap: 4px; font-size: .92rem; }
   .trip-facts dt { font-weight: 900; background: var(--k); color: var(--white); padding: 2px 8px; width: fit-content; }
   .trip-facts dd { margin: 0 0 6px; line-height: 1.7; }
-  .trip-photo { margin: 0; max-width: 220px; border: 2px solid var(--k); background: var(--white); }
+  .trip-photo { margin: 0; flex: 1 1 auto; max-width: 220px; border: 2px solid var(--k); background: var(--white); }
   .trip-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
   .trip-photo figcaption { font-size: .66rem; padding: 3px 6px; color: var(--gray); line-height: 1.4; }
   .trip-map { border: 3px solid var(--k); background: var(--blue-soft); display: grid; align-items: center; }
