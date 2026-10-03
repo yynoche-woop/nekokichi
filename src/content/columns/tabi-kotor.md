@@ -19,7 +19,7 @@ trip:
   time: "乗り継ぎで約18時間〜"
   ship: false
   feed: "現地の案内に従う"
-  scene: town
+  scene: walled
   photo: { src: "/tabi/kotor.webp", alt: "コトルの石垣の前でこちらを見る黒猫", author: "Alexey Komarov", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:A_feral_cat_in_Kotor,_September,_2015.jpg" }
 sources:
   - { title: "Cats Museum Kotor(公式)", url: "https://www.catsmuseum.org/" }

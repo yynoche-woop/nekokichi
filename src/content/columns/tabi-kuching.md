@@ -19,7 +19,7 @@ trip:
   time: "乗り継ぎで約11時間〜"
   ship: false
   feed: "触らない(狂犬病に注意)"
-  scene: town
+  scene: statue
   photo: { src: "/tabi/kuching.webp", alt: "クチンのパドゥンガン通りに立つ大きな白い猫の像", author: "Wee Hong", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Cat_statue_of_Kuching_(Jalan_Padungan).jpg" }
 sources:
   - { title: "サラワク州観光局:Welcome to Kuching, the Cat City", url: "https://www.sarawaktourism.com/web/stories/story-view/welcome-to-kuching-the-cat-city" }

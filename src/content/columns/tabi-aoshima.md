@@ -19,7 +19,7 @@ trip:
   time: "約5〜6時間(前泊が現実的)"
   ship: true
   feed: "決まった場所で少しだけ"
-  scene: island
+  scene: port
   photo: { src: "/tabi/aoshima.webp", alt: "青島で島の人のまわりに集まる茶トラや白黒の猫たち(2015年撮影)", author: "暇・カキコ", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Cats_in_aoshima_island_1.JPG" }
 sources:
   - { title: "大洲市:青島航路(時刻表・運賃・注意事項)", url: "https://www.city.ozu.ehime.jp/soshiki/nagahamash/0375.html" }

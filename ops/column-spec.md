@@ -81,7 +81,7 @@ draft: false
 ## 猫の旅(tabi。2026-10-03 追加)
 - 猫に会える日本と世界の旅先。slug は `tabi-<地名>`、`category: tabi`、verdict の label は「まとめ:〜」
 - frontmatter に `trip`(region japan/world・place・lat/lng・mapQuery・access・scene・photo)。記事の頭に「旅のカード」(写真・東京からの地図・Googleマップ)が自動で出る(`src/components/TripCard.astro`、地図は `src/data/trip-map.ts`)
-- 写真は Wikimedia Commons の CC0 / CC BY / CC BY-SA / PD だけ。作者・ライセンス・ファイルページを photo に書く。原画像は `.scratch/tabi/`、`node .scratch/tabi-photos.mjs` で `public/tabi/<slug>.webp`(1200×800)にする。写真がなければ photo を省くとイラスト(scene)になる
+- 記事の顔は旅先ごとのイラスト(`scene`、`src/data/trip-scene.ts`)。写真は小さく添えるだけ(横田さん 2026-10-03「写真の質が悪いので小さく、代わりにイラスト」)。写真は Wikimedia Commons の CC0 / CC BY / CC BY-SA / PD だけ、作者・ライセンス・ファイルページを photo に書く。原画像は `.scratch/tabi/`、`node .scratch/tabi-photos.mjs` で `public/tabi/<slug>.webp`(480×320)
 - 本文:冒頭 → 基本データ表 → 由来・歴史 → 見どころ → 東京からの行き方(表) → 訪ねるときのマナー → 編集部のひとこと → 関連項目
 - 船の便数・運休・駅長の交代・エサやりのルールは変わりやすい。公式(自治体・船会社・施設)で確かめ、「2026年10月時点」のように時点を書く
 - コーナーのページは `/tabi/`(地図と一覧)。トップの「猫の旅」枠から入る

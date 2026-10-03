@@ -19,7 +19,7 @@ trip:
   time: "約4時間"
   ship: true
   feed: "観光客は禁止(島全体のルール)"
-  scene: island
+  scene: catshrine
   photo: { src: "/tabi/tashirojima.webp", alt: "田代島の岸壁を歩く猫", author: "Kirin7739", license: "CC BY 4.0", url: "https://commons.wikimedia.org/wiki/File:Walking_cat_(Tashiro_Island).jpg" }
 sources:
   - { title: "石巻市:田代島の紹介", url: "https://www.city.ishinomaki.lg.jp/cont/10053500/0050/3639/3639.html" }

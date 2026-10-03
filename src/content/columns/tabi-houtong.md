@@ -19,7 +19,7 @@ trip:
   time: "約6時間"
   ship: false
   feed: "観光客は禁止"
-  scene: town
+  scene: mining
   photo: { src: "/tabi/houtong.webp", alt: "猴硐猫村の路地でくつろぐ茶白・ハチワレ・黒の猫(2026年2月)", author: "4300streetcar", license: "CC BY 4.0", url: "https://commons.wikimedia.org/wiki/File:Cats_at_Houtong_Cat_Village_February_2026.jpg" }
 sources:
   - { title: "Taipei Times:Houtong cat numbers drop(2026年1月27日)", url: "https://www.taipeitimes.com/News/lang/archives/2026/01/27/2003851256" }
@@ -34,6 +34,7 @@ sources:
   - { title: "Wikipedia:Houtong Cat Village", url: "https://en.wikipedia.org/wiki/Houtong_Cat_Village" }
   - { title: "台北駐日経済文化代表処:猴硐", url: "https://www.roc-taiwan.org/jp_ja/album/17/photo/43381.html" }
   - { title: "KAYAK:羽田→台北松山のフライト", url: "https://www.kayak.co.jp/%E3%83%95%E3%83%A9%E3%82%A4%E3%83%88/%E6%9D%B1%E4%BA%AC-%E7%BE%BD%E7%94%B0%E7%A9%BA%E6%B8%AF-HND/%E5%8F%B0%E5%8C%97%E5%B8%82-%E5%8F%B0%E5%8C%97%E6%9D%BE%E5%B1%B1%E7%A9%BA%E6%B8%AF-TSA" }
+  - { title: "聯合報:猴硐貓村で猫に辣椒水(2026年4月)", url: "https://udn.com/news/story/7320/9442342" }
 draft: false
 ---
 
@@ -119,6 +120,10 @@ Taipei Times(2026年1月)は、猫が減ったのは管理の失敗ではなく�
 猴硐駅の近くにある「猫公所」は、台湾鉄道の古い宿舎を改装した建物だ。2024年4月に開いたが、運営の委託が約1年で終わり、世話の体制に空白ができた(Taipei Times、鏡週刊)。2026年2月からは、新北市の委託で台湾防止虐待動物協会が運営している。遠見雑誌(2026年4月)によると、隔離の部屋と譲渡の部屋があり、具合の悪い猫の治療と、子猫や保護した猫の譲渡の拠点になっている。2026年8月8日の国際猫の日には、ここで譲渡会も開かれた(ETtoday)。
 
 毎朝7時ごろ、ボランティアが食事を配りながら猫の「点呼」をしているという(遠見雑誌、聯合報)。
+
+### 2026年4月の事件
+
+2026年4月10日、猴硐の広場と猫公所の裏口のあたりで、猫5匹がトウガラシのスプレーをかけられる事件があった。28歳の男が動物保護法違反の疑いで送検されている。猫たちは目を開けられなくなったが、獣医師が生理食塩水で洗い流し、食欲も戻って落ち着いたと報じられた(聯合報)。猫たちは村の人とボランティアに見守られて暮らしている。訪ねる人も、猫をおどかしたり、いじめたりする人を見かけたら、近くの店や猫公所に知らせたい。
 
 ## 見どころ
 

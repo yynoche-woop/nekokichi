@@ -19,7 +19,7 @@ trip:
   time: "約5時間半〜6時間"
   ship: true
   feed: "ドライフードのみ・少量"
-  scene: island
+  scene: jump
 sources:
   - { title: "たどつ汽船(公式):運航情報・お知らせ", url: "https://tadotsu-kisen.jp/" }
   - { title: "たどつ汽船:時刻表(2026年8月1日改正)", url: "https://tadotsu-kisen.jp/%e6%99%82%e5%88%bb%e8%a1%a8" }

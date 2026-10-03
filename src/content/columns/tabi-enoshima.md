@@ -19,7 +19,7 @@ trip:
   time: "約1時間"
   ship: false
   feed: "控える"
-  scene: island
+  scene: enoshima
   photo: { src: "/tabi/enoshima.webp", alt: "江の島の石垣の上に座るキジトラの猫", author: "Guilhem Vellut", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Cat_@_Enoshima_(13897723632).jpg" }
 sources:
   - { title: "タウンニュース藤沢版:江の島の猫に冬の家を(2024年1月5日)", url: "https://www.townnews.co.jp/0601/2024/01/05/714548.html" }

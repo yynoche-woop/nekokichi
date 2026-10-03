@@ -19,7 +19,7 @@ trip:
   time: "約40分"
   ship: false
   feed: "—"
-  scene: shrine
+  scene: temple
   photo: { src: "/tabi/gotokuji.webp", alt: "豪徳寺の招福殿の横に奉納された、たくさんの白い招き猫", author: "Niwrat", license: "CC0", url: "https://commons.wikimedia.org/wiki/File:Maneki-neko_(Japanese_Lucky_Cat)_Statues_at_Gotokuji_Temple,_Tokyo.jpg" }
 sources:
   - { title: "豪徳寺(公式)", url: "https://gotokuji.jp/" }

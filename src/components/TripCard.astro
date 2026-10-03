@@ -1,8 +1,8 @@
 ---
-// 猫の旅の記事の頭に出す「旅のカード」:写真(なければイラスト)・東京からの位置の地図・Googleマップ
+// 猫の旅の記事の頭に出す「旅のカード」:イラスト(記事の顔)・東京からの位置の地図・小さな現地写真・Googleマップ
 import type { Column } from '../lib';
-import { bodySvg } from '../data/cat-art';
-import { japanMapSvg, worldMapSvg, sceneSvg, kmFromTokyo } from '../data/trip-map';
+import { japanMapSvg, worldMapSvg, kmFromTokyo } from '../data/trip-map';
+import { tripSceneSvg } from '../data/trip-scene';
 
 interface Props {
   entry: Column;
@@ -16,28 +16,27 @@ const map = t.region === 'japan' ? japanMapSvg([pin], { title: `東京と${name}
 const km = kmFromTokyo(t);
 const gmap = `https://maps.google.com/maps?q=${encodeURIComponent(t.mapQuery)}&ll=${t.lat},${t.lng}&z=${t.region === 'japan' ? 13 : 14}&hl=ja&output=embed`;
 const route = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent('東京駅')}&destination=${t.lat},${t.lng}&travelmode=transit`;
-const scene = t.photo ? '' : sceneSvg(t.scene, bodySvg(d.art), name, entry.id.length);
+const scene = tripSceneSvg(t.scene, d.art, name, entry.id.length);
 ---
 <section class="trip" aria-label="旅のデータ">
-  <figure class="trip-photo">
-    {t.photo ? (
-      <>
-        <img src={t.photo.src} alt={t.photo.alt} width="1200" height="800" loading="eager" decoding="async" />
-        <figcaption>写真:<a href={t.photo.url} target="_blank" rel="noopener">{t.photo.author}</a>({t.photo.license}/Wikimedia Commons)</figcaption>
-      </>
-    ) : (
-      <Fragment set:html={scene} />
-    )}
-  </figure>
+  <figure class="trip-hero"><Fragment set:html={scene} /></figure>
   <div class="trip-grid">
     <div class="trip-map">
       <Fragment set:html={map} />
       <p class="trip-km">東京から直線で<b>約{km.toLocaleString()}km</b></p>
     </div>
-    <dl class="trip-facts">
-      <dt>場所</dt><dd>{t.place}</dd>
-      <dt>東京から</dt><dd>{t.access}</dd>
-    </dl>
+    <div>
+      <dl class="trip-facts">
+        <dt>場所</dt><dd>{t.place}</dd>
+        <dt>東京から</dt><dd>{t.access}</dd>
+      </dl>
+      {t.photo && (
+        <figure class="trip-photo">
+          <img src={t.photo.src} alt={t.photo.alt} width="480" height="320" loading="lazy" decoding="async" />
+          <figcaption>現地の写真:<a href={t.photo.url} target="_blank" rel="noopener">{t.photo.author}</a>({t.photo.license})</figcaption>
+        </figure>
+      )}
+    </div>
   </div>
   <div class="trip-gmap">
     <iframe src={gmap} title={`${name}のGoogleマップ`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
@@ -47,10 +46,11 @@ const scene = t.photo ? '' : sceneSvg(t.scene, bodySvg(d.art), name, entry.id.le
 
 <style>
   .trip { display: grid; gap: 14px; margin: 18px 0 26px; }
-  .trip-photo { margin: 0; border: 3px solid var(--k); background: var(--white); box-shadow: var(--shadow); }
-  .trip-photo img, .trip-photo :global(svg) { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
-  .trip-photo :global(.tripscene) { aspect-ratio: 8 / 5; }
-  .trip-photo figcaption { font-size: .72rem; padding: 4px 8px; color: var(--gray); }
+  .trip-hero { margin: 0; border: 3px solid var(--k); box-shadow: var(--shadow); background: var(--white); }
+  .trip-hero :global(svg) { display: block; width: 100%; height: auto; }
+  .trip-photo { margin: 10px 0 0; max-width: 240px; border: 2px solid var(--k); background: var(--white); }
+  .trip-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+  .trip-photo figcaption { font-size: .66rem; padding: 3px 6px; color: var(--gray); line-height: 1.4; }
   .trip-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 14px; align-items: start; }
   .trip-map { border: 3px solid var(--k); background: var(--white); }
   .trip-map :global(svg) { display: block; width: 100%; height: auto; }

@@ -19,7 +19,7 @@ trip:
   time: "約4時間"
   ship: false
   feed: "公式の記載なし。見守る"
-  scene: town
+  scene: alley
   photo: { src: "/tabi/onomichi.webp", alt: "「猫の細道」の看板の上でくつろぐ白黒の猫", author: "Asturio Cantabrio", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Neko-no-Hosomichi_2021-08_ac_(1).jpg" }
 sources:
   - { title: "尾道観光協会:猫の細道", url: "https://www.ononavi.jp/sightseeing/showplace/detail.html?detail_id=732" }

@@ -19,7 +19,7 @@ trip:
   time: "直行便で約13時間"
   ship: false
   feed: "指定場所のみ(2025年〜)"
-  scene: town
+  scene: mosque
   photo: { src: "/tabi/istanbul.webp", alt: "イスタンブールのカドゥキョイの芝生で鼻をくっつける2匹の茶トラ", author: "Matti Blume", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Cats,_Kadikoey,_Istanbul_(P1100168).jpg" }
 sources:
   - { title: "Wikipedia:Feral cats in Istanbul", url: "https://en.wikipedia.org/wiki/Feral_cats_in_Istanbul" }

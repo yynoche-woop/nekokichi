@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { ART_SCHEMA } from './data/art-schema';
+import { SCENES } from './data/trip-scene';
 
 // コラム。書き方のルールは ops/column-spec.md
 const columns = defineCollection({
@@ -36,7 +37,7 @@ const columns = defineCollection({
         time: z.string().optional(), // 比較表用:東京からの所要の目安(「約4時間」)
         ship: z.boolean().optional(), // 比較表用:船に乗る
         feed: z.string().optional(), // 比較表用:エサやりのルール(短く)
-        scene: z.enum(['island', 'town', 'shrine', 'station', 'ruins', 'festival', 'house']).default('town'), // 写真がないときのイラスト
+        scene: z.enum(SCENES).default('town'), // 記事の顔のイラスト(src/data/trip-scene.ts)
         photo: z.object({ src: z.string(), alt: z.string(), author: z.string(), license: z.string(), url: z.string().url() }).optional(),
       })
       .optional(),
