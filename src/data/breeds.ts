@@ -1253,7 +1253,7 @@ export const BREEDS: Breed[] = [
       { title: 'Maine Coon Cat(The Cat Fanciers’ Association)', url: 'https://cfa.org/breed/maine-coon-cat/' },
       { title: 'メインクーンの性格は?大きさは?寿命が短命ってほんと?(アニコム 猫との暮らし大百科)', url: 'https://www.anicom-sompo.co.jp/nekonoshiori/481.html' },
       { title: 'メインクーン(ペット保険のPS保険)', url: 'https://pshoken.co.jp/note_cat/cat_list/maine_coon.html' },
-      { title: 'A substitution mutation in the myosin binding protein C gene in ragdoll hypertrophic cardiomyopathy(Genomics, 2007)', url: 'https://pubmed.ncbi.nlm.nih.gov/17521870/' },
+      { title: 'A cardiac myosin binding protein C mutation in the Maine Coon cat with familial hypertrophic cardiomyopathy(Hum Mol Genet, 2005)', url: 'https://pubmed.ncbi.nlm.nih.gov/16236761/' },
     ],
   },
 
