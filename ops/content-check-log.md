@@ -80,3 +80,6 @@
   - 直す点なし:ノルウェージャンのフレイヤの車・1970年代の公式な猫・5年で完成・オス12〜16ポンド/メス9〜12ポンド・正三角形の頭・高い所好き、メインクーンの最大の血統猫・1850年代の記録・1895年の最優秀・アライグマ説は遺伝的にありえない・水好き・3年で完成・20ポンド超、ペルシャの100年以上・1906年の創設時の品種・7部門・PKD1変異2004年
   - 報告のみ:ノルウェージャン care の「できれば毎日ブラッシング」は、CFA では「意外と手入れは多くいらず、もつれにくい」とされる(換毛期は別)。出典どうしの差なので直していない
 - 次回はここから:猫種図鑑の旧20種の残り(siamese, sphynx, selkirk-rex, somali, devon-rex, abyssinian, american-curl, exotic-shorthair, siberian, bengal, russian-blue)の出典照合 → ツール5つ
+- 機械チェック:build 警告なし・87ページ。`ops/site_check.py --live` で本番サイトマップ86URLすべて200、リンク切れ・title/description の欠落/重複・表示崩れなし。新ページの check-breaks(375/390px)は表や箇条書きの短い行の指摘のみ
+- インデックス:/、/breeds/、/breeds/american-shorthair/、/columns/eye-shine/、/tabi/、/columns/tabi-cat-inns/ は Submitted and indexed。/columns/first-cat/ は「URL is unknown to Google」(9/30 は Discovered)。サイトマップのエラー・警告0(最終DL 10/3)、10/7 に再送信
+- 注意:Git Bash から index_check.py に "/" で始まるパスを渡すと C:/Program Files/Git/ に書き換わる。PowerShell で実行するか MSYS_NO_PATHCONV=1 を付ける
