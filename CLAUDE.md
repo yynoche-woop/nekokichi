@@ -20,7 +20,7 @@
 
 ## 構成
 - `src/content/columns/*.md` → `/columns/<slug>/`。書き方は `ops/column-spec.md`(shuusei=猫の習性事典、jitsuyo=暮らし・健康。旧 kensho=ウワサ検証は 2026-09-28 に習性事典へ書き直し済み。URLは変えていない)
-- `src/data/breeds.ts` → 猫種図鑑 `/breeds/<slug>/`(36種、雑種 mix を含む。`myths`=よくある誤解、label は 事実・おおむね正しい・個体差が大きい・言いすぎ・誤り・根拠は弱い)。`tendency` は猫種診断 `/tools/match/` に使う
+- `src/data/breeds.ts` → 猫種図鑑 `/breeds/<slug>/`(37種、雑種 mix を含む。`myths`=よくある誤解、label は 事実・おおむね正しい・個体差が大きい・言いすぎ・誤り・根拠は弱い)。`tendency` は猫種診断 `/tools/match/` に使う
 - `src/data/cat-art.ts` → イラスト。毛色×柄×目×耳×毛の長さ(型は `art-schema.ts`)で、どの猫もステッカー調で描ける。編集長・猫吉はキジトラ白
 - 猫の旅 `/tabi/`(2026-10-03 横田さん指示):猫に会える日本と世界の旅先15か所。記事は `columns/tabi-*.md`(category: tabi、trip に地図・写真)。Googleマップ埋め込み+東京基準の自前の絵地図(d3-geo+world-atlas でビルド時に SVG)。写真は Wikimedia Commons の自由ライセンスのみ(作者表示)。トップの NEWS の下に「猫の旅」枠。書き方は `ops/column-spec.md`
 - ツール:`/tools/match/`(猫種診断)`/tools/seimei/`(姓名判断。計算は seimei.ts、文章は seimei-text.ts)`/tools/age/` `/tools/bcs/` `/tools/food/`

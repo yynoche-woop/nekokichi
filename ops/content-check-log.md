@@ -83,3 +83,12 @@
 - 機械チェック:build 警告なし・87ページ。`ops/site_check.py --live` で本番サイトマップ86URLすべて200、リンク切れ・title/description の欠落/重複・表示崩れなし。新ページの check-breaks(375/390px)は表や箇条書きの短い行の指摘のみ
 - インデックス:/、/breeds/、/breeds/american-shorthair/、/columns/eye-shine/、/tabi/、/columns/tabi-cat-inns/ は Submitted and indexed。/columns/first-cat/ は「URL is unknown to Google」(9/30 は Discovered)。サイトマップのエラー・警告0(最終DL 10/3)、10/7 に再送信
 - 注意:Git Bash から index_check.py に "/" で始まるパスを渡すと C:/Program Files/Git/ に書き換わる。PowerShell で実行するか MSYS_NO_PATHCONV=1 を付ける
+
+## 2026-10-09(毎日ルーティン)
+- アクセス(10/2〜10/8):GA4 24ユーザー・356PV(前期間 40・61)。PVは 10/2 の262PV(渋谷のPC1人122PV=運営側の確認と思われる、米ボードマンのデータセンター1人63PV、shukan-ragdoll.com からの referral 1人70PV)と 10/3・10/4(計78PV、ユーザー各3)に集中。10/5〜10/8 は1日1〜8PVで、外部の実際の流入は小さい。Search Console(9/30〜10/6)は表示85・クリック1・平均順位48、表示はほぼ猫種名の検索
+- 追加:/breeds/chartreux/(シャルトリュー)。sources 4件は開いて確認(CFA の品種ページと記事、PS保険、ロイヤルカナン)。ロイヤルカナンは被毛を「中毛種」としているが、CFA・PS保険に合わせて短毛にした(ロイヤルカナンは性格と寿命の目安12〜15歳に使用)
+- 機械チェック:build 警告なし・88ページ、`ops/site_check.py` 問題なし。新ページの check-breaks(375/390px)は短い行の指摘のみ
+- インデックス:/、/breeds/、/breeds/abyssinian/、/breeds/exotic-shorthair/、/columns/first-cat/(10/7 にクロール、Submitted and indexed になった)。/columns/personality/(10/7追加)は Discovered - currently not indexed。サイトマップのエラー・警告0(最終DL 10/7)
+- 目視:猫種図鑑 siamese・sphynx・selkirk-rex を CFA の品種ページと照合
+  - 直す点なし:シャムのアユタヤ王朝(1350〜1767年)の詩集・1906年CFA創設時の品種・伝統4色・短いのは被毛だけ・多くの猫種のお手本・いちばん暖かい場所=ひざ、スフィンクスの1966年トロント・潜性・大きな耳とレモン形の目・長い指・低アレルゲンとはいえない・定期的な入浴、セルカークのモンタナ州・継父の姓で人名にちなむ唯一の品種・顕性・ひげが折れやすい・コーニッシュ/デボンとの巻き毛の違い・オス12〜15ポンド
+- 次回はここから:猫種図鑑の旧20種の残り(somali, devon-rex, abyssinian, american-curl, exotic-shorthair, siberian, bengal, russian-blue)の出典照合 → ツール5つ
