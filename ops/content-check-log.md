@@ -92,3 +92,14 @@
 - 目視:猫種図鑑 siamese・sphynx・selkirk-rex を CFA の品種ページと照合
   - 直す点なし:シャムのアユタヤ王朝(1350〜1767年)の詩集・1906年CFA創設時の品種・伝統4色・短いのは被毛だけ・多くの猫種のお手本・いちばん暖かい場所=ひざ、スフィンクスの1966年トロント・潜性・大きな耳とレモン形の目・長い指・低アレルゲンとはいえない・定期的な入浴、セルカークのモンタナ州・継父の姓で人名にちなむ唯一の品種・顕性・ひげが折れやすい・コーニッシュ/デボンとの巻き毛の違い・オス12〜15ポンド
 - 次回はここから:猫種図鑑の旧20種の残り(somali, devon-rex, abyssinian, american-curl, exotic-shorthair, siberian, bengal, russian-blue)の出典照合 → ツール5つ
+
+## 2026-10-14(毎日ルーティン)
+- アクセス(10/7〜10/13):GA4 7ユーザー・11PV(前期間 36・370。前期間は 10/2 の運営側の確認などによる急増を含む)。Direct 6・Referral 3。Search Console(10/5〜10/11)は表示80・クリック1・平均順位47.9。28日(9/16〜10/13)は GA4 67ユーザー・425PV、Search Console(9/14〜10/11)は表示204・クリック1
+- 追加:/columns/breed-size/(猫の大きさ・体重は猫種でどう違う?37種の目安一覧。jitsuyo)。表の数字は breeds.ts の weight・grown から生成(各猫種ページの出典どおり)。sources 6件はすべて開いて確認(アニコム損保、CFA のメインクーン・ラガマフィン・サイベリアン・シンガプーラ、International Cat Care)
+- 機械チェック:build 警告なし・89ページ、`ops/site_check.py` 問題なし。新ページの check-breaks(375/390px)は目次・表・短い行の指摘のみ
+- インデックス:/、/breeds/、/breeds/chartreux/(10/9追加、10/13クロール)、/columns/personality/(10/7追加、10/9クロール。前回 Discovered から登録済みに)、/breeds/maine-coon/、/tools/seimei/ はすべて Submitted and indexed。サイトマップのエラー・警告0(最終DL 10/9)
+- 目視:猫種図鑑 somali・devon-rex・abyssinian を CFA・アニコム・PS保険・PubMed(E-utilities で抄録)と照合
+  - 直す点なし:ソマリの潜性の長毛遺伝子・入り方は記録がない・1960年代半ば・アビシニアの隣国ソマリアにちなむ・戸棚を開ける・蛇口の水・2.7〜4.5kg(PS保険)・CEP290の網膜変性・重症筋無力症/巨大食道症/PK欠損症(アニコム)、デボンの1959年デヴォン州のカーリー(Kirlee)・コーニッシュと同じ変異という説は交配で否定・エルフ/ピクシー・ひげと眉がもろく折れる・長時間ひとりが苦手・ブルドッグのような前足・胸が広く首が細い、アビシニアンの1871年クリスタルパレスのズーラ・インド洋沿岸と東南アジア起源・ルディ/シナモン/ブルー/フォーン・つま先立ち・弧を描く首・寝るとき以外は動き回る・前足で合図
+  - 報告のみ:ソマリの「1960年代半ばにアメリカのブリーダーが」は CFA(ミーグ氏が1960年代半ば)どおりだが、アニコムは「1950年代からアメリカとカナダの愛好家が」。出典どうしの差なので直していない。デボンの体重(約2.5〜4kg)は CFA では6〜9ポンド(約2.7〜4.1kg)でほぼ同じ
+- 報告のみ:Search Console に http://nekokichi.net/ の URL(/columns/eye-shine/・/breeds/scottish-fold/・/)が表示されている。確認したところ http:// が 200 でそのまま返り(リダイレクトなし)、GitHub Pages の「Enforce HTTPS」が OFF(https_enforced=false)。ON にすると重複が解消する(設定変更なので横田さんの判断待ち)
+- 次回はここから:猫種図鑑の旧20種の残り(american-curl, exotic-shorthair, siberian, bengal, russian-blue)の出典照合 → ツール5つ
