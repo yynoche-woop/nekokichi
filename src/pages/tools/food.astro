@@ -11,7 +11,7 @@ import BreedPick from '../../components/BreedPick.astro';
     <div class="field">
       <label for="stage">ライフステージ</label>
       <select id="stage" name="stage">
-        <option value="3.0">子猫(4か月未満)</option>
+        <option value="2.5">子猫(4か月未満)</option>
         <option value="2.5">子猫(4〜12か月)</option>
         <option value="1.2" selected>成猫・避妊去勢済み</option>
         <option value="1.4">成猫・避妊去勢なし</option>
@@ -83,7 +83,7 @@ import BreedPick from '../../components/BreedPick.astro';
       const b = BREEDS[slug];
       if (!b) return '';
       const out = [`${b.name}の成猫の体重の目安:${b.weight}。`];
-      if (b.grown && (factor === 3.0 || factor === 2.5)) out.push(`${b.name}は${b.grown.text}。1歳を過ぎても体が大きくなることがあるので、子猫用のごはんから切り替える時期は、かかりつけの獣医師に相談しましょう。`);
+      if (b.grown && factor === 2.5) out.push(`${b.name}は${b.grown.text}。1歳を過ぎても体が大きくなることがあるので、子猫用のごはんから切り替える時期は、かかりつけの獣医師に相談しましょう。`);
       if (factor === 0.8) out.push('目標体重は猫種の平均に合わせず、体型チェックの結果と獣医師の意見で決めましょう。');
       return out.join('');
     };
