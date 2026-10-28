@@ -97,6 +97,7 @@ draft: false
 
 ## 関連項目
 
+- <a href="/columns/eye-color/">猫の目の色はなぜ違う?</a>
 - <a href="/columns/slow-blink/">猫のゆっくりまばたき</a>
 - <a href="/columns/whiskers/">猫のひげの役割</a>
 - <a href="/columns/black-cat/">黒猫</a>
