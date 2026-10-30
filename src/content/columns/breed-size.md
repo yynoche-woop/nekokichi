@@ -135,6 +135,7 @@ draft: false
 - <a href="/breeds/">猫種図鑑</a>(38種の性格・特徴・お手入れ)
 - <a href="/tools/bcs/">体型チェック</a> / <a href="/tools/food/">ごはんの量計算</a> / <a href="/tools/age/">猫の年齢換算</a>
 - <a href="/columns/personality/">猫の性格は猫種や毛色で決まる?</a>
+- <a href="/columns/how-many-breeds/">猫の種類は何種類?団体ごとの公認数</a>
 - <a href="/columns/human-age/">猫の年齢を人間に換算すると何歳?</a>
 - <a href="/columns/liquid/">猫が液体みたいに見えるのはなぜ?</a>
 - <a href="/tools/match/">猫種診断</a>

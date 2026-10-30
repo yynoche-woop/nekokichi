@@ -84,6 +84,7 @@ draft: false
 - <a href="/tools/match/">猫種診断</a>
 - <a href="/breeds/">猫種図鑑</a>(<a href="/breeds/british-shorthair/">ブリティッシュショートヘア</a>・<a href="/breeds/russian-blue/">ロシアンブルー</a>・<a href="/breeds/turkish-van/">ターキッシュバン</a>・<a href="/breeds/mix/">ミックス(雑種)</a>など)
 - <a href="/columns/three-days/">猫は飼い主を覚えている?</a>
+- <a href="/columns/how-many-breeds/">猫の種類は何種類?団体ごとの公認数</a>
 - <a href="/columns/calico-male/">オスの三毛猫はなぜ珍しい?</a>
 - <a href="/columns/first-cat/">はじめて猫と暮らす前に準備すること</a>
 
